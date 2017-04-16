@@ -2,7 +2,6 @@ import {combineReducers} from 'redux';
 import {
 	users,
 	groups,
-	isTryingToAuth,
 	branches,
 	usersDataStatus,
 	groupsDataStatus,
@@ -12,7 +11,8 @@ import ui from './ui'
 import taskManager from './taskManager';
 import qmLetters from './qmLetters';
 import firebaseListeners from './firebaseListeners'
-import {busy, selectedBranch, selectedUser, adminLoggedIn} from './core';
+import { selectedBranch, selectedUser } from './core';
+import { authState, authMessage } from './auth'
 
 
 const rootReducer = combineReducers({
@@ -20,10 +20,10 @@ const rootReducer = combineReducers({
 		branches,
 		users,
 		groups,
-		isTryingToAuth,
 		dataStatus: combineReducers({usersDataStatus, groupsDataStatus, branchesDataStatus})
 	}),
-	core: combineReducers({busy, selectedBranch, selectedUser, adminLoggedIn}),
+	core: combineReducers({ selectedBranch, selectedUser}),
+	auth: combineReducers({ authState, authMessage }),
 	taskManager: taskManager,
 	qmLetters: qmLetters,
 	ui: ui,

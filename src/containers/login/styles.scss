@@ -10,4 +10,11 @@
 		font-size: 4.5em;
 		font-weight: 100;
 	}
+	.errorMessage{
+		color: #ff0000;
+    background-color: rgba(255, 84, 56, 0.15);
+    padding: 4px;
+    width: 100%;
+    justify-content: center;
+	}
 }

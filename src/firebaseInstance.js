@@ -37,5 +37,8 @@ if (process.env.NODE_ENV === 'production') {
 
 const firebaseInstance = firebase.initializeApp(config);
 
-export default firebaseInstance;
+export const ref = firebase.database().ref()
+export const firebaseAuth = firebase.auth
 export const Storage = firebaseInstance.storage();
+
+export default firebaseInstance;

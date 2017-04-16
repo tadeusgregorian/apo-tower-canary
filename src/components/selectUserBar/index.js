@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import './styles.scss';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {hashHistory} from 'react-router'
-import {closeSelectUser, signOut, adminLoggedIn, adminLoggedOut} from 'actions/index';
 import EnterAdminPinPopup from 'components/enterAdminPinPopup';
 import BigUserButton from 'components/bigUserButton';
 import _ from 'lodash';
@@ -17,14 +15,8 @@ class SelectUserBar extends Component {
 		}
 	}
 
-	tryToOpenUserPage = (user) => {
-		if (user.adminHash && (sessionStorage.getItem("adminHash") !== user.adminHash)) {
-			this.openEnterAdminPinPopup(user);
-		} else {
-			this.props.setSelectedUser(user.ID)
-			hashHistory.push('/Apps/TaskManager/' + user.ID)
-			this.props.closeSelectUser();
-		}
+	tryToSelectUser = (user) => {
+		this.props.setSelectedUser(user.ID)
 	}
 
 	openEnterAdminPinPopup = (user) => {
@@ -37,8 +29,6 @@ class SelectUserBar extends Component {
 
 	onFinish = (user) => {
 		this.props.setSelectedUser(user.ID)
-		this.props.adminLoggedIn();
-		hashHistory.push('/Apps/TaskManager/' + user.ID)
 		this.props.closeSelectUser();
 	}
 
@@ -51,7 +41,7 @@ class SelectUserBar extends Component {
 			<fb id="selectUserBar">
 				<fb className="bigUserButtonsContainer">
 					{_.values(this.props.users).filter(u => u.branches && u.branches[this.props.selectedBranch.ID]).map(u => {
-						return <BigUserButton user={u} key={u.ID} clickHandler={() => this.tryToOpenUserPage(u)}/>
+						return <BigUserButton user={u} key={u.ID} clickHandler={() => this.tryToSelectUser(u)}/>
 					})}
 				</fb>
 				<Dialog
@@ -69,10 +59,6 @@ class SelectUserBar extends Component {
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		closeSelectUser,
-		signOut,
-		adminLoggedIn,
-		adminLoggedOut,
 		setSelectedUser: (userID) => dispatch({type: 'SET_SELECTED_USER', payload: userID})
 	}, dispatch);
 };
@@ -81,7 +67,6 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
 	return {
 		users: state.data.users,
-		qmLetters: state.data.qmLetters
 	}
 }
 

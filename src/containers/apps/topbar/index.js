@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import Popover from 'material-ui/Popover'
@@ -7,9 +7,7 @@ import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 import './styles.scss'
 import _ from 'lodash'
-import { getUnreadQmLetters } from 'selectors/unreadQmLettersSelector'
 import cN from 'classnames'
-import {openSelectUser, signOut, adminLoggedOut} from 'actions/index'
 
 class Topbar extends PureComponent {
 	constructor(props) {
@@ -26,16 +24,8 @@ class Topbar extends PureComponent {
 	}
 
 	render() {
-		let { pathname } = this.props.location;
-		let currentApp = '';
-		if(pathname.includes('Apps/TaskManager/')) { currentApp = 'task' }
-		if(pathname.includes('Apps/Qm/')) { currentApp = 'qm' }
-		if(pathname.includes('Apps/Roster/')) { currentApp = 'roster' }
-		if(pathname.includes('Apps/Adminpanel/')) { currentApp = 'adminpanel' }
-
 		const {user, userMode} = this.props
 		let userID = this.props.params && this.props.params.id;
-		let qmNotifications = user && this.props.unreadQmLetters[user.ID];
 
 		return (
 			<fb id="topbar" className={cN({topbarBoxshadow: userMode ? true : false})} style={{background: userMode ? user.color : '#134f77', height: userMode ? '48px' : ''}}>
@@ -98,15 +88,11 @@ const mapStateToProps = (state) => {
 		selectedBranch: state.core.selectedBranch,
 		qmLetters: state.data.qmLetters,
 		users: state.data.users,
-		unreadQmLetters: getUnreadQmLetters(state)
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		signOut,
-		openSelectUser,
-		adminLoggedOut,
 		removeSelectedUser: () => dispatch({type: 'REMOVE_SELECTED_USER'})
 	}, dispatch);
 };

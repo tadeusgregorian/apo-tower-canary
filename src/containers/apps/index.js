@@ -5,7 +5,6 @@ import Dialog from 'material-ui/Dialog';
 import SelectBranchDialog from 'components/selectBranchDialog';
 import {registerUsersDataListener, registerGroupsDataListener, registerBranchesDataListener} from 'actions';
 import {setQmLettersListener, setRepeatingTasksListener, setCheckedMiniListener} from 'actions';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Topbar from './topbar';
 
 class Apps extends PureComponent {
@@ -41,11 +40,9 @@ class Apps extends PureComponent {
 	}
 
 	render() {
-		console.log('SUCK A D - this is the new Branch I HOPE')
 		if(!this.requiredDataIsLoaded()) return <fb>loading...</fb>
 		const user = this.props.params.id && this.props.users && this.props.users.find(u => u.ID == this.props.params.id)
 		return (
-			<MuiThemeProvider>
 				<fb id="root">
 					<fb className="vertical">
 						<Topbar
@@ -64,8 +61,7 @@ class Apps extends PureComponent {
 						<SelectBranchDialog close={() => this.setState({selectBranchDialogIsOpen: false})}/>
 					</Dialog>
 				</fb>
-			</MuiThemeProvider>
-		);
+		)
 	}
 }
 

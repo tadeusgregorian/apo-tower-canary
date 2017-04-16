@@ -89,8 +89,7 @@ module.exports = {
 			helpers: 		paths.appSrc + '/helpers',
 			reducers: 	paths.appSrc + '/reducers',
 			selectors: 	paths.appSrc + '/selectors',
-			styles: 			paths.appSrc + '/styles',
-			helpers: 		paths.appSrc + '/helpers',
+			styles: 		paths.appSrc + '/styles',
 			composers: 	paths.appSrc + '/composers'
     },
   },
@@ -119,6 +118,7 @@ module.exports = {
           /\.html$/,
           /\.(js|jsx)$/,
           /\.css$/,
+          /\.scss$/,
           /\.json$/,
           /\.svg$/
         ],
@@ -152,6 +152,16 @@ module.exports = {
         loader: ExtractTextPlugin.extract(
           'style',
           'css?importLoaders=1!postcss',
+          extractTextPluginOptions
+        )
+        // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
+      },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract(
+          'style',
+          'css?importLoaders=1!postcss',
+					'sass-loader',
           extractTextPluginOptions
         )
         // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.

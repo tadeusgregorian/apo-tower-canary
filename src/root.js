@@ -1,6 +1,6 @@
 import React from 'react';
 import {Provider} from 'react-redux';
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk';
 import rootReducer from 'reducers'
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -16,8 +16,12 @@ import 'toastr/build/toastr.min.css';
 import "./styles/main.scss";
 
 injectTapEventPlugin()
-const store = createStore(rootReducer, applyMiddleware(thunk))
-const loggedIn = true
+const inDevelopement = process.env.NODE_ENV === 'developement'
+const composeEnhancers = inDevelopement ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose
+const store = createStore(rootReducer,  composeEnhancers(applyMiddleware(thunk)))
+
+console.log('herecomes store')
+console.log(store.getState().auth)
 
 
 export default() => {
@@ -27,7 +31,7 @@ export default() => {
 				<Router>
 					<div>
 						<Route path={'/'} exact render={() => (
-							loggedIn  ? (<Redirect to="/TaskManager/Kalender" />) : (<Login/>)
+							store.getState().auth.authState === 'loggedIn'  ? (<Redirect to="/TaskManager/Kalender" />) : (<Login/>)
 						)}/>
 						<Route path={'/TaskManager'} component={TaskManager} />
 					</div>
