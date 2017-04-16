@@ -1,0 +1,23 @@
+.templateModeSwitch{
+	flex: 0 0 auto;
+
+	>*{
+		padding: 0 6px;
+		min-width: 80px;
+		&.selected{
+			background-color: white;
+			box-shadow: inset 0px -1px 0px 0px #ced0d4;
+			color: #277ae8;
+		}
+	}
+
+	.templateButton{
+		border-radius: 0 4px 4px 0;
+	}
+
+	.weekShiftButton{
+		border-right: none;
+		border-radius: 4px 0 0 4px;
+		//width: 94px;
+	}
+}

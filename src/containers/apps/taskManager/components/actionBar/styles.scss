@@ -1,0 +1,15 @@
+.actionBar {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	flex-direction: row;
+	position: absolute;
+	right: 13px;
+	bottom: 30px;
+	margin: 0 -6px;
+	height: 56px;
+
+	> * {
+		margin: 0 6px;
+	}
+}

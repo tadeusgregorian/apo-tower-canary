@@ -1,0 +1,24 @@
+
+
+.userWrapper{
+
+	&.mini{
+		margin-left: -2px;
+		padding: 0px;
+	}
+
+	.hiddenMiniUsersCount{
+		height: 22px;
+		width: 34px;
+		color: #a5a5a5;
+    font-size: 13px;
+    margin: 2px;
+    border-radius: 1px;
+    justify-content: center;
+		align-items: center;
+    margin-left: 4px;
+    background-color: rgba(0, 0, 0, 0.05);
+    flex: 0 0 auto;
+    font-weight: 500;
+	}
+}
