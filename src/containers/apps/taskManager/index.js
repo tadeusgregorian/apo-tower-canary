@@ -12,22 +12,20 @@ import _ from 'lodash';
 class TaskManager extends PureComponent {
 
 	render() {
-		const {user, match} = this.props
+		const { selectedUser , match, selectedBranch} = this.props
+		const navBarRoutes = [
+			{name: "Kalender", 	path: 'Apps/TaskManager/Kalender'},
+			{name: "Editor", 		path: 'Apps/TaskManager/Editor'}
+		]
+
 		return (
 			<main className="vertical">
-				{ user ?
-					<Navbar
-						user={user}
-						location={this.props.location}
-						routes={[
-							{name: "Kalender", 	path: `Apps/TaskManager/Kalender/${user.ID}`},
-							{name: "Editor", 		path: `Apps/TaskManager/Editor/${user.ID}/`}
-						]}
-					/> :
-					<SelectUserBar selectedBranch={this.props.selectedBranch}/>
-					}
-					<Route path={match.url + '/Kalender'} component={Calendar}/>
-					<Route path={match.url + '/Editor'} 	component={TasksEdit}/>
+				{ selectedUser ?
+					<Navbar user={selectedUser} routes={navBarRoutes}/> :
+					<SelectUserBar selectedBranch={selectedBranch}/>
+				}
+				<Route path={match.url + '/Kalender'} component={Calendar}/>
+				<Route path={match.url + '/Editor'}   component={TasksEdit}/>
 			</main>
 		)
 	}
@@ -41,7 +39,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
 	return {
-		selectedBranch: state.core.selectedBranch
+		selectedBranch: state.core.selectedBranch,
+		selectedUser: state.core.selectedUser
 	};
 };
 

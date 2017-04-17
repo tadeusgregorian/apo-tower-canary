@@ -1,12 +1,12 @@
 import React from 'react';
 import './styles.scss';
-import { darkenColor } from 'helpers/index';
 import FlatButton from 'material-ui/FlatButton';
-import { Link } from 'react-router';
+import { NavLink } from 'react-router-dom';
 
 const Navbar = ({routes, children, user}) => {
+	console.log(routes)
 	return (
-		<fb id="navbar" style={{backgroundColor: darkenColor(-0.2, user.color), borderBottom: `solid 1px ${darkenColor(-0.35, user.color)}`}}>
+		<fb id="navbar">
 			<fb className='navbarContentWrapper'>
 				<left>
 					{ routes.map(r =>
@@ -14,13 +14,10 @@ const Navbar = ({routes, children, user}) => {
 							key={r.path}
 							rippleColor="white"
 							className="linkButton"
-							containerElement={<Link activeClassName="active" to={r.path} />}
+							containerElement={<NavLink activeClassName="active" to={r.path} />}
 							label={r.name} />
 					)}
 				</left>
-				<right>
-					{children}
-				</right>
 			</fb>
 		</fb>
 	)

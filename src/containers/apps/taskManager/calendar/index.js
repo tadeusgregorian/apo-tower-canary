@@ -42,7 +42,7 @@ class Calendar extends PureComponent {
 			shiftTaskTo={this.shiftTaskTo}
 			close={this.props.closeCheckingTask}
 			users={this.props.users}
-			user={this.props.user}/>)
+			selectedUser={this.props.selectedUser}/>)
 		this.props.setCheckingTask(task)
 	}
 
@@ -52,7 +52,7 @@ class Calendar extends PureComponent {
 		this.addEditTaskWizard = <Wizard saveTaskToDB={this.saveOperatingTaskToDB}/>
 	}
 
-	checkUncheckTask = (isUnchecking, taskID, checkType, userID = this.props.user.ID, shiftedTo = false, taskObj = null) => {
+	checkUncheckTask = (isUnchecking, taskID, checkType, userID = this.props.selectedUser, shiftedTo = false, taskObj = null) => {
 		playTaskCheckSound();
 		const {selectedBranch, currentDay, checked} = this.props
 		const checkedID = isUnchecking && checked.find(c => c.taskID == taskID).ID
@@ -93,7 +93,6 @@ class Calendar extends PureComponent {
 
 	renderDay = (day) => {
 		return  [<Day
-			user={this.props.user}
 			users={this.props.users}
 			key={day}
 			day={day}
@@ -117,7 +116,6 @@ class Calendar extends PureComponent {
 				<fb className='updateDBButton' onClick={()=>deleteTaskManager()}>deleteTaskManager</fb>
 				<fb className='updateDBButton' onClick={()=>createCheckedCount(this.props.branches, this.props.checked, this.props.repeatingTasks)}>createCheckedCount</fb> */}
 					<DayHead
-						user={this.props.user}
 						onPagingHandler={this.moveToNextOrPreviousDay}
 						isToday={this.props.currentDay == this.today}
 						currentDay={this.props.currentDay}
@@ -125,14 +123,14 @@ class Calendar extends PureComponent {
 						jumpToToday={this.jumpToToday}
 						jumpToDate={this.jumpToDate}
 						openDatePicker={() => this.refs.jumpToDatePicker.openDialog()}
-						uncheckedTasksGrid={{}} // COME BACK HERE
 						loadingPastTasks={true} // COME BACK HERE
 					/>
 					<DaysTransitionGroup movingDirection={this.state.movingDayBackward}>
 						{this.state.removeDay ? [] : this.renderDay(this.props.currentDay)}
 					</DaysTransitionGroup>
+
 				</fb>
-				<ActionBar user={this.props.user} openAddEditTaskWizard={this.openAddEditTaskWizard} />
+				<ActionBar openAddEditTaskWizard={this.openAddEditTaskWizard} />
 				<DatePicker style={{"display": "none"}}
 					ref='jumpToDatePicker'
 					onChange={(e, d) => {if (!(typeof d === 'string' || d instanceof String)) this.jumpToDate(parseInt(moment(d).format('YYYYMMDD')))}}

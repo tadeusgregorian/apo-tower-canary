@@ -9,7 +9,7 @@ export const addFBListener = (ref, fbAction, target, dispatch, childrenCount = 0
 	})
 }
 
-export const cleanUpFBListeners = (dispatch, getState, listenerTarget, newPath) => {
+export const trackFBListeners = (dispatch, getState, listenerTarget, newPath) => {
 	const listenerPath = getState().firebaseListeners[listenerTarget]
 	if(listenerPath) FBInstance.database().ref(listenerPath).off()
 	dispatch({type: 'ADD_FIREBASE_LISTENER', listenerTarget: listenerTarget, listenerPath: newPath})
@@ -17,7 +17,7 @@ export const cleanUpFBListeners = (dispatch, getState, listenerTarget, newPath) 
 
 export const createFirebaseListener = (dispatch, getState, target, dbPath, queryRef = null) => {
 
-	cleanUpFBListeners(dispatch, getState, target, dbPath)
+	trackFBListeners(dispatch, getState, target, dbPath)
 	dispatch({type: 'data_requested_' + target })
 
 	const ref = queryRef || FBInstance.database().ref(dbPath)

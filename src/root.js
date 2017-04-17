@@ -5,10 +5,8 @@ import thunk from 'redux-thunk';
 import rootReducer from 'reducers'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
-
-import Login 						from './containers/login'
-import TaskManager 			from './containers/apps/taskManager'
+import { BrowserRouter as Router} from 'react-router-dom'
+import Main 						from './main'
 
 import 'normalize.css/normalize.css';
 import 'skeleton.css/skeleton.css';
@@ -16,25 +14,16 @@ import 'toastr/build/toastr.min.css';
 import "./styles/main.scss";
 
 injectTapEventPlugin()
-const inDevelopement = process.env.NODE_ENV === 'developement'
+const inDevelopement = process.env.NODE_ENV === 'development'
 const composeEnhancers = inDevelopement ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose
 const store = createStore(rootReducer,  composeEnhancers(applyMiddleware(thunk)))
-
-console.log('herecomes store')
-console.log(store.getState().auth)
-
 
 export default() => {
 	return (
 		<MuiThemeProvider>
 			<Provider store={store}>
 				<Router>
-					<div>
-						<Route path={'/'} exact render={() => (
-							store.getState().auth.authState === 'loggedIn'  ? (<Redirect to="/TaskManager/Kalender" />) : (<Login/>)
-						)}/>
-						<Route path={'/TaskManager'} component={TaskManager} />
-					</div>
+					<Main />
 				</Router>
 			</Provider>
 		</MuiThemeProvider>

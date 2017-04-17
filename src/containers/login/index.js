@@ -15,11 +15,12 @@ class Login extends React.Component {
 
 	tryToLogin = () => {
 		this.props.signInWithEmailAndPassword(this.state.username + '@mail.de', this.state.password)
-			.then(() => 	{ this.props.setUserToLoggedIn() })
 			.catch((e) => { this.props.userCredentialsWereWrong() })
 	}
 
 	render() {
+		console.log('im here mofos')
+
 		return (
 				<fb style={{ height: "100%"}}>
 					<fb className="vertical" id="login">

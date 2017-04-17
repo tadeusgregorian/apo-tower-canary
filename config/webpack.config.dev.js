@@ -85,7 +85,8 @@ module.exports = {
 			reducers: 	paths.appSrc + '/reducers',
 			selectors: 	paths.appSrc + '/selectors',
 			styles: 		paths.appSrc + '/styles',
-			composers: 	paths.appSrc + '/composers'
+			composers: 	paths.appSrc + '/composers',
+			constants: 	paths.appSrc + '/constants'
     }
   },
 
@@ -212,7 +213,7 @@ module.exports = {
     // makes the discovery automatic so you don't have to restart.
     // See https://github.com/facebookincubator/create-react-app/issues/186
     new WatchMissingNodeModulesPlugin(paths.appNodeModules),
-		new WebpackNotifierPlugin()
+		new WebpackNotifierPlugin({excludeWarnings: true})
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

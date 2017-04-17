@@ -15,7 +15,7 @@ const AssignedUsers = (props) => {
 	let assignedUsersSorted = props.assignedUsers.map(userID =>{
 		const assignedUser = props.users.find(user => user.ID == userID)
 		return { ...assignedUser, hasRead: props.usersRead && props.usersRead.includes(userID)}
-	}).sortBy(u => String(u.hasRead))
+	}).sort((a, b) => a.hasRead < b.hasRead)
 
 	// optionally you can limit the number of shown MiniUsers.
 	// A number like ( +3 ) is appended at the end to indicate

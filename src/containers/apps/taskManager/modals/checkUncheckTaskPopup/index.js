@@ -10,13 +10,14 @@ export default class CheckUncheckTaskPopup extends Component {
 
 	checkUncheckTask = (isUnchecking, checkType, shiftedTo = null, taskObj = null) => {
 		this.props.close()
-		this.props.checkUncheckTask(isUnchecking, this.props.data.ID, checkType, this.props.user.ID, shiftedTo, taskObj)
+		this.props.checkUncheckTask(isUnchecking, this.props.data.ID, checkType, this.props.selectedUser, shiftedTo, taskObj)
 	}
 
 	render() {
 		const t = this.props.data
 		const taskTypeAndPattern = getTypeAndPatternOfTask(t);
 		const creatorName = this.props.users.find(u => u.ID == t.creatorID).name
+		const userMode = !!this.props.selectedUser
 		const ignoreButton = (
 			<RaisedButton
 				label={t.isIgnored ? 'Ignorierung aufheben' : 'Ignorieren'}
@@ -63,9 +64,9 @@ export default class CheckUncheckTaskPopup extends Component {
 				</header>
 				<content><fb className="no-shrink margin-bottom">{t.text}</fb></content>
 				<footer>
-					{this.props.user && ignoreButton}
-					{this.props.user && shiftButton}
-					<fb className="right no-grow">{this.props.user && checkUncheckButton}</fb>
+					{userMode && ignoreButton}
+					{userMode && shiftButton}
+					<fb className="right no-grow">{userMode && checkUncheckButton}</fb>
 				</footer>
 				<DatePicker style={{"display": "none"}}
 					ref='shiftTaskDatePicker'

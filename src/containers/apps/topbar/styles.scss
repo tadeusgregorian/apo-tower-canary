@@ -60,6 +60,10 @@
 			font-weight: 300;
 		}
 
+		a{
+			text-decoration: none;
+		}
+
 	}
 
 	.topbarButton{
@@ -81,13 +85,9 @@
 			// padding: 0;
 			// margin-right: 11px;
 			// padding-bottom: 3px;
+			line-height: inherit;
+			padding: 0px;
 		}
-	}
-
-	.topbarTaskButton{
-	}
-
-	.topbarRosterButton{
 	}
 
 	.topbarQmsButton{

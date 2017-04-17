@@ -1,13 +1,8 @@
 import React, {Component} from 'react';
-import cN from 'classnames';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {selectBranch} from 'actions/index';
-import composePopup from 'composers/popup';
-import toastr from 'toastr'
 import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
 
 class SelectBranchDialog extends Component {
 	selectBranch = (branch) => {

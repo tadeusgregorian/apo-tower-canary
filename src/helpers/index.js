@@ -5,7 +5,6 @@ export * from './dataHelper'
 export * from './GT_styles'
 export * from './sounds'
 export * from './databaseUpdates'
-export * from './taskManager'
 export * from './firebaseListeners'
 export * from './databaseUpdate_qmLetters'
 

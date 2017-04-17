@@ -1,5 +1,3 @@
-'use strict';
-
 var autoprefixer = require('autoprefixer');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -90,7 +88,8 @@ module.exports = {
 			reducers: 	paths.appSrc + '/reducers',
 			selectors: 	paths.appSrc + '/selectors',
 			styles: 		paths.appSrc + '/styles',
-			composers: 	paths.appSrc + '/composers'
+			composers: 	paths.appSrc + '/composers',
+			constants: 	paths.appSrc + '/constants'
     },
   },
 

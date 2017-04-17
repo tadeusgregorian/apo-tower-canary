@@ -9,7 +9,7 @@ import Dialog from 'material-ui/Dialog';
 
 class SelectUserBar extends Component {
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = {
 			enterAdminPinPopupIsOpen: false
 		}

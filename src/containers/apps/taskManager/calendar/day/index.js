@@ -17,10 +17,10 @@ export default class Day extends PureComponent {
 	}
 
 	render() {
-		const {tasks, user} = this.props;
+		const {tasks, selectedUser} = this.props;
 		if(!tasks) return null;
 		if(this.props.dataStatus != 'LOADED') return(<fb>LOADING...</fb>)
-		const filteredTasks = tasks.filter(t => !user || t.assignedUsers[user.ID])
+		const filteredTasks = tasks.filter(t => !selectedUser || t.assignedUsers[selectedUser.ID])
 		const checkedTasksCount = filteredTasks.filter(t => t.isDone || t.isIgnored).length
 		const visibleTasks = _.sortBy(filteredTasks.filter(t => this.state.showDoneTasks || (!t.isDone && !t.isIgnored)), [
 			t => !!t.isDone || !!t.isIgnored || !!t.isShifted,
@@ -29,13 +29,13 @@ export default class Day extends PureComponent {
 			"subject",
 		])
 		return (
-			<fb className={cN({tasksDay: true, fullWidthDay: true, inUserMode: user})}>
+			<fb className={cN({tasksDay: true, fullWidthDay: true, inUserMode: selectedUser})}>
 				<fb ref="tasksWrapper" className={`tasksWrapper`}>
 					<TaskTransitionGroup>
 						{ visibleTasks.length ?  visibleTasks.map(t => <Task
 										data={t}
 										key={t.ID}
-										withCheckbox={!!user}
+										withCheckbox={!!selectedUser}
 										dateString={this.props.day}
 										onCheckboxClick={() => this.props.checkUncheckTask(t.isDone, t.ID, 'done')}
 										users={this.props.users}

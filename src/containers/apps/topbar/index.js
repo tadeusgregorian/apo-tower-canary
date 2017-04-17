@@ -19,19 +19,17 @@ class Topbar extends PureComponent {
 		}
 	}
 
-	goBackToHome = () => {
-		console.log('Remove SelectedUser from REDUX and redirect home')
-	}
+	goBackToHome = () => this.props.removeSelectedUser()
 
 	render() {
-		const {user, userMode} = this.props
-		let userID = this.props.params && this.props.params.id;
+		const {user, userMode, selectedUser} = this.props
+		let userID = selectedUser
 
 		return (
 			<fb id="topbar" className={cN({topbarBoxshadow: userMode ? true : false})} style={{background: userMode ? user.color : '#134f77', height: userMode ? '48px' : ''}}>
 				<fb className="topbarContentWrapper">
 					<fb className="left">
-						{ userMode && <Link to={'/'}><icon className="backButton icon-arrow-left2"/></Link> }
+						{ userMode && <icon onClick={this.goBackToHome} className="backButton icon-arrow-left2"/> }
 						{ userMode &&
 							<fb className="topbarButton topbarTasksButton">
 								<Link to={`Apps/TaskManager/${userID}`}><icon className="icon icon-stack no-border"></icon></Link>
@@ -83,18 +81,15 @@ class Topbar extends PureComponent {
 	}
 }
 
-const mapStateToProps = (state) => {
-	return {
+const mapStateToProps = (state) => ({
 		selectedBranch: state.core.selectedBranch,
-		qmLetters: state.data.qmLetters,
-		users: state.data.users,
-	};
-};
+		selectedUser: state.core.selectedUser
+})
 
-const mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({
+const mapDispatchToProps = (dispatch) => (
+	bindActionCreators({
 		removeSelectedUser: () => dispatch({type: 'REMOVE_SELECTED_USER'})
-	}, dispatch);
-};
+	}, dispatch)
+)
 
-export default connect(mapStateToProps, mapDispatchToProps)(Topbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Topbar)
