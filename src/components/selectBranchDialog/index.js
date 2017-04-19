@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {selectBranch} from 'actions/index';
+import {selectBranch} from 'actions';
 import RaisedButton from 'material-ui/RaisedButton';
 
 class SelectBranchDialog extends Component {
@@ -24,7 +24,7 @@ class SelectBranchDialog extends Component {
 							<RaisedButton label={b.name} primary={true} onTouchTap={() => this.selectBranch(b)}/>
 						</fb>
 					))
-}
+				}
 				</content>
 			</fb>
 		);

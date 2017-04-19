@@ -7,6 +7,6 @@ export function removeBusy() {
 }
 
 export function selectBranch(branch) {
-	localStorage.setItem('branch', JSON.stringify(branch));
-	return {type: 'SELECT_BRANCH', payload: branch};
+	localStorage.setItem('branch', branch.ID )
+	return {type: 'SELECT_BRANCH', payload: branch.ID }
 }

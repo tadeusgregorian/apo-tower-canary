@@ -1,8 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {fetch} from 'redux';
-import {Link} from 'react-router';
 import EditBranchesContent from './branch';
 import cN from 'classnames';
 import {openPopup} from 'actions/index';
@@ -18,35 +16,23 @@ class EditBranches extends React.Component {
 		this.state = {
 			selectedBranchID: null,
 			createBranchPopupOpen: false
-		};
-
+		}
 		this.createBranchPopup = null;
 	}
 
-	branchElementClicked(e) {
-		this.setState({selectedBranchID: e.target.id});
-	}
-
-	closeAddMemberPopup() {
-		this.setState({createBranchPopupOpen: false});
-	}
+	branchElementClicked = (e) => this.setState({selectedBranchID: e.target.id})
+	closeAddMemberPopup  = () => this.setState({createBranchPopupOpen: false})
 
 	openCreateBranchPopup() {
 		this.setState({createBranchPopupOpen: true});
 		this.createBranchPopup = (<CreateBranchPopup close={this.closeCreateBranchPopup.bind(this)}/>);
 	}
 
-	closeCreateBranchPopup() {
-		this.setState({createBranchPopupOpen: false});
-	}
-
-	branchWasCreated() {}
+	closeCreateBranchPopup = () => this.setState({createBranchPopupOpen: false})
 
 	setSelectedBranch() {
-		let firstBranchID = this.props.branches[0]
-			? this.props.branches[0].ID
-			: null;
-		this.setState({selectedBranchID: firstBranchID});
+		let firstBranchID = this.props.branches[0] ? this.props.branches[0].ID : null
+		this.setState({selectedBranchID: firstBranchID})
 	}
 
 	render() {
@@ -64,12 +50,8 @@ class EditBranches extends React.Component {
 						<button className="button icon-folder-plus" onTouchTap={this.openCreateBranchPopup.bind(this)}>Filiale Erstellen</button>
 					</div>
 				</div>
-				{< EditBranchesContent setSelectedBranch = {
-					this.setSelectedBranch.bind(this)
-				}
-				branch = {
-					this.props.branches.find(g => g.ID == selectedBranchID)
-				} />}
+				{< EditBranchesContent setSelectedBranch={ this.setSelectedBranch.bind(this) }
+				branch={ this.props.branches.find(g => g.ID == selectedBranchID) } />}
 				<Dialog className="materialDialog" open={this.state.createBranchPopupOpen} onRequestClose={this.closeAddMemberPopup.bind(this)}>
 					{this.createBranchPopup}
 				</Dialog>

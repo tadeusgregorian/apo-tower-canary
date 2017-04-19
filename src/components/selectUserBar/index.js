@@ -40,7 +40,7 @@ class SelectUserBar extends Component {
 		return(
 			<fb id="selectUserBar">
 				<fb className="bigUserButtonsContainer">
-					{_.values(this.props.users).filter(u => u.branches && u.branches[this.props.selectedBranch.ID]).map(u => {
+					{_.values(this.props.users).filter(u => u.branches && u.branches[this.props.selectedBranch]).map(u => {
 						return <BigUserButton user={u} key={u.ID} clickHandler={() => this.tryToSelectUser(u)}/>
 					})}
 				</fb>

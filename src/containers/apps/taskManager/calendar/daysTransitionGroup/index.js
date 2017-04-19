@@ -9,7 +9,7 @@ const DaysTransitionGroup = ({movingDirection, children}) => (
 		component={AnimationWrapperElement}
 		transitionName={`tasksDayAnimation-${movingDirection ? "backward" : "forward"}`}
 		transitionEnterTimeout={200}
-		transitionLeaveTimeout={200}>
+		transitionLeaveTimeout={140}>
 		{children}
 	</ReactCSSTransitionGroup>
 )

@@ -11,10 +11,10 @@ import Apps 	from './containers/apps'
 
 const Main = (props) => {
 	const loggedIn = props.authState === 'loggedIn'
-	//const isAuthenticating = props.authState === 'isAuthenticating'
-	props.setAuthStateListener()
-
-	//if(isAuthenticating) return (<fb>Loading... -authenticating-</fb>)
+	const isAuthenticating = props.authState === 'isAuthenticating'
+	console.log(props.firebaseAuthListener)
+	if(!props.firebaseAuthListener) props.setAuthStateListener()
+	if(isAuthenticating) return (<fb>Loading... -authenticating-</fb>)
 
 	return (
 		<div>
@@ -26,7 +26,9 @@ const Main = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-	authState: state.auth.authState
+	authState: state.auth.authState,
+	firebaseAuthListener: state.firebaseListeners.firebaseAuth
+
 })
 
 const mapDispatchToProps = (dispatch) => {

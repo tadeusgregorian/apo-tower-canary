@@ -5,7 +5,7 @@ export function signInWithEmailAndPassword (email, pw) {
 	return dispatch => firebaseAuth().signInWithEmailAndPassword(email, pw)
 }
 
-export function logout () {
+export function logoutFromFirebase () {
   return dispatch => firebaseAuth().signOut()
 }
 

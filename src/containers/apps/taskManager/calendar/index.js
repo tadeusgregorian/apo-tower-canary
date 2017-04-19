@@ -8,7 +8,6 @@ import DayHead from './dayHead'
 import {checkTask, uncheckTask, createTask} from 'actions';
 import Dialog from 'material-ui/Dialog';
 import CheckUncheckTaskPopup from '../modals/checkUncheckTaskPopup'
-import ActionBar from '../components/actionBar'
 import DaysTransitionGroup from './daysTransitionGroup';
 
 import composeWizard 			from 'composers/wizard'
@@ -29,10 +28,12 @@ class Calendar extends PureComponent {
 		super(props)
 
 		this.state = { removeDay: false }
-
 		this.today = parseInt(moment().format('YYYYMMDD'))
-		props.setCurrentDay(this.today)
-		props.setSingleTasksListener(this.today)
+	}
+
+	componentWillReceiveProps = (nP) => {
+		const dayChanged = this.props.currentDay !== nP.currentDay
+		dayChanged && this.props.setSingleTasksListener()
 	}
 
 	openCheckUncheckTaskPopup = (task) => {
@@ -56,8 +57,8 @@ class Calendar extends PureComponent {
 		playTaskCheckSound();
 		const {selectedBranch, currentDay, checked} = this.props
 		const checkedID = isUnchecking && checked.find(c => c.taskID == taskID).ID
-		if(!isUnchecking)  checkTask(selectedBranch.ID, taskID, currentDay, checkType, userID, shiftedTo, taskObj)
-		if(isUnchecking) uncheckTask(selectedBranch.ID, taskID, currentDay, checkedID)
+		if(!isUnchecking)  checkTask(selectedBranch, taskID, currentDay, checkType, userID, shiftedTo, taskObj)
+		if(isUnchecking) uncheckTask(selectedBranch, taskID, currentDay, checkedID)
 	}
 
 	saveOperatingTaskToDB = () => {
@@ -67,28 +68,23 @@ class Calendar extends PureComponent {
 			creationDate: moment().toISOString(),
 			creatorID: this.props.selectedUser
 		}
-		createTask(newTask, this.props.selectedBranch.ID)
+		createTask(newTask, this.props.selectedBranch)
 		this.props.closeTaskWizard()
 	}
 
-	updateFBListener = (newDay) => { this.props.setSingleTasksListener(newDay) }
+	updateFBListener = () => { this.props.setSingleTasksListener() }
 
-	jumpToToday = () => 		 this.moveToDay(this.today)
-	jumpToDate = (newDay) => this.moveToDay(newDay)
-
-	moveToNextOrPreviousDay = (i) => {
-		const newDay = i > 0 ? addDays(this.props.currentDay, 1) : subtractDays(this.props.currentDay, 1)
-		this.moveToDay(newDay)
-	}
+	jumpToToday = () => 		 	this.moveToDay(this.today)
+	jumpToDate  = (newDay) => this.moveToDay(newDay)
+	goToNextDay = () => 			this.moveToDay(subtractDays(this.props.currentDay, 1))
+	goToPrevDay = () => 			this.moveToDay(addDays(this.props.currentDay, 1))
 
 	moveToDay = (newDay) => {
-		if(typeof newDay != 'number') throw new Error('newDay has to be a Number!')
 		this.setState({ removeDay: true, movingDayBackward: newDay < this.props.currentDay })
 		setTimeout(()=>{
-			this.updateFBListener(newDay)
 			this.props.setCurrentDay(newDay)
 			this.setState({removeDay: false})
-		}, 230)
+		}, 160)
 	}
 
 	renderDay = (day) => {
@@ -106,6 +102,7 @@ class Calendar extends PureComponent {
 
 
 	render() {
+		const userMode = !!this.props.selectedUser
 		return (
 			<content className="calendar">
 				<fb className="daysWrapper">
@@ -116,13 +113,16 @@ class Calendar extends PureComponent {
 				<fb className='updateDBButton' onClick={()=>deleteTaskManager()}>deleteTaskManager</fb>
 				<fb className='updateDBButton' onClick={()=>createCheckedCount(this.props.branches, this.props.checked, this.props.repeatingTasks)}>createCheckedCount</fb> */}
 					<DayHead
-						onPagingHandler={this.moveToNextOrPreviousDay}
+						goToNextDay={this.goToNextDay}
+						goToPrevDay={this.goToPrevDay}
 						isToday={this.props.currentDay == this.today}
 						currentDay={this.props.currentDay}
 						isFuture={this.props.currentDay > this.today}
+						openAddEditTaskWizard={this.openAddEditTaskWizard}
 						jumpToToday={this.jumpToToday}
 						jumpToDate={this.jumpToDate}
 						openDatePicker={() => this.refs.jumpToDatePicker.openDialog()}
+						userMode={userMode}
 						loadingPastTasks={true} // COME BACK HERE
 					/>
 					<DaysTransitionGroup movingDirection={this.state.movingDayBackward}>
@@ -130,7 +130,6 @@ class Calendar extends PureComponent {
 					</DaysTransitionGroup>
 
 				</fb>
-				<ActionBar openAddEditTaskWizard={this.openAddEditTaskWizard} />
 				<DatePicker style={{"display": "none"}}
 					ref='jumpToDatePicker'
 					onChange={(e, d) => {if (!(typeof d === 'string' || d instanceof String)) this.jumpToDate(parseInt(moment(d).format('YYYYMMDD')))}}
@@ -145,7 +144,7 @@ class Calendar extends PureComponent {
 					children={this.checkUncheckTaskPopup} />
 				<Dialog
 					className="materialDialog addEditTaskWizard"
-					open={this.props.taskWizard == 'add'}
+					open={this.props.taskWizard === 'add'}
 					onRequestClose={this.props.closeTaskWizard}
 					children={this.addEditTaskWizard} />
 			</content>
@@ -177,7 +176,7 @@ const mapStateToProps = (state) => {
 		tasks: extendTasksWithChecked(state),
 		operatingTask: state.ui.taskManager.operatingTask,
 		taskWizard: state.ui.taskManager.taskWizard,
-		selectedUser: state.core.selectedUser
+		selectedUser: state.core.selectedUser,
 	}
 }
 

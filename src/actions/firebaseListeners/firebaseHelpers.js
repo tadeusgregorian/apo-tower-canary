@@ -15,6 +15,8 @@ export const trackFBListeners = (dispatch, getState, listenerTarget, newPath) =>
 	dispatch({type: 'ADD_FIREBASE_LISTENER', listenerTarget: listenerTarget, listenerPath: newPath})
 }
 
+
+// optionally you can give queryRef instead of dbPath to make a firebaseQuery beforehand.
 export const createFirebaseListener = (dispatch, getState, target, dbPath, queryRef = null) => {
 
 	trackFBListeners(dispatch, getState, target, dbPath)

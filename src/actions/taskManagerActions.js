@@ -1,8 +1,9 @@
 import FBInstance from '../firebaseInstance';
 import { createShortGuid } from 'helpers';
+import { getFirebasePath } from './actionHelpers'
 import moment from 'moment';
 
-const getCategory = (task) => {return (task.onetimerDate ? 'single' : 'repeating')}
+const getCategory = (task) => {return (task.onetimerDate ? 'singleTasks' : 'repeatingTasks')}
 
 //shiftedTo and taskObj are optional
 export function checkTask(branchID, taskID, taskDate, checkType, userID, shiftedTo, taskObj) {
@@ -38,25 +39,34 @@ export function updateTask(task, branchID) {
 	FBInstance.database().ref('tasks').child(task.ID).set(task);
 }
 
-export function createTask(task, branchID) {
-	const ref 			= FBInstance.database().ref('taskManager/branches/'+branchID+'/tasks/'+getCategory(task))
-	ref.child(task.ID).set(task)
+export function createTask(task) {
+	return(dispatch, getState) => {
+		const ref = FBInstance.database().ref(getFirebasePath(getCategory(task), getState))
+		ref.child(task.ID).set(task)
+		}
 }
 
-export const editAndCreateTask = (oldTask, newTask, branchID) => {
-	let updates = {}
-	updates['taskManager/branches/'+branchID+'/tasks/'+getCategory(oldTask)+'/'+oldTask.ID+'/endDate'] = oldTask.endDate
-	updates['taskManager/branches/'+branchID+'/tasks/'+getCategory(oldTask)+'/'+oldTask.ID+'/isDuplicate'] = true
-	updates['taskManager/branches/'+branchID+'/tasks/'+getCategory(newTask)+'/'+newTask.ID] = newTask
-	FBInstance.database().ref().update(updates)
+
+export const editAndCreateTask = (oldTask, newTask) => {
+	return(dispatch, getState) => {
+		let updates = {}
+		updates[getFirebasePath('repeatingTasks', getState)+'/'+oldTask.ID+'/endDate'] = oldTask.endDate
+		updates[getFirebasePath('repeatingTasks', getState)+'/'+oldTask.ID+'/isDuplicate'] = true
+		updates[getFirebasePath('singleTasks', getState)+'/'+newTask.ID] = newTask
+		FBInstance.database().ref().update(updates)
+	}
 }
 
-export function deleteTask(taskID, category, branchID) {
-	FBInstance.database().ref('taskManager/branches/'+branchID+'/tasks/'+category).child(taskID).remove();
+export function deleteTask(task) {
+	return (dispatch, getState) => {
+		FBInstance.database().ref(getFirebasePath(getCategory(task), getState)).child(task.ID).remove()
+	}
 }
 
-export const endRepeatingTask = (taskID, endDate, branchID) => {
-	let updates = {}
-	updates['taskManager/branches/'+branchID+'/tasks/repeating/'+taskID+'/endDate'] = endDate
-	FBInstance.database().ref().update(updates)
+export const endRepeatingTask = (task, endDate) => {
+	return (dispatch, getState) => {
+		let updates = {}
+		updates[getFirebasePath('repeatingTasks', getState) + task.ID + '/endDate'] = endDate
+		FBInstance.database().ref().update(updates)
+	}
 }

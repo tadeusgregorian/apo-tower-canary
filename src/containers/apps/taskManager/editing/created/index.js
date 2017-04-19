@@ -56,25 +56,22 @@ class EditCreatedTasks extends PureComponent {
 	}
 
 	deleteOrEndTask = (task) => {
-		const category = task.onetimerDate ? 'single' : 'repeating'
-		const branchID = this.props.selectedBranch.ID
 		if(task.onetimerDate || task.startDate >= getTodaySmart()) {
-			deleteTask(task.ID, category, branchID)
+			deleteTask(task)
 		} else {
-			endRepeatingTask(task.ID, getYesterdaySmart(), branchID)
+			endRepeatingTask(task, getYesterdaySmart())
 		}
 	}
 
 	editTask = () => {
 		const task = this.props.operatingTask
 		if(task.onetimerDate || (!task.onetimerDate && task.startDate >= getTodaySmart())) {
-			createTask(task, this.props.selectedBranch.ID) // this just overrides the task with new version.
+			createTask(task) // this just overrides the task with new version.
 		} else {
 			const yesterdaySmart = parseInt(moment().subtract(1, 'day').format('YYYYMMDD'))
 			editAndCreateTask(
 				{ID: task.ID, endDate: yesterdaySmart},
-				{ ...task, ID: createShortGuid(), startDate: getTodaySmart(), originalStartDate: task.startDate, originalTaskID: task.ID },
-				this.props.selectedBranch.ID
+				{ ...task, ID: createShortGuid(), startDate: getTodaySmart(), originalStartDate: task.startDate, originalTaskID: task.ID }
 			)
 		}
 		this.props.closeTaskWizard()
@@ -201,7 +198,7 @@ const mapStateToProps = (state) => {
 		repeatingTasks: state.taskManager.repeatingTasks,
 		singleTasks: state.taskManager.singleTasksNoShifted,
 		singleTasks_dataStatus: state.taskManager.singleTasksNoShifted_dataStatus,
-		users: state.data.users.filter(u => u.branches && u.branches[state.core.selectedBranch.ID]),
+		users: state.data.users.filter(u => u.branches && u.branches[state.core.selectedBranch]),
 		selectedUser: state.core.selectedUser,
 		selectedBranch: state.core.selectedBranch
 	}

@@ -41,9 +41,13 @@ export default class DayHead extends PureComponent {
 							numberOfUncheckedTasks={numberOfUncheckedTasks}
 						/>
 				  }
+					{	this.props.userMode &&
+					<fb className='addNewTaskButton' onClick={this.props.openAddEditTaskWizard}>
+						<icon className='icon icon-plus'/>
+					</fb>}
 				</fb>
 				<fb className="dayControl">
-					<Paging clickHandler={() => this.props.onPagingHandler(-1)} direction={"left"} />
+					<Paging clickHandler={this.props.goToNextDay} direction={"left"} />
 						<button
 							onTouchTap={this.props.jumpToToday}
 							disabled={this.props.isToday}
@@ -53,7 +57,7 @@ export default class DayHead extends PureComponent {
 							onTouchTap={this.props.openDatePicker}
 							className="icon-calendar icon jumpToDateIcon"
 						/>
-					<Paging clickHandler={() => this.props.onPagingHandler(1)} direction={"right"} />
+					<Paging clickHandler={this.props.goToPrevDay} direction={"right"} />
 				</fb>
 			</fb>
 		)

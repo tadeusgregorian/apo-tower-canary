@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-export const selectedBranch = (state = (localStorage.branch && JSON.parse(localStorage.branch)) || null, action) => {
+export const selectedBranch = (state = localStorage.branch || null, action) => {
 	switch (action.type) {
 	case 'SELECT_BRANCH': return action.payload;
 	default: return state;

@@ -3,8 +3,6 @@ import { Route } from 'react-router-dom'
 import Calendar 				from './calendar'
 import TasksEdit 				from './editing'
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {setRepeatingTasksListener} from 'actions';
 import Navbar from 'components/navbar';
 import SelectUserBar from 'components/selectUserBar';
 import _ from 'lodash';
@@ -31,12 +29,6 @@ class TaskManager extends PureComponent {
 	}
 }
 
-const mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({
-		setRepeatingTasksListener
-	}, dispatch);
-};
-
 const mapStateToProps = (state) => {
 	return {
 		selectedBranch: state.core.selectedBranch,
@@ -44,4 +36,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TaskManager);
+export default connect(mapStateToProps)(TaskManager);

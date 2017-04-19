@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react'
 import { Link } from 'react-router-dom'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+import { logoutFromFirebase } from 'actions'
 import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
@@ -11,7 +12,7 @@ import cN from 'classnames'
 
 class Topbar extends PureComponent {
 	constructor(props) {
-		super(props);
+		super(props)
 
 		this.state = {
 			settingsPopoverIsOpen: false,
@@ -22,8 +23,9 @@ class Topbar extends PureComponent {
 	goBackToHome = () => this.props.removeSelectedUser()
 
 	render() {
-		const {user, userMode, selectedUser} = this.props
-		let userID = selectedUser
+		const {user, userMode, selectedUser, selectedBranch, branches} = this.props
+		const selectedBranchObj = branches.find(b => b.ID === selectedBranch)
+		const selectedBranchName = (selectedBranchObj && selectedBranchObj.name) || ''
 
 		return (
 			<fb id="topbar" className={cN({topbarBoxshadow: userMode ? true : false})} style={{background: userMode ? user.color : '#134f77', height: userMode ? '48px' : ''}}>
@@ -32,12 +34,12 @@ class Topbar extends PureComponent {
 						{ userMode && <icon onClick={this.goBackToHome} className="backButton icon-arrow-left2"/> }
 						{ userMode &&
 							<fb className="topbarButton topbarTasksButton">
-								<Link to={`Apps/TaskManager/${userID}`}><icon className="icon icon-stack no-border"></icon></Link>
+								<Link to={`Apps/TaskManager/${selectedUser}`}><icon className="icon icon-stack no-border"></icon></Link>
 							</fb>
 						}
 						{ userMode &&
 							<fb className="topbarButton topbarQmsButton">
-								<Link to={`Apps/Qm/${userID}`}><icon className="icon icon-mail no-border"></icon></Link>
+								<Link to={`Apps/Qm/${selectedUser}`}><icon className="icon icon-mail no-border"></icon></Link>
 							</fb>
 						}
 						{ userMode &&
@@ -48,7 +50,7 @@ class Topbar extends PureComponent {
 						{ this.props.selectedBranch && !userMode &&
 							<fb className="branchLabel">
 								<icon className="icon-cloud-download branchIcon"></icon>
-								<fb>{this.props.selectedBranch.name}</fb>
+								<fb>{selectedBranchName}</fb>
 							</fb>
 						}
 					</fb>
@@ -72,7 +74,7 @@ class Topbar extends PureComponent {
 							this.props.openSelectbranchDialog();
 							this.setState({settingsPopoverIsOpen: false})
 						}}/>
-						<MenuItem primaryText="Abmelden" onTouchTap={() => this.props.signOut()}/>
+						<MenuItem primaryText="Abmelden" onTouchTap={() => this.props.logoutFromFirebase()}/>
 					</Menu>
 				</Popover>
 				</fb>
@@ -82,12 +84,14 @@ class Topbar extends PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-		selectedBranch: state.core.selectedBranch,
-		selectedUser: state.core.selectedUser
+	branches: state.data.branches,
+	selectedBranch: state.core.selectedBranch,
+	selectedUser: state.core.selectedUser
 })
 
 const mapDispatchToProps = (dispatch) => (
 	bindActionCreators({
+		logoutFromFirebase,
 		removeSelectedUser: () => dispatch({type: 'REMOVE_SELECTED_USER'})
 	}, dispatch)
 )

@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux';
+import moment from 'moment'
 
-const currentDay = (state = 0, action) => {
+const currentDay = (state = parseInt(moment().format('YYYYMMDD')) , action) => {
 	switch (action.type) {
 	case 'TASKS_SET_CURRENT_DAY' : return action.payload
 	default: return state

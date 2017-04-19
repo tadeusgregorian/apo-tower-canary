@@ -29,3 +29,6 @@ export default() => {
 		</MuiThemeProvider>
 	)
 }
+
+// Materil-ui Date picker needs this shit I think
+window.DateTimeFormat = global.Intl.DateTimeFormat;
