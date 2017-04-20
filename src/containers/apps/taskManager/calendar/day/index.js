@@ -9,7 +9,7 @@ import Task from './task';
 
 export default class Day extends PureComponent {
 	constructor(props) {
-		super(props);
+		super(props)
 
 		this.state = {
 			showDoneTasks: false
@@ -19,7 +19,8 @@ export default class Day extends PureComponent {
 	render() {
 		const {tasks, selectedUser} = this.props;
 		if(!tasks) return null;
-		if(this.props.dataStatus != 'LOADED') return(<fb>LOADING...</fb>)
+		if(!this.props.tasksLoaded) return(<fb>LOADING...</fb>)
+
 		const filteredTasks = tasks.filter(t => !selectedUser || t.assignedUsers[selectedUser])
 		const checkedTasksCount = filteredTasks.filter(t => t.isDone || t.isIgnored).length
 		const visibleTasks = _.sortBy(filteredTasks.filter(t => this.state.showDoneTasks || (!t.isDone && !t.isIgnored)), [

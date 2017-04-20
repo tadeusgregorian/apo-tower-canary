@@ -1,8 +1,8 @@
 
-
 // This function holds the Information, where in the FirebaseDB each Node sits
-export const getFirebasePath	= (target, getState = null) => {
-	const branchID = getState().core.selectedBranch
+export const getFirebasePath	= (target) => {
+	if(!window.selectedBranch) throw new Error('window.selectBranch existiert noch nicht!')
+	const branchID = window.selectedBranch
 
 	switch(target){
 		case 'checked': return 'taskManager/branches/'+branchID+'/checked/'

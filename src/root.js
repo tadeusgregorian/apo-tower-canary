@@ -6,12 +6,8 @@ import rootReducer from 'reducers'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { BrowserRouter as Router} from 'react-router-dom'
-import Main 						from './main'
+import Main from './main'
 
-import 'normalize.css/normalize.css';
-import 'skeleton.css/skeleton.css';
-import 'toastr/build/toastr.min.css';
-import "./styles/main.scss";
 
 injectTapEventPlugin()
 const inDevelopement = process.env.NODE_ENV === 'development'

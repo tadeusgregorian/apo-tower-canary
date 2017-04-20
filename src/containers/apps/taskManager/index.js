@@ -3,11 +3,22 @@ import { Route } from 'react-router-dom'
 import Calendar 				from './calendar'
 import TasksEdit 				from './editing'
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import Navbar from 'components/navbar';
 import SelectUserBar from 'components/selectUserBar';
+import {
+	setRepeatingTasksListener,
+	setSingleTasksListener,
+} from 'actions'
 import _ from 'lodash';
 
 class TaskManager extends PureComponent {
+
+	componentDidMount = () => {
+		console.log('ComponentDidMount: ', TaskManager)
+		this.props.repeatingTasks_dataStatus 	== 'NOT_REQUESTED' && this.props.setRepeatingTasksListener()
+		this.props.singleTasks_dataStatus 		== 'NOT_REQUESTED' && this.props.setSingleTasksListener()
+	}
 
 	render() {
 		const { selectedUser , match, selectedBranch} = this.props
@@ -29,11 +40,21 @@ class TaskManager extends PureComponent {
 	}
 }
 
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({
+		setRepeatingTasksListener,
+		setSingleTasksListener,
+		setSelectedUser: (userID) => dispatch({type: 'SET_SELECTED_USER', payload: userID})
+	}, dispatch);
+};
+
 const mapStateToProps = (state) => {
 	return {
 		selectedBranch: state.core.selectedBranch,
-		selectedUser: state.core.selectedUser
+		selectedUser: state.core.selectedUser,
+		repeatingTasks_dataStatus: state.taskManager.repeatingTasks_dataStatus,
+		singleTasks_dataStatus: state.taskManager.singleTasks_dataStatus
 	};
 };
 
-export default connect(mapStateToProps)(TaskManager);
+export default connect(mapStateToProps, mapDispatchToProps)(TaskManager);

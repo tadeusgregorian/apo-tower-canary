@@ -4,7 +4,6 @@ import FlatButton from 'material-ui/FlatButton';
 import { NavLink } from 'react-router-dom';
 
 const Navbar = ({routes, children, user}) => {
-	console.log(routes)
 	return (
 		<fb id="navbar">
 			<fb className='navbarContentWrapper'>

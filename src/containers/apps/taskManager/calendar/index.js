@@ -55,10 +55,10 @@ class Calendar extends PureComponent {
 
 	checkUncheckTask = (isUnchecking, taskID, checkType, userID = this.props.selectedUser, shiftedTo = false, taskObj = null) => {
 		playTaskCheckSound();
-		const {selectedBranch, currentDay, checked} = this.props
+		const {currentDay, checked} = this.props
 		const checkedID = isUnchecking && checked.find(c => c.taskID == taskID).ID
-		if(!isUnchecking)  checkTask(selectedBranch, taskID, currentDay, checkType, userID, shiftedTo, taskObj)
-		if(isUnchecking) uncheckTask(selectedBranch, taskID, currentDay, checkedID)
+		if(!isUnchecking)  checkTask(taskID, currentDay, checkType, userID, shiftedTo, taskObj)
+		if(isUnchecking) uncheckTask(taskID, currentDay, checkedID)
 	}
 
 	saveOperatingTaskToDB = () => {
@@ -87,16 +87,23 @@ class Calendar extends PureComponent {
 		}, 160)
 	}
 
+	tasksLoaded = () => {
+		if (this.props.singleTasks_dataStatus 			!== 'LOADED') return false
+		if (this.props.repeatingTasks_dataStatus  	!== 'LOADED') return false
+		return true
+	}
+
 	renderDay = (day) => {
 		return  [<Day
 			users={this.props.users}
 			key={day}
 			day={day}
 			tasks={this.props.tasks}
-			dataStatus={this.props.singleTasks_dataStatus}
+			tasksLoaded={this.tasksLoaded()}
 			checkUncheckTask={this.checkUncheckTask}
 			openCheckUncheckTaskPopup={this.openCheckUncheckTaskPopup}
 			selectedBranch={this.props.selectedBranch}
+			selectedUser={this.props.selectedUser}
 		/>]
 	}
 
@@ -173,6 +180,7 @@ const mapStateToProps = (state) => {
 		checkingTask: state.ui.taskManager.checkingTask,
 		checked: state.taskManager.checked,
 		singleTasks_dataStatus: state.taskManager.singleTasks_dataStatus,
+		repeatingTasks_dataStatus: state.taskManager.repeatingTasks_dataStatus,
 		tasks: extendTasksWithChecked(state),
 		operatingTask: state.ui.taskManager.operatingTask,
 		taskWizard: state.ui.taskManager.taskWizard,

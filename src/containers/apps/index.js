@@ -8,9 +8,7 @@ import {
 	registerUsersDataListener,
 	registerGroupsDataListener,
 	registerBranchesDataListener,
-	setQmLettersListener,
-	setRepeatingTasksListener,
-	setSingleTasksListener,
+	setQmLettersListener
 } from 'actions'
 
 import Topbar from './topbar';
@@ -24,31 +22,29 @@ class Apps extends PureComponent {
 		this.state = { selectBranchDialogIsOpen: false }
 	}
 
+	componentWillMount() {
+		this.props.usersDataStatus 		== 'NOT_REQUESTED' && this.props.registerUsersDataListener()
+		this.props.groupsDataStatus 	== 'NOT_REQUESTED' && this.props.registerGroupsDataListener()
+		this.props.branchesDataStatus == 'NOT_REQUESTED' && this.props.registerBranchesDataListener()
+
+		this.props.qmLettersDataStatus  == 'NOT_REQUESTED' && this.props.setQmLettersListener()
+		window.selectedBranch = this.props.selectedBranch || null
+	}
+
 	componentWillReceiveProps(nP) {
 		!nP.selectedBranch && nP.branches.length && this.setState({selectBranchDialogIsOpen: true})
-		nP.selectedBranch && (window.selectedBranch = nP.selectedBranch)
 
 		// Pull new Data from FB if Branch has changed ( when the active listenerPath doesnt contain current branchID)
 		//const branchHasChanged = nP.repeatingTasks_listenerPath && !nP.repeatingTasks_listenerPath.includes(nP.selectedBranch)
 		const branchHasChanged = nP.selectedBranch !== this.props.selectedBranch
 		if(branchHasChanged) {
 			console.log('BRANCH CHANGED')
+			window.selectedBranch = this.props.selectedBranch
 			this.props.setRepeatingTasksListener()
 			this.props.setSingleTasksListener()
 		}
 	}
 
-	componentWillMount() {
-	 	this.props.usersDataStatus 		== 'NOT_REQUESTED' && this.props.registerUsersDataListener()
-		this.props.groupsDataStatus 	== 'NOT_REQUESTED' && this.props.registerGroupsDataListener()
-		this.props.branchesDataStatus == 'NOT_REQUESTED' && this.props.registerBranchesDataListener()
-
-		this.props.qmLettersDataStatus 				== 'NOT_REQUESTED' && this.props.setQmLettersListener()
-
-		if(this.props.selectedBranch) return // because the Task-Listeners need a Branch.
-		this.props.repeatingTasks_dataStatus 	== 'NOT_REQUESTED' && this.props.setRepeatingTasksListener()
-		this.props.singleTasks_dataStatus 		== 'NOT_REQUESTED' && this.props.setSingleTasksListener()
-	}
 
 	requiredDataIsLoaded = () => {
 		if (this.props.usersDataStatus 			!== 'LOADED') return false
@@ -62,7 +58,7 @@ class Apps extends PureComponent {
 		if(!this.requiredDataIsLoaded()) return <fb>loading...</fb>
 		const user = this.props.selectedUser && this.props.users && this.props.users.find(u => u.ID == this.props.selectedUser)
 		return (
-				<fb id="root">
+				<fb id="apps">
 					<fb className="vertical">
 						<Topbar
 							userMode={!!user}
@@ -94,8 +90,6 @@ const mapStateToProps = (state) => {
 		groupsDataStatus: state.data.dataStatus.groupsDataStatus,
 		qmLettersDataStatus: state.qmLetters.dataStatus,
 		branchesDataStatus: state.data.dataStatus.branchesDataStatus,
-		repeatingTasks_dataStatus: state.taskManager.repeatingTasks_dataStatus,
-		singleTasks_dataStatus: state.taskManager.singleTasks_dataStatus,
 		selectedBranch: state.core.selectedBranch,
 		selectedUser: state.core.selectedUser,
 		repeatingTasks_listenerPath: state.firebaseListeners.repeatingTasks,
@@ -110,8 +104,6 @@ const mapDispatchToProps = (dispatch) => {
 		registerGroupsDataListener,
 		setQmLettersListener,
 		registerBranchesDataListener,
-		setRepeatingTasksListener,
-		setSingleTasksListener,
 		setSelectedUser: (userID) => dispatch({type: 'SET_SELECTED_USER', payload: userID})
 	}, dispatch);
 };

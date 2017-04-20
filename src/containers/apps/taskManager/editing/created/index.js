@@ -14,17 +14,10 @@ import AssignUsersStep 		from '../../modals/addEditTaskWizardSteps/assignUsersSt
 import DefineContentStep 	from '../../modals/addEditTaskWizardSteps/defineContentStep'
 import SetTimingStep 			from '../../modals/addEditTaskWizardSteps/setTimingStep'
 
-import toastr from 'toastr'
 import EditCreatedTask from './task'
 import FilterBar from './filterBar'
 import { stringIncludes, getTodaySmart, getYesterdaySmart, createShortGuid } from 'helpers'
 import LazyLoad, {forceCheck} from 'react-lazyload'
-
-import SelectField from 'material-ui/SelectField'
-import MenuItem from 'material-ui/MenuItem'
-import TextField from 'material-ui/TextField'
-import Checkbox from 'material-ui/Checkbox'
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
 
 import DeleteTaskPopup from '../../modals/deleteTaskPopup'
 import TaskDetailsPopup from '../../modals/taskDetailsPopup'

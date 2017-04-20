@@ -4,6 +4,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setAuthStateListener } from 'actions'
 
+import 'normalize.css/normalize.css';
+import 'skeleton.css/skeleton.css';
+import 'toastr/build/toastr.min.css';
+import "./styles/main.scss";
+
 import Login 	from './containers/login'
 import Apps 	from './containers/apps'
 
@@ -12,12 +17,11 @@ import Apps 	from './containers/apps'
 const Main = (props) => {
 	const loggedIn = props.authState === 'loggedIn'
 	const isAuthenticating = props.authState === 'isAuthenticating'
-	console.log(props.firebaseAuthListener)
 	if(!props.firebaseAuthListener) props.setAuthStateListener()
 	if(isAuthenticating) return (<fb>Loading... -authenticating-</fb>)
 
 	return (
-		<div>
+		<div id='main'>
 			<Route path='/' exact render={() => (<Redirect to="/Apps/TaskManager/Kalender" />)}/>
 			<Route path='/Login' 	render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender" /> : <Login /> } />
 			<Route path='/Apps' 	render={() => !loggedIn ? <Redirect to="/Login" /> : <Apps /> } />
