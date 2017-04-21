@@ -16,6 +16,7 @@ import Apps 	from './containers/apps'
 
 const Main = (props) => {
 	const loggedIn = props.authState === 'loggedIn'
+	const loggedOut = props.authState === 'loggedOut'
 	const isAuthenticating = props.authState === 'isAuthenticating'
 	if(!props.firebaseAuthListener) props.setAuthStateListener()
 	if(isAuthenticating) return (<fb>Loading... -authenticating-</fb>)
@@ -24,7 +25,7 @@ const Main = (props) => {
 		<div id='main'>
 			<Route path='/' exact render={() => (<Redirect to="/Apps/TaskManager/Kalender" />)}/>
 			<Route path='/Login' 	render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender" /> : <Login /> } />
-			<Route path='/Apps' 	render={() => !loggedIn ? <Redirect to="/Login" /> : <Apps /> } />
+			<Route path='/Apps' 	render={() => loggedOut ? <Redirect to="/Login" /> : <Apps /> } />
 		</div>
 	)
 }

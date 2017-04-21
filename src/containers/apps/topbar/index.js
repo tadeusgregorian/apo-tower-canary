@@ -22,6 +22,7 @@ class Topbar extends PureComponent {
 
 	goBackToHome = () => this.props.removeSelectedUser()
 
+
 	render() {
 		const {user, userMode, selectedUser, selectedBranch, branches} = this.props
 		const selectedBranchObj = branches.find(b => b.ID === selectedBranch)
@@ -31,20 +32,24 @@ class Topbar extends PureComponent {
 			<fb id="topbar" className={cN({topbarBoxshadow: userMode ? true : false})} style={{background: userMode ? user.color : '#134f77', height: userMode ? '48px' : ''}}>
 				<fb className="topbarContentWrapper">
 					<fb className="left">
-						{ userMode && <icon onClick={this.goBackToHome} className="backButton icon-arrow-left2"/> }
+						{ userMode &&
+							<Link to='/Apps/TaskManager'>
+								<icon onClick={this.props.removeSelectedUser} className="backButton icon-arrow-left2"/>
+							</Link>
+							}
 						{ userMode &&
 							<fb className="topbarButton topbarTasksButton">
-								<Link to={`Apps/TaskManager/${selectedUser}`}><icon className="icon icon-stack no-border"></icon></Link>
+								<Link to={`/Apps/TaskManager/Kalender/${selectedUser}`}><icon className="icon icon-stack no-border"></icon></Link>
 							</fb>
 						}
 						{ userMode &&
 							<fb className="topbarButton topbarQmsButton">
-								<Link to={`Apps/Qm/${selectedUser}`}><icon className="icon icon-mail no-border"></icon></Link>
+								<Link to={`/Apps/QM/${selectedUser}`}><icon className="icon icon-mail no-border"></icon></Link>
 							</fb>
 						}
 						{ userMode &&
 							<fb className="topbarButton topbarAdminpanelButton">
-								<Link to={'Apps/Adminpanel'}><icon className="icon icon-cogs no-border"></icon></Link>
+								<Link to={'/Apps/Adminpanel'}><icon className="icon icon-cogs no-border"></icon></Link>
 							</fb>
 						}
 						{ this.props.selectedBranch && !userMode &&

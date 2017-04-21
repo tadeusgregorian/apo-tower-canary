@@ -69,19 +69,6 @@ export const wizardStepStateGenerator = (props, properties) => {
 	return _.zipObject(propertyNames, propertyValues);
 }
 
-
-export const darkenColor = (p, c0, c1) => {
-	let n=p<0?p*-1:p; let u=Math.round; let w=parseInt;
-	if(c0.length>7) {
-	  let f=c0.split(","), t= (c1 ?c1:p<0?"rgb(0,0,0)":"rgb(255,255,255)").split(","), R=w(f[0].slice(4)), G=w(f[1]), B=w(f[2]);
-	  return "rgb("+(u((w(t[0].slice(4))-R)*n)+R)+","+(u((w(t[1])-G)*n)+G)+","+(u((w(t[2])-B)*n)+B)+")"
-	}else{
-		let f=w(c0.slice(1),16),t=w((c1?c1:p<0?"#000000":"#FFFFFF").slice(1),16),R1=f>>16,G1=f>>8&0x00FF,B1=f&0x0000FF;
-  	return "#"+(0x1000000+(u(((t>>16)-R1)*n)+R1)*0x10000+(u(((t>>8&0x00FF)-G1)*n)+G1)*0x100+(u(((t&0x0000FF)-B1)*n)+B1)).toString(16).slice(1)
-	}
-}
-
-
 export const downloadFile = (fileURL, fileName) => {
 	// for non-IE
 	if (!window.ActiveXObject) {
@@ -147,76 +134,6 @@ export const shallowEqual = (a, b) => {
 
 export const doubleDigit = (num) => {
 	return (String(num).length == 1) ? '0'+num : ''+num
-}
-
-export const minToTimeString = (min) => {
-	if(!min) return '00:00'
-	let minutes = doubleDigit(min % 60)
-	let hours = doubleDigit(Math.floor(min/60))
-	return hours+':'+minutes
-}
-
-export const 	timeStrToMin = (str) => {
-	let hours = parseInt(str.substr(0, 2))
-	let minutes = parseInt(str.substr(3, 2))
-	return (hours * 60 + minutes)
-}
-
-export const getEmptyShiftWeekObj = () => {
-	return { days: { mon: {number: 1}, tue: {number: 2}, wed: {number: 3}, thu: {number: 4}, fri: {number: 5}, sat: {number: 6}, sun: {number: 7} } }
-}
-
-export const getTotalWorkMinutesInWeek = (shiftDays, vacationDays, hoursPerWeek) => { // vacationDays and hoursPerWeek are optional
-	// shiftDays format: {0: {shift: shiftObj }, 4: {shfit: shiftObj}}
-	const minutesPerDay = hoursPerWeek && hoursPerWeek * 60 / 6
-	const shiftMinutesArray = []
-
-	for(let i=0; i<7; i++) {
-		if(vacationDays && vacationDays.includes(i)) {
-			shiftMinutesArray.push(minutesPerDay) // if user is on vacation add minutes per day to worked time, neglecting what he would have worked or not worked that day!
-			continue
-		}
-		const shiftDay = shiftDays && shiftDays[i]
-		if (shiftDay && shiftDay.shift) {
-			const s = shiftDay.shift
-			if(!_.isEmpty(s)) {
-				if(isNaN(s.endTime - s.startTime - s.break)) continue // this might be the case if user is editing a shift. then shiftObj just contains shfitEdit and no times.
-				shiftMinutesArray.push(s.endTime - s.startTime - s.break)
-			}
-		}
-	}
-	return(shiftMinutesArray.reduce((a, b) => a + b, 0))
-}
-
-export const shiftDaysToString = (shiftDays) => {
-	let shiftsInMinutes = ''
-	if(!shiftDays) return null
-	for(let i=0; i<7; i++) {
-		if(shiftDays[i] && shiftDays[i].shift) {
-			const s = shiftDays[i].shift
-			let shiftDuration = s.endTime - s.startTime - s.break
-			if(isNaN(shiftDuration)) shiftDuration = '0'  // this might be the case if user is editing a shift. then shiftObj just contains shfitEdit and no times.
-			shiftsInMinutes += shiftDuration
-		}else{
-			shiftsInMinutes += '0'
-		}
-		if(i < 6) { shiftsInMinutes += '-' }
-	}
-	return shiftsInMinutes
-}
-
-export const stringToShiftDays = (sDString) => {
-	if(!sDString) return {}
-	const shiftDays = {}
-	const sDArray = sDString.split('-')
-	sDArray.forEach((min, i)=> { if(min != '0') { shiftDays[i] = parseInt(min) }})
-	return shiftDays
-}
-
-export const intervalsOverlap = (start1, end1, start2, end2) => {
-	if(start1 > start2) return (end2 - start1) >= 0
-	if(start1 < start2) return (end1 - start2) >= 0
-	if(start1 == start2) return true
 }
 
 export const isNum = (input) => {

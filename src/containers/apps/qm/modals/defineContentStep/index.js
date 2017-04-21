@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import { PropTypes } from 'prop-types'
-import cN from 'classnames';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 import 'styles/modals.scss';
+import './styles.scss';
 
 export default class DefineContentStep extends Component {
 	constructor(props) {
@@ -90,7 +90,7 @@ export default class DefineContentStep extends Component {
 					</fb>
 					<fb className="no-shrink margin-top vertical">
 					{this.state.files.filter(f => !this.state.filesToBeDeleted.filter(d => d.guid == f.guid).length).map(f => (
-						<fb key={f.name + f.lastModified} className="file">
+						<fb key={f.name + f.lastModified} className="qm-file">
 							<fb className="name">{f.name}</fb>
 							<FlatButton
 								primary={true}
@@ -117,11 +117,9 @@ export default class DefineContentStep extends Component {
 						className="left"
 						containerElement='label'
 						labelPosition="before"
-						style={{
-							position: "relative"
-						}}
+						style={{position: "relative"}}
 						label='Dateien anhängen'
-						icon={< FontIcon className = "icon icon-upload" />}>
+						icon={< FontIcon className="icon icon-upload" />}>
 						<input
 							multiple
 							onChange={(e, f, c) => this.addChosenFiles(e, f, c)}

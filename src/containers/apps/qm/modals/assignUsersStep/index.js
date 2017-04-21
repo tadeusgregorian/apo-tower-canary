@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import cN from 'classnames';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import moment from 'moment'
 import {filterUsersByBranch, createGuid, filterUsersByGroup, playTaskCreatedSound} from 'helpers'
 import _ from 'lodash';
@@ -9,6 +8,8 @@ import toastr from 'toastr';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Storage} from '../../../../../firebaseInstance';
 import 'styles/modals.scss';
+import './styles.scss';
+
 
 class AssignUsersStep extends Component {
 	constructor(props) {
@@ -24,7 +25,6 @@ class AssignUsersStep extends Component {
 	 onFinish = () => {
 		if (this.props.isBusy) return
 		this.props.busy(true);
-		const creatorID = this.props.creatorID
 
 		const qmData = {
 			...this.props.initData,
@@ -164,7 +164,7 @@ class AssignUsersStep extends Component {
 					<h3>Nutzer zuweisen</h3>
 				</header>
 				<content>
-					<fb className="user-group-wrapper" style={{borderBottom:"1px solid #adadad"}}>
+					<fb className="qm-user-group-wrapper" style={{borderBottom:"1px solid #adadad"}}>
 						<fb className="categorie">Fillialen:</fb>
 						<fb className="inner-group-wrapper">
 							{this.props.branches.map(b => {
@@ -185,7 +185,7 @@ class AssignUsersStep extends Component {
 							})}
 						</fb>
 					</fb>
-					<fb className="user-group-wrapper">
+					<fb className="qm-user-group-wrapper">
 						<fb className="categorie">Gruppen:</fb>
 							<fb className="inner-group-wrapper">
 								{this.props.groups.map(g => {
@@ -207,25 +207,18 @@ class AssignUsersStep extends Component {
 						</fb>
 					</fb>
 
-					<fb className="modal-user-wrapper padding-top">
+					<fb className="qm-modal-user-wrapper padding-top">
 						{this.props.users.filter(u => u.ID != this.props.user.ID).map(u => {
 							let isSelected = !!(this.state.assignedUsers[u.ID]);
 							return (
 								<fb
 									key={u.ID}
 									className={cN({'modal-user': true, 'selected': isSelected})}
-									style={{
-										color: (isSelected
-										? 'blue'
-										: "#353535"),
-										borderColor: (isSelected
-										? 'blue'
-										: "grey")
-									}}
+									style={{ color: (isSelected ? 'blue' : "#353535"), borderColor: (isSelected ? 'blue': "grey")}}
 									onTouchTap={() => this.selectDeselectUser(u)}>
 									{u.name}
 								</fb>
-							);
+							)
 						})}
 					</fb>
 				</content>

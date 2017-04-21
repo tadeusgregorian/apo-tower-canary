@@ -88,8 +88,8 @@ class Calendar extends PureComponent {
 	}
 
 	tasksLoaded = () => {
-		if (this.props.singleTasks_dataStatus 			!== 'LOADED') return false
-		if (this.props.repeatingTasks_dataStatus  	!== 'LOADED') return false
+		if (this.props.singleTasksDataStatus 			!== 'LOADED') return false
+		if (this.props.repeatingTasksDataStatus  	!== 'LOADED') return false
 		return true
 	}
 
@@ -179,8 +179,8 @@ const mapStateToProps = (state) => {
 		currentDay: state.ui.taskManager.currentDay,
 		checkingTask: state.ui.taskManager.checkingTask,
 		checked: state.taskManager.checked,
-		singleTasks_dataStatus: state.taskManager.singleTasks_dataStatus,
-		repeatingTasks_dataStatus: state.taskManager.repeatingTasks_dataStatus,
+		singleTasksDataStatus: state.taskManager.singleTasksDataStatus,
+		repeatingTasksDataStatus: state.taskManager.repeatingTasksDataStatus,
 		tasks: extendTasksWithChecked(state),
 		operatingTask: state.ui.taskManager.operatingTask,
 		taskWizard: state.ui.taskManager.taskWizard,

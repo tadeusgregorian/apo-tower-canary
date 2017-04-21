@@ -1,9 +1,90 @@
-.qm {
-	align-items: center;
-}
+.qmAppWrapper{
+	justify-content: center;
 
-.qmLettersMainWrapper {
-	padding: 0px 6px;
-	width: 100%;
-	max-width: 990px;
+	.qmAppMain {
+		max-width: 990px;
+
+		header{
+			padding-top: 0px;
+			display: flex;
+			justify-content: space-between;
+			align-content: space-between;
+
+			icon{
+				font-size: 22px;
+				margin: 2px;
+				padding: 2px;
+				align-items: flex-end;
+				padding-bottom: 11px;
+				color: grey;
+			}
+
+			.filterUnreadCheckbox{
+				width: 240px;
+				justify-content: flex-end;
+				height: 36px;
+				align-items: flex-end;
+				margin-left: 20px;
+				padding: 6px;
+				margin-top: 21px;
+				padding-left: 16px;
+				border-radius: 1px;
+				padding-right: 0px;
+			}
+
+			.addQmButton{
+				height: 44px;
+		    background: #f6f7f9;
+		    margin-top: 16px;
+		    width: 49px;
+		    border-radius: 4px;
+				color: #65686d;
+				font-weight: bold;
+				cursor: pointer;
+				border: 1px solid #ced0d4;
+				border-bottom: 1px solid #bec1c7;
+    		border-top: 1px solid #dfe0e2;
+
+				.addQmButtonIconWrapper{
+					width: 34px;
+			    flex: 0 0 auto;
+			    justify-content: center;
+			    border-right: 1px solid #d7d7d8;
+			    margin: 3px 0;
+
+					.icon{
+						border: none;
+						font-size: 16px;
+						justify-content: center;
+						align-items: center;
+						padding: 0px;
+						margin: 4px;
+						color: #3eb16f;
+					}
+				}
+
+				.addQmButtonText{
+					justify-content: center;
+					align-items: center;
+				}
+			}
+		}
+	}
+
+	.iconButton {
+	  margin: 0!important;
+	  padding: 0!important;
+	  width: 60px!important;
+	  max-width: 50px!important;
+		min-width: 50px!important;
+		max-height:  37px!important;
+		min-height: 37px!important;
+		height: 37px!important;
+		line-height: 25px!important;
+		background: rgba(0,0,0,0.07)!important;
+		border-radius: 0!important;
+		&:first-child {
+			border-right: solid 1px rgba(255,255,255,0.6)!important;
+		}
+	}
 }

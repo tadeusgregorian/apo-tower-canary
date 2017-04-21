@@ -1,7 +1,7 @@
 import { simpleReducer } from './reducerHelpers'
 
 export const authState = simpleReducer({
-	default: 								'loggedOut',
+	default: 								'null',
 	USER_LOGGED_IN: 				'loggedIn',
 	USER_LOGGED_OUT: 				'loggedOut',
 	USER_IS_AUTHENTICATING: 'isAuthenticating'

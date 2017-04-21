@@ -1,0 +1,24 @@
+.fileUpload {
+	visibility: hidden;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+.qm-file {
+	flex: 0 0 auto;
+  background: rgba(0,0,0,0.07);
+  border-radius: 2px;
+	&:not(:last-child) {
+  	margin: 0 0 6px 0;
+	}
+	&.notUploadedYet {
+		background: #d7ecd2;
+	}
+	align-items: center;
+	.name {
+		padding: 6px 6px 6px 10px;
+	}
+}

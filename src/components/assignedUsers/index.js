@@ -28,7 +28,7 @@ const AssignedUsers = (props) => {
 
 	return (
 		<fb className="userWrapper mini no-grow no-shrink">
-			{ hiddenMiniUsersCount ? <fb className={cN({"hiddenMiniUsersCount": true, "nothingToHide": !hiddenMiniUsersCount  })} key="counter"> {`+ ${hiddenMiniUsersCount}`} </fb> : null}
+			{ hiddenMiniUsersCount ? <fb className={cN({"hiddenMiniUsersCount": true, "nothingToHide": !hiddenMiniUsersCount  })} key="counter"> {'...'} </fb> : null}
 			{ assignedUsersSorted.map(assignedUser => (
 				<MiniUser
 					user={assignedUser}

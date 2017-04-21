@@ -2,14 +2,11 @@ import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton'
 import FontIcon from 'material-ui/FontIcon'
 import React, {PureComponent} from 'react'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
 import {readQm, unreadQm} from 'actions'
-import composePopup from 'composers/popup';
-import AssignedUsers from 'components/assignedUsers';
-import 'styles/modals.scss';
-import './styles.scss';
-import { Storage } from '../../../../../../firebaseInstance';
+import AssignedUsers from 'components/assignedUsers'
+import 'styles/modals.scss'
+import './styles.scss'
+import { Storage } from '../../../../../firebaseInstance'
 import { downloadFile, playTaskCheckSound } from 'helpers'
 import _ from 'lodash'
 
@@ -17,7 +14,7 @@ export default class ReadUnreadQmPopup extends PureComponent {
 	constructor(props) {
 		super(props)
 
-		this.readerIsCreator = this.props.user.ID == this.props.qmData.creatorID;
+		this.readerIsCreator = this.props.userID == this.props.qmData.creatorID;
 		this.state = { downloadLinksForAttachments: [] }
 	}
 
@@ -32,7 +29,7 @@ export default class ReadUnreadQmPopup extends PureComponent {
 
 	readUnread() {
 		const qmID 		= this.props.qmData.ID
-		const userID 	= this.props.user.ID
+		const userID 	= this.props.userID
 		playTaskCheckSound()
 		this.props.close()
 		this.props.hasRead ? unreadQm(qmID, userID) : readQm(qmID, userID)
@@ -70,7 +67,8 @@ export default class ReadUnreadQmPopup extends PureComponent {
 				<content>
 					<p>{this.props.qmData.text}</p>
 					{this.props.qmData.files && this.props.qmData.files.map(f => {
-						const fileIsViewable = f.name.last(4) == ".pdf";
+						const fileIsViewable = f.name.substr(-4) == ".pdf";
+						console.log(f.name.substr(-4))
 						return (
 							<fb key={f.name + f.uploadTime + f.size} className="file downloadable">
 

@@ -79,6 +79,46 @@
 		}
 	}
 
+	.addTaskButton{
+		background: #f6f7f9;
+		border-radius: 4px;
+		color: #65686d;
+		font-weight: bold;
+		cursor: pointer;
+		border: 1px solid #ced0d4;
+		border-bottom: 1px solid #bec1c7;
+		border-top: 1px solid #dfe0e2;
+		height: 40px;
+    flex: 0 0 auto;
+    width: 167px;
+    margin-right: 11px;
+
+		.addTaskButtonIconWrapper{
+			width: 34px;
+			flex: 0 0 auto;
+			justify-content: center;
+			border-right: 1px solid #d7d7d8;
+			margin: 3px 0;
+
+			.icon{
+				border: none;
+				font-size: 16px;
+				justify-content: center;
+				align-items: center;
+				padding: 0px;
+				margin: 4px;
+				color: #3eb16f;
+			}
+		}
+
+		.addTaskButtonText{
+			justify-content: center;
+			align-items: center;
+			font-size: 15px;
+    	font-weight: 700;
+		}
+	}
+
 	.dayControl {
 		border-radius: 2px;
 

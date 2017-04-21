@@ -1,0 +1,37 @@
+.qm-user-group-wrapper {
+  flex: 0 0 auto;
+  margin-top: 8px;
+  align-items: center;
+  max-width: 643px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+	padding-bottom: 6px;
+
+	.inner-group-wrapper{
+		justify-content: flex-start;
+		flex-wrap: wrap;
+	}
+
+	.categorie{
+		margin-right: 20px;
+    margin-left: 12px;
+    height: 100%;
+    width: 87px;
+		flex: 0 0 auto;
+	}
+
+	.selected {
+		color: white;
+		font-weight: 300;
+	}
+}
+
+.qm-modal-user-wrapper {
+	flex: 0 0 auto;
+	width: auto;
+	margin-right: -8px;
+	flex-wrap: wrap;
+	flex-shrink: 1;
+	margin-bottom: 12px;
+	flex: 0 0 auto;
+}

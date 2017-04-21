@@ -1,6 +1,7 @@
+//@flow
 import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
-import { Route } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 import {bindActionCreators} from 'redux';
 import Dialog from 'material-ui/Dialog';
 import SelectBranchDialog from 'components/selectBranchDialog';
@@ -8,7 +9,9 @@ import {
 	registerUsersDataListener,
 	registerGroupsDataListener,
 	registerBranchesDataListener,
-	setQmLettersListener
+	setQmLettersListener,
+	setRepeatingTasksListener,
+	setSingleTasksListener
 } from 'actions'
 
 import Topbar from './topbar';
@@ -22,7 +25,7 @@ class Apps extends PureComponent {
 		this.state = { selectBranchDialogIsOpen: false }
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.props.usersDataStatus 		== 'NOT_REQUESTED' && this.props.registerUsersDataListener()
 		this.props.groupsDataStatus 	== 'NOT_REQUESTED' && this.props.registerGroupsDataListener()
 		this.props.branchesDataStatus == 'NOT_REQUESTED' && this.props.registerBranchesDataListener()
@@ -39,7 +42,7 @@ class Apps extends PureComponent {
 		const branchHasChanged = nP.selectedBranch !== this.props.selectedBranch
 		if(branchHasChanged) {
 			console.log('BRANCH CHANGED')
-			window.selectedBranch = this.props.selectedBranch
+			window.selectedBranch = nP.selectedBranch
 			this.props.setRepeatingTasksListener()
 			this.props.setSingleTasksListener()
 		}
@@ -68,7 +71,7 @@ class Apps extends PureComponent {
 						<fb>
 							<fb id="app">
 								<Route path='/Apps/TaskManager' component={TaskManager} />
-								<Route path='/Apps/QM' component={QmApp} />
+								<Route path='/Apps/QM/:userID' component={QmApp} />
 								<Route path='/Apps/Admin' component={AdminPanel} />
 							</fb>
 						</fb>
@@ -100,6 +103,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
+		setRepeatingTasksListener,
+		setSingleTasksListener,
 		registerUsersDataListener,
 		registerGroupsDataListener,
 		setQmLettersListener,
@@ -108,4 +113,4 @@ const mapDispatchToProps = (dispatch) => {
 	}, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Apps);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Apps))

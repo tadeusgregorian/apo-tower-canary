@@ -54,10 +54,14 @@
 	}
 
 	.noTasksBlock {
-		justify-content: center;
-		align-items: center;
-		height: 80px;
-		background: #e5e5e5;
-		border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    background: #e5e5e5;
+    border-radius: 2px;
+    margin: 2px 17px;
+    box-shadow: inset 0px 1px 3px -1px grey;
+    color: #615e5e;
+    letter-spacing: 0.8px;
 	}
 }

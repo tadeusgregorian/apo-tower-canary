@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { deleteQm } from 'actions';
-import composePopup from 'composers/popup';
-import toastr from 'toastr';
 import RaisedButton from 'material-ui/RaisedButton';
 import 'styles/modals.scss';
 import {Storage} from '../../../../../firebaseInstance';

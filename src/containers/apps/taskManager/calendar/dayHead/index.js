@@ -10,26 +10,8 @@ import moment from 'moment'
 
 export default class DayHead extends PureComponent {
 
-	getNumberOfUncheckedTasks = () => {
-		let count = 0;
-		const grid = this.props.uncheckedTasksGrid
-		_.values(grid).forEach(day => count += day.length)
-		return count
-	}
-
-	getLastDayWithUncheckedTask = () => {
-		const currentDay 	= this.props.currentDay
-		const gridCleaned = _.omitBy(this.props.uncheckedTasksGrid, (taskIDs => taskIDs.length == 0))
-		const daysArray  	= _.keys(gridCleaned).sort()
-		const daysInPast 	= daysArray.filter(d => d < currentDay)
-		let dateToJumpTo 	= (daysInPast.length == 0) ? daysArray[daysArray.length - 1] : daysInPast[daysInPast.length - 1]
-		// if we are already at the beginning of the grid, it jumps to the end again
-		return parseInt(dateToJumpTo)
-	}
-
 	render() {
 		const dayMoment = moment(this.props.currentDay, 'YYYYMMDD')
-		const numberOfUncheckedTasks = this.getNumberOfUncheckedTasks()
 
 		return (
 			<fb className="head">
@@ -37,14 +19,16 @@ export default class DayHead extends PureComponent {
 					<fb className="date"> {dayMoment.format('dddd DD')}. {dayMoment.format('MMM').toUpperCase().substr(0, 3)}</fb>
 					{this.props.isFuture ? <fb className="futurePastIndicator">ZUKUNFT</fb> :
 						<OpenTasksFromPastBlock
-							clickHandler={() => numberOfUncheckedTasks && this.props.jumpToDate(this.getLastDayWithUncheckedTask())}
-							numberOfUncheckedTasks={numberOfUncheckedTasks}
+							clickHandler={() => false && this.props.jumpToDate(()=>console.log('Do something TADE'))}
+							numberOfUncheckedTasks='4'
 						/>
 				  }
 					{	this.props.userMode &&
-					<fb className='addNewTaskButton' onClick={this.props.openAddEditTaskWizard}>
-						<icon className='icon icon-plus'/>
-					</fb>}
+						<fb className='addTaskButton' onClick={this.props.openAddEditTaskWizard}>
+							<fb className='addTaskButtonIconWrapper'><icon className='icon icon-plus'/></fb>
+							<fb className='addTaskButtonText'>NEUE AUFGABE</fb>
+						</fb>
+					}
 				</fb>
 				<fb className="dayControl">
 					<Paging clickHandler={this.props.goToNextDay} direction={"left"} />
