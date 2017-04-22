@@ -6,21 +6,20 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 //import Navbar from 'components/navbar';
 import SelectUserBar from 'components/selectUserBar';
-import {
-	setRepeatingTasksListener,
-	setSingleTasksListener,
-} from 'actions'
+import { setTaskManagerListeners, refreshTaskManagerListeners } from 'actions'
 import _ from 'lodash';
 
 class TaskManager extends PureComponent {
 
-	componentDidMount = () => {
-		this.props.repeatingTasksDataStatus 	== 'NOT_REQUESTED' && this.props.setRepeatingTasksListener()
-		this.props.singleTasksDataStatus 			== 'NOT_REQUESTED' && this.props.setSingleTasksListener()
+	componentDidMount = () => this.props.setTaskManagerListeners()
+
+	componentWillReceiveProps = (nP) => {
+		const branchHasChanged = nP.selectedBranch !== this.props.selectedBranch
+		if(branchHasChanged) this.props.refreshTaskManagerListeners()
 	}
 
 	render() {
-		const { selectedUser , match, selectedBranch} = this.props
+		const { selectedUser , match, selectedBranch } = this.props
 		// const navBarRoutes = [
 		// 	{name: "Kalender", 	path: 'Apps/TaskManager/Kalender'},
 		// 	{name: "Editor", 		path: 'Apps/TaskManager/Editor'}
@@ -42,9 +41,8 @@ class TaskManager extends PureComponent {
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		setRepeatingTasksListener,
-		setSingleTasksListener,
-		setSelectedUser: (userID) => dispatch({type: 'SET_SELECTED_USER', payload: userID})
+		setTaskManagerListeners,
+		refreshTaskManagerListeners,
 	}, dispatch);
 };
 
@@ -52,8 +50,6 @@ const mapStateToProps = (state) => {
 	return {
 		selectedBranch: state.core.selectedBranch,
 		selectedUser: state.core.selectedUser,
-		repeatingTasksDataStatus: state.taskManager.repeatingTasksDataStatus,
-		singleTasksDataStatus: state.taskManager.singleTasksDataStatus
 	};
 };
 

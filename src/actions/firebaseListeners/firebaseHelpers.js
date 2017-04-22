@@ -17,18 +17,23 @@ export const trackFBListeners = (dispatch, getState, listenerTarget, newPath) =>
 
 
 // optionally you can give queryRef instead of dbPath to make a firebaseQuery beforehand.
-export const createFirebaseListener = (dispatch, getState, target, dbPath, queryRef = null) => {
+// the onValue is used for Listeners that just want to sync with a DB value. no child Events needed
+export const createFirebaseListener = (dispatch, getState, target, dbPath, queryRef = null, onValue = false) => {
+	return new Promise((resolve, reject) => {
 
-	trackFBListeners(dispatch, getState, target, dbPath)
-	dispatch({type: 'data_requested_' + target })
+		trackFBListeners(dispatch, getState, target, dbPath)
+		dispatch({type: 'data_requested_' + target })
+		const ref = queryRef || FBInstance.database().ref(dbPath)
 
-	const ref = queryRef || FBInstance.database().ref(dbPath)
-	ref.once('value').then(snapshot =>{
-		dispatch({ type: 'value_received_' + target, payload: snapshot.val() })
+		ref[onValue ? 'on' : 'once']('value', snap => {
+			dispatch({ type: 'value_received_' + target, payload: snap.val() })
+			resolve(snap.val())
+			if(onValue) return // if we listen for 'on' events, we dont need to listen to children
 
-		const childrenCount = snapshot.exists() ? Object.keys(snapshot.val()).length : 0
-		addFBListener(ref, 'child_changed', target, dispatch)
-		addFBListener(ref, 'child_added', 	target, dispatch, childrenCount)
-		addFBListener(ref, 'child_removed', target, dispatch)
+			const childrenCount = snap.exists() ? Object.keys(snap.val()).length : 0
+			addFBListener(ref, 'child_changed', target, dispatch)
+			addFBListener(ref, 'child_added', 	target, dispatch, childrenCount)
+			addFBListener(ref, 'child_removed', target, dispatch)
+		})
 	})
 }

@@ -9,9 +9,7 @@ import {
 	registerUsersDataListener,
 	registerGroupsDataListener,
 	registerBranchesDataListener,
-	setQmLettersListener,
-	setRepeatingTasksListener,
-	setSingleTasksListener
+	setQmLettersListener
 } from 'actions'
 
 import Topbar from './topbar';
@@ -35,19 +33,11 @@ class Apps extends PureComponent {
 	}
 
 	componentWillReceiveProps(nP) {
-		!nP.selectedBranch && nP.branches.length && this.setState({selectBranchDialogIsOpen: true})
+		!nP.selectedBranch && nP.branches.length && !this.state.selectBranchDialogIsOpen && this.setState({selectBranchDialogIsOpen: true})
 
-		// Pull new Data from FB if Branch has changed ( when the active listenerPath doesnt contain current branchID)
-		//const branchHasChanged = nP.repeatingTasks_listenerPath && !nP.repeatingTasks_listenerPath.includes(nP.selectedBranch)
 		const branchHasChanged = nP.selectedBranch !== this.props.selectedBranch
-		if(branchHasChanged) {
-			console.log('BRANCH CHANGED')
-			window.selectedBranch = nP.selectedBranch
-			this.props.setRepeatingTasksListener()
-			this.props.setSingleTasksListener()
-		}
+		if(branchHasChanged) { window.selectedBranch = nP.selectedBranch }
 	}
-
 
 	requiredDataIsLoaded = () => {
 		if (this.props.usersDataStatus 			!== 'LOADED') return false
@@ -103,8 +93,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		setRepeatingTasksListener,
-		setSingleTasksListener,
 		registerUsersDataListener,
 		registerGroupsDataListener,
 		setQmLettersListener,

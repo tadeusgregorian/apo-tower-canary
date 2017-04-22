@@ -27,6 +27,12 @@ export const createFirebaseReducer_object = (target) => {
 	}
 }
 
+export const createFirebaseReducer_simple = (target) => {
+	return (state = null, action) => (
+		action.type === 'value_received_'+target ? action.payload : state
+	)
+}
+
 export const createDataStatusReducer = (target) => {
 	return (state = 'NOT_REQUESTED', action) => {
 		switch (action.type) {

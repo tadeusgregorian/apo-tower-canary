@@ -17,7 +17,7 @@ import DefineContentStep 	from '../modals/addEditTaskWizardSteps/defineContentSt
 import SetTimingStep 			from '../modals/addEditTaskWizardSteps/setTimingStep'
 
 import DatePicker from 'material-ui/DatePicker';
-import { addDays, subtractDays, playTaskCheckSound, createShortGuid} from 'helpers'
+import { addDays, subtractDays, createShortGuid} from 'helpers'
 import { setSingleTasksListener } from 'actions'
 import { extendTasksWithChecked } from 'selectors/extendTasksWithChecked'
 import './styles.scss';
@@ -54,7 +54,7 @@ class Calendar extends PureComponent {
 	}
 
 	checkUncheckTask = (isUnchecking, taskID, checkType, userID = this.props.selectedUser, shiftedTo = false, taskObj = null) => {
-		playTaskCheckSound();
+		//playTaskCheckSound(); // come back here and put sound back in.
 		const {currentDay, checked} = this.props
 		const checkedID = isUnchecking && checked.find(c => c.taskID == taskID).ID
 		if(!isUnchecking)  checkTask(taskID, currentDay, checkType, userID, shiftedTo, taskObj)
@@ -72,8 +72,6 @@ class Calendar extends PureComponent {
 		this.props.closeTaskWizard()
 	}
 
-	updateFBListener = () => { this.props.setSingleTasksListener() }
-
 	jumpToToday = () => 		 	this.moveToDay(this.today)
 	jumpToDate  = (newDay) => this.moveToDay(newDay)
 	goToNextDay = () => 			this.moveToDay(subtractDays(this.props.currentDay, 1))
@@ -87,9 +85,11 @@ class Calendar extends PureComponent {
 		}, 160)
 	}
 
-	tasksLoaded = () => {
+	tasksLoaded = () => { // come back and write for this a selector !
 		if (this.props.singleTasksDataStatus 			!== 'LOADED') return false
 		if (this.props.repeatingTasksDataStatus  	!== 'LOADED') return false
+		if (this.props.lastUTUpdateDataStatus  		!== 'LOADED') return false
+		if (this.props.undoneTasksDataStatus  		!== 'LOADED') return false
 		return true
 	}
 
@@ -179,6 +179,8 @@ const mapStateToProps = (state) => {
 		currentDay: state.ui.taskManager.currentDay,
 		checkingTask: state.ui.taskManager.checkingTask,
 		checked: state.taskManager.checked,
+		undoneTasksDataStatus: state.taskManager.undoneTasksDataStatus,
+		lastUTUpdateDataStatus: state.taskManager.lastUTUpdateDataStatus,
 		singleTasksDataStatus: state.taskManager.singleTasksDataStatus,
 		repeatingTasksDataStatus: state.taskManager.repeatingTasksDataStatus,
 		tasks: extendTasksWithChecked(state),

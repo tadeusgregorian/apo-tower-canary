@@ -198,6 +198,11 @@ export const getYesterdaySmart = () => {
 	return parseInt(moment().subtract(1, 'day').format('YYYYMMDD'))
 }
 
+export const smartDatesDiff = (startDate, endDate) => {
+	if(startDate > endDate) throw new Error('FirstDate is bigger then lastDate: ', startDate, endDate)
+	return moment(startDate, 'YYYYMMDD').diff(moment(endDate, 'YYYYMMDD'), 'days')
+}
+
 export const deletePropAndReturnObj = (obj, prop) => {
 	const obj_copy = { ...obj }
 	delete obj_copy[prop]
@@ -206,4 +211,16 @@ export const deletePropAndReturnObj = (obj, prop) => {
 
 export const stringIncludes = (target, searchTerm) => {
 	return target.toLowerCase().includes(searchTerm.toLowerCase())
+}
+
+export const getSmartDayRange = (firstDate, lastDate) => {
+	if(typeof firstDate != Number || typeof lastDate != Number) throw new Error('dates need to be numbers!')
+	if(firstDate === lastDate) return [firstDate]
+	let range = []
+	let currentDate = firstDate
+	let diff = smartDatesDiff(firstDate, lastDate)
+	for(var i = 0; i < diff; i++){
+		range.push(currentDate)
+		addDays(currentDate, 1)
+	}
 }
