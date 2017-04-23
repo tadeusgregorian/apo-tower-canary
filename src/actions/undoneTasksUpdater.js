@@ -3,11 +3,15 @@ import { getFirebasePath } from './actionHelpers'
 import { getSmartDayRange } from 'helpers'
 import { getTasksForDay } from 'selectors/tasksDaySelector'
 import moment from 'moment'
+import _ from 'lodash'
 
 const yesterday =  parseInt(moment().subtract(1, 'day').format('YYYYMMDD'))
+const today = parseInt(moment().format('YYYYMMDD'))
 
 export const updateUndoneTasks = (lastUpdate) => {
 	return (dispatch, getState) => {
+		console.log(lastUpdate)
+		console.log(today)
 
 		const singleTasksPath = getFirebasePath('singleTasks')
 		const checkedMini 		= getFirebasePath('checkedMini')
@@ -16,14 +20,33 @@ export const updateUndoneTasks = (lastUpdate) => {
 
 		singleTasksRef.once('value', tSnap => {
 			checkedMiniRef.once('value', cSnap => {
+
+				const repeatingTasks 	= getState().taskManager.repeatingTasks
+				const singleTasks 		= [..._.values(tSnap.val())]
+				const checkedMini 		= cSnap.val()
+
+				console.log(lastUpdate)
+				console.log(yesterday)
 				const range = getSmartDayRange(lastUpdate, yesterday)
-				const undoneTasksInRange = getUndoneTasksInRange(getState, range, tSnap)
+				const undoneTasksInRange = getUndoneTasksInRange(range, repeatingTasks, singleTasks, checkedMini)
+				writeUndoneTasksToDB(undoneTasksInRange)
 			})
 		})
 	}
 }
 
-const getUndoneTasksInDay = (getState, range, singleTasks) => {
-	const repeatingTasks = getState().taskManager.repeatingTasks
-	console.log( getTasksForDay(repeatingTasks, singleTasks, ))
+const getUndoneTasksInRange = (range, repeatingTasks, singleTasks, checkedMini) => {
+	const tasksGrid = range.map(day => {
+		const tasks = getTasksForDay(repeatingTasks, singleTasks, day)
+		return tasks.map(t => ({ID: day+t.ID, taskID: t.ID, taskDate: day, assignedUsers: t.assignedUsers}))
+	})
+
+	const tasksFlat =  tasksGrid.reduce((acc, curr) => acc.concat(curr))
+	return  tasksFlat.filter(t => !(checkedMini && checkedMini[t.taskDate] && checkedMini[t.taskDate][t.taskID]))
+}
+
+const writeUndoneTasksToDB = (undoneTasksInRange) => {
+	let updates = {[getFirebasePath('lastUTUpdate')]: today}
+	undoneTasksInRange.forEach(t => updates[getFirebasePath('undoneTasks') + t.ID] = t)
+	FBInstance.database().ref().update(updates)
 }

@@ -15,13 +15,13 @@ export default class CheckUncheckTaskPopup extends Component {
 
 	render() {
 		const t = this.props.data
-		const taskTypeAndPattern = getTypeAndPatternOfTask(t);
+		const taskTypeAndPattern = getTypeAndPatternOfTask(t)
 		const creatorName = this.props.users.find(u => u.ID == t.creatorID).name
 		const userMode = !!this.props.selectedUser
 		const ignoreButton = (
 			<RaisedButton
 				label={t.isIgnored ? 'Ignorierung aufheben' : 'Ignorieren'}
-				onTouchTap={() => this.checkUncheckTask(t.isIgnored, t.ID, 'ignored')}
+				onTouchTap={() => this.checkUncheckTask(t.isIgnored, 'ignored')}
 				disabled={!!t.isDone || !!t.isShifted}
 				primary={!!t.isIgnored}
 			/>)
@@ -30,7 +30,7 @@ export default class CheckUncheckTaskPopup extends Component {
 			<RaisedButton
 				primary={true}
 				label={t.isDone ? 'Nicht erledigt' : 'Erledigt'}
-				onTouchTap={() => this.checkUncheckTask(t.isDone, t.ID, 'done')}
+				onTouchTap={() => this.checkUncheckTask(t.isDone, 'done')}
 				disabled={!!t.isIgnored || !!t.isShifted}
 			/>)
 

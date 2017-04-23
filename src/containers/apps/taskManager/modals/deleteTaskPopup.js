@@ -1,13 +1,5 @@
 import React, {PureComponent} from 'react';
-import cN from 'classnames';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import composePopup from 'composers/popup';
-import toastr from 'toastr'
 import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
-import {deleteTask} from 'actions';
-import moment from 'moment'
 import 'styles/modals.scss';
 
 //@param task obj

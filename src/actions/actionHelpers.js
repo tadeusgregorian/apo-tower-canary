@@ -9,8 +9,8 @@ export const getFirebasePath	= (target) => {
 		case 'checkedMini': return 'taskManager/branches/'+branchID+'/checkedMini/'
 		case 'singleTasks': return 'taskManager/branches/'+branchID+'/tasks/single/'
 		case 'repeatingTasks': return 'taskManager/branches/'+branchID+'/tasks/repeating/'
-		case 'undoneTasks': return 'taskManager/branches/'+branchID+'/undoneTasks/results'
-		case 'lastUTUpdate': return 'taskManager/branches/'+branchID+'/undoneTasks/lastUpdate'
+		case 'undoneTasks': return 'taskManager/branches/'+branchID+'/undoneTasks/results/'
+		case 'lastUTUpdate': return 'taskManager/branches/'+branchID+'/undoneTasks/lastUpdate/'
 		default : throw new Error('target is not existing Tade ( getFirebasePath ), target: ' + target)
 	}
 }
