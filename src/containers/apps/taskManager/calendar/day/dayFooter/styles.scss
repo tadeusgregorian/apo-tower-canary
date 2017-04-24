@@ -1,0 +1,64 @@
+.dayFooter {
+	flex: 0 0 auto;
+	padding-left: 8px;
+	justify-content: center;
+
+	.dayFooterItem {
+		background: none;
+		box-shadow: none;
+		color: grey;
+		height: 36px;
+		justify-content: flex-start;
+		font-weight: 300;
+		width: auto;
+		border: none;
+		margin-top: 4px;
+		margin-left: 10px;
+    margin-right: 10px;
+		flex: 0 0 auto;
+		cursor: pointer;
+		align-items: center;
+
+		icon {
+			margin-top: 1px;
+	    padding-right: 2px;
+	    padding-left: 0px;
+	    border: none;
+	    color: inherit
+		}
+
+		.itemText{
+			margin-top: 1px;
+			flex: 0 0 auto;
+		}
+
+		.showDoneCount{
+			margin-top: 1px;
+			margin-left: 4px;
+			font-weight: bold;
+		}
+
+		.doneTasksIndicator {
+			margin-left: 6px;
+			border-radius: 12px;
+			width: 17px;
+			height: 17px;
+			font-size: 10px;
+			font-weight: 400;
+			background: #d4d4d4;
+			color: inherit;
+			flex: 0 0 auto;
+			justify-content: center;
+			line-height: 11px;
+			align-items: center;
+		}
+	}
+
+	.justMyTasksToggle{
+		justify-content: flex-end;
+		max-width: 130px;
+		margin: 4px;
+		align-items: center;
+		color: grey;
+	}
+}

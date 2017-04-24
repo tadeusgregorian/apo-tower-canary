@@ -17,9 +17,11 @@ import DefineContentStep 	from '../modals/addEditTaskWizardSteps/defineContentSt
 import SetTimingStep 			from '../modals/addEditTaskWizardSteps/setTimingStep'
 
 import DatePicker from 'material-ui/DatePicker';
-import { addDays, subtractDays, createShortGuid} from 'helpers'
-import { setSingleTasksListener } from 'actions'
-import { extendTasksWithChecked } from 'selectors/extendTasksWithChecked'
+import { addDays, subtractDays } 			from 'helpers'
+import { setSingleTasksListener } 		from 'actions'
+import { extendTasksWithChecked } 		from 'selectors/extendTasksWithChecked'
+import { taskDataLoaded }							from 'selectors/taskDataLoaded'
+import { getLastDateWithUndoneTask }	from 'selectors/lastDateWithUndoneTask'
 import './styles.scss';
 
 
@@ -36,15 +38,9 @@ class Calendar extends PureComponent {
 		dayChanged && this.props.setSingleTasksListener()
 	}
 
-	openCheckUncheckTaskPopup = (task) => {
-		this.checkUncheckTaskPopup = (<CheckUncheckTaskPopup
-			data={task}
-			checkUncheckTask={this.checkUncheckTask}
-			shiftTaskTo={this.shiftTaskTo}
-			close={this.props.closeCheckingTask}
-			users={this.props.users}
-			selectedUser={this.props.selectedUser}/>)
-		this.props.setCheckingTask(task)
+	numberOfUndoneTasks = () => {
+		if(!this.props.selectedUser) return this.props.undoneTasks.length
+		return this.props.undoneTasks.filter(t => t.assignedUsers[this.props.selectedUser]).length
 	}
 
 	openAddEditTaskWizard = () => {
@@ -53,22 +49,14 @@ class Calendar extends PureComponent {
 		this.addEditTaskWizard = <Wizard saveTaskToDB={this.saveOperatingTaskToDB}/>
 	}
 
-	checkUncheckTask = (isUnchecking, taskID, checkType, userID = this.props.selectedUser, shiftedTo = false, taskObj = null) => {
+	checkUncheckTask = (isUnchecking, taskObj, checkType, userID = this.props.selectedUser, shiftedTo = false) => {
 		//playTaskCheckSound(); // come back here and put sound back in.
-		const {currentDay, checked} = this.props
-		const checkedID = isUnchecking && checked.find(c => c.taskID == taskID).ID
-		if(!isUnchecking)  checkTask(taskID, currentDay, checkType, userID, shiftedTo, taskObj)
-		if(isUnchecking) uncheckTask(taskID, currentDay, checkedID)
+		if(!isUnchecking)  checkTask(taskObj, this.props.currentDay, checkType, userID, shiftedTo)
+		if(isUnchecking) uncheckTask(taskObj, this.props.currentDay)
 	}
 
 	saveOperatingTaskToDB = () => {
-		const newTask = {
-			...this.props.operatingTask,
-			ID: createShortGuid(),
-			creationDate: moment().toISOString(),
-			creatorID: this.props.selectedUser
-		}
-		createTask(newTask, this.props.selectedBranch)
+		createTask({ ...this.props.operatingTask, creatorID: this.props.selectedUser })
 		this.props.closeTaskWizard()
 	}
 
@@ -85,23 +73,15 @@ class Calendar extends PureComponent {
 		}, 160)
 	}
 
-	tasksLoaded = () => { // come back and write for this a selector !
-		if (this.props.singleTasksDataStatus 			!== 'LOADED') return false
-		if (this.props.repeatingTasksDataStatus  	!== 'LOADED') return false
-		if (this.props.lastUTUpdateDataStatus  		!== 'LOADED') return false
-		if (this.props.undoneTasksDataStatus  		!== 'LOADED') return false
-		return true
-	}
-
 	renderDay = (day) => {
 		return  [<Day
 			users={this.props.users}
 			key={day}
 			day={day}
 			tasks={this.props.tasks}
-			tasksLoaded={this.tasksLoaded()}
+			tasksLoaded={this.props.taskDataLoaded}
 			checkUncheckTask={this.checkUncheckTask}
-			openCheckUncheckTaskPopup={this.openCheckUncheckTaskPopup}
+			openCheckUncheckTaskPopup={this.props.setCheckingTask}
 			selectedBranch={this.props.selectedBranch}
 			selectedUser={this.props.selectedUser}
 		/>]
@@ -113,12 +93,6 @@ class Calendar extends PureComponent {
 		return (
 			<content className="calendar">
 				<fb className="daysWrapper">
-				{/*<fb className='updateDBButton' onClick={()=>updateQmLetters(this.props.qmLetters)}>updateQmLetters</fb>
-				<fb className='updateDBButton' onClick={()=>shortenUsers(this.props.users)}>shortenUsers</fb>
-				<fb className='updateDBButton' onClick={()=>moveTasksToBranches(this.props.allTasks)}>moveTasksToBranches</fb>
-				<fb className='updateDBButton' onClick={()=>createCheckedInBranches(this.props.allTasks)}>createCheckedInBranches</fb>
-				<fb className='updateDBButton' onClick={()=>deleteTaskManager()}>deleteTaskManager</fb>
-				<fb className='updateDBButton' onClick={()=>createCheckedCount(this.props.branches, this.props.checked, this.props.repeatingTasks)}>createCheckedCount</fb> */}
 					<DayHead
 						goToNextDay={this.goToNextDay}
 						goToPrevDay={this.goToPrevDay}
@@ -130,6 +104,8 @@ class Calendar extends PureComponent {
 						jumpToDate={this.jumpToDate}
 						openDatePicker={() => this.refs.jumpToDatePicker.openDialog()}
 						userMode={userMode}
+						lastDateWithUndoneTask={this.props.lastDateWithUndoneTask}
+						numberOfUndoneTasks={this.numberOfUndoneTasks()}
 						loadingPastTasks={true} // COME BACK HERE
 					/>
 					<DaysTransitionGroup movingDirection={this.state.movingDayBackward}>
@@ -145,10 +121,9 @@ class Calendar extends PureComponent {
 					autoOk={true}
 					DateTimeFormat={window.DateTimeFormat}
 					locale="de-DE"/>
-				<Dialog style={{zIndex: 900}}
-					open={!!this.props.checkingTask}
-					onRequestClose={this.props.closeCheckingTask}
-					children={this.checkUncheckTaskPopup} />
+				<Dialog open={!!this.props.checkingTask} onRequestClose={this.props.closeCheckingTask}>
+					<CheckUncheckTaskPopup checkUncheck={this.checkUncheckTask}/>
+				</Dialog>
 				<Dialog
 					className="materialDialog addEditTaskWizard"
 					open={this.props.taskWizard === 'add'}
@@ -178,15 +153,13 @@ const mapStateToProps = (state) => {
 		selectedBranch: state.core.selectedBranch,
 		currentDay: state.ui.taskManager.currentDay,
 		checkingTask: state.ui.taskManager.checkingTask,
-		checked: state.taskManager.checked,
-		undoneTasksDataStatus: state.taskManager.undoneTasksDataStatus,
-		lastUTUpdateDataStatus: state.taskManager.lastUTUpdateDataStatus,
-		singleTasksDataStatus: state.taskManager.singleTasksDataStatus,
-		repeatingTasksDataStatus: state.taskManager.repeatingTasksDataStatus,
 		tasks: extendTasksWithChecked(state),
+		taskDataLoaded: taskDataLoaded(state),
+		lastDateWithUndoneTask: getLastDateWithUndoneTask(state),
 		operatingTask: state.ui.taskManager.operatingTask,
 		taskWizard: state.ui.taskManager.taskWizard,
 		selectedUser: state.core.selectedUser,
+		undoneTasks: state.taskManager.undoneTasks
 	}
 }
 

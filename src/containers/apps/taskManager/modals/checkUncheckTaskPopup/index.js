@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
 import { getTypeAndPatternOfTask } from 'helpers';
 import RaisedButton from 'material-ui/RaisedButton';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import DatePicker from 'material-ui/DatePicker';
 import moment from 'moment'
 import 'styles/modals.scss';
 import './styles.scss';
 
-export default class CheckUncheckTaskPopup extends Component {
+class CheckUncheckTaskPopup extends Component {
 
-	checkUncheckTask = (isUnchecking, checkType, shiftedTo = null, taskObj = null) => {
-		this.props.close()
-		this.props.checkUncheckTask(isUnchecking, this.props.data.ID, checkType, this.props.selectedUser, shiftedTo, taskObj)
+	checkUncheckTask = (isUnchecking, checkType, shiftedTo = null) => {
+		this.props.closeCheckingTask()
+		this.props.checkUncheck(isUnchecking, this.props.checkingTask, checkType, this.props.selectedUser, shiftedTo)
 	}
 
 	render() {
-		const t = this.props.data
+		// this is a random Workaround for a bug ( after closing the Popup there is a last Render which causes bugs... MaterialUI bug )
+		if(!this.props.checkingTask) return <fb></fb>
+		const t = this.props.checkingTask
 		const taskTypeAndPattern = getTypeAndPatternOfTask(t)
 		const creatorName = this.props.users.find(u => u.ID == t.creatorID).name
 		const userMode = !!this.props.selectedUser
@@ -70,7 +74,7 @@ export default class CheckUncheckTaskPopup extends Component {
 				</footer>
 				<DatePicker style={{"display": "none"}}
 					ref='shiftTaskDatePicker'
-					onChange={(e, d) => { this.checkUncheckTask(false, 'shifted', parseInt(moment(d).format('YYYYMMDD')), this.props.data)}}
+					onChange={(e, d) => { this.checkUncheckTask(false, 'shifted', parseInt(moment(d).format('YYYYMMDD')))}}
 					floatingLabelText="fakeText_Shift"
 					cancelLabel="Abbrechen"
 					okLabel="Verschieben"
@@ -80,3 +84,21 @@ export default class CheckUncheckTaskPopup extends Component {
 		)
 	}
 }
+
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({
+		setCheckingTask: 		(task) => ({type: 'SET_CHECKING_TASK', payload: task}),
+		closeCheckingTask: 	() => ({type: 'CLOSE_CHECKING_TASK'})
+	}, dispatch);
+}
+
+const mapStateToProps = (state) => {
+	return {
+		users: state.data.users,
+		selectedBranch: state.core.selectedBranch,
+		checkingTask: state.ui.taskManager.checkingTask,
+		selectedUser: state.core.selectedUser,
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CheckUncheckTaskPopup)

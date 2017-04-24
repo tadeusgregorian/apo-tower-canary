@@ -168,44 +168,6 @@
 			padding-left: 6px;
 		}
 	}
-
-	&.controlbutton {
-		background: none;
-		box-shadow: none;
-		border-radius: 30px;
-		color: #414141;
-		height: 36px;
-		align-self: center;
-		justify-content: center;
-		font-weight: 300;
-		width: auto;
-		border: none;
-		margin: 6px!important;
-
-		.head {
-			max-width: none;
-		}
-
-		.icon {
-			padding-right: 4px;
-		}
-	}
-
-	.doneTasksIndicator {
-		margin-left: 4px;
-		border-radius: 50%;
-		width: 17px;
-		font-size: 9px;
-		box-sizing: border-box;
-		font-weight: 400;
-		height: 17px;
-		line-height: 17px;
-		background: gray;
-		color: white;
-		flex: 0 0 auto;
-		justify-content: center;
-		line-height: 19px;
-	}
 }
 
 

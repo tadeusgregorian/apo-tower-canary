@@ -10,8 +10,6 @@ const today = parseInt(moment().format('YYYYMMDD'))
 
 export const updateUndoneTasks = (lastUpdate) => {
 	return (dispatch, getState) => {
-		console.log(lastUpdate)
-		console.log(today)
 
 		const singleTasksPath = getFirebasePath('singleTasks')
 		const checkedMini 		= getFirebasePath('checkedMini')
@@ -25,8 +23,6 @@ export const updateUndoneTasks = (lastUpdate) => {
 				const singleTasks 		= [..._.values(tSnap.val())]
 				const checkedMini 		= cSnap.val()
 
-				console.log(lastUpdate)
-				console.log(yesterday)
 				const range = getSmartDayRange(lastUpdate, yesterday)
 				const undoneTasksInRange = getUndoneTasksInRange(range, repeatingTasks, singleTasks, checkedMini)
 				writeUndoneTasksToDB(undoneTasksInRange)

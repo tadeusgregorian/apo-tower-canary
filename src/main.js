@@ -23,7 +23,7 @@ const Main = (props) => {
 
 	return (
 		<div id='main'>
-			<Route path='/' exact render={() => (<Redirect to="/Apps/TaskManager/Kalender" />)}/>
+			<Route path='/' exact render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender" /> : <Login /> } />
 			<Route path='/Login' 	render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender" /> : <Login /> } />
 			<Route path='/Apps' 	render={() => loggedOut ? <Redirect to="/Login" /> : <Apps /> } />
 		</div>

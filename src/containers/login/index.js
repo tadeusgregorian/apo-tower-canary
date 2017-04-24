@@ -19,8 +19,6 @@ class Login extends React.Component {
 	}
 
 	render() {
-		console.log('im here mofos')
-
 		return (
 				<fb style={{ height: "100%"}}>
 					<fb className="vertical" id="login">
