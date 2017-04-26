@@ -34,6 +34,6 @@ export const createFirebaseListener = (dispatch, getState, target, dbPath, query
 			addFBListener(ref, 'child_changed', target, dispatch)
 			addFBListener(ref, 'child_added', 	target, dispatch, childrenCount)
 			addFBListener(ref, 'child_removed', target, dispatch)
-		})
+		}).catch(e => console.log(e.message))
 	})
 }

@@ -8,11 +8,11 @@ import {
 	branchesDataStatus
 } from './data';
 import ui from './ui'
-import taskManager from './taskManager';
-import qmLetters from './qmLetters';
+import taskManager from './taskManager'
+import qmLetters from './qmLetters'
 import firebaseListeners from './firebaseListeners'
-import { selectedBranch, selectedUser } from './core';
-import { authState, authMessage } from './auth'
+import { selectedBranch, selectedUser } from './core'
+import { authState, authMessage, accountID } from './auth'
 
 
 const rootReducer = combineReducers({
@@ -23,11 +23,11 @@ const rootReducer = combineReducers({
 		dataStatus: combineReducers({usersDataStatus, groupsDataStatus, branchesDataStatus})
 	}),
 	core: combineReducers({ selectedBranch, selectedUser}),
-	auth: combineReducers({ authState, authMessage }),
+	auth: combineReducers({ authState, authMessage, accountID }),
 	taskManager: taskManager,
 	qmLetters: qmLetters,
 	ui: ui,
 	firebaseListeners: firebaseListeners
 });
 
-export default rootReducer;
+export default rootReducer

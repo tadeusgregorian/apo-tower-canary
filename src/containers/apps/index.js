@@ -24,12 +24,15 @@ class Apps extends PureComponent {
 	}
 
 	componentDidMount() {
+		console.log(this.props)
+		console.log(window.accountID)
 		this.props.usersDataStatus 		== 'NOT_REQUESTED' && this.props.registerUsersDataListener()
 		this.props.groupsDataStatus 	== 'NOT_REQUESTED' && this.props.registerGroupsDataListener()
 		this.props.branchesDataStatus == 'NOT_REQUESTED' && this.props.registerBranchesDataListener()
 
 		this.props.qmLettersDataStatus  == 'NOT_REQUESTED' && this.props.setQmLettersListener()
 		window.selectedBranch = this.props.selectedBranch || null
+		window.accountID = this.props.accountID
 	}
 
 	componentWillReceiveProps(nP) {
@@ -86,7 +89,8 @@ const mapStateToProps = (state) => {
 		selectedBranch: state.core.selectedBranch,
 		selectedUser: state.core.selectedUser,
 		repeatingTasks_listenerPath: state.firebaseListeners.repeatingTasks,
-		currentDay: state.ui.taskManager.currentDay
+		currentDay: state.ui.taskManager.currentDay,
+		accountID: state.auth.accountID
 	}
 }
 

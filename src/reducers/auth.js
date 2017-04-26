@@ -7,7 +7,13 @@ export const authState = simpleReducer({
 	USER_IS_AUTHENTICATING: 'isAuthenticating'
 })
 
+export const accountID = simpleReducer({
+	USER_IS_AUTHENTICATING: null,
+	USER_LOGGED_IN: 				'PAYLOAD',
+	USER_LOGGED_OUT: 				null
+})
+
 export const authMessage = simpleReducer({
 	SET_AUTH_MESSAGE: 				'PAYLOAD',
-	USER_LOGGED_IN: 					null,
+	USER_LOGGED_IN: 					null
 })
