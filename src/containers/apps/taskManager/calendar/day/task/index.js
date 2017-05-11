@@ -12,14 +12,15 @@ export default class Task extends PureComponent {
 		const t = this.props.data;
 		const { clickHandler, onCheckboxClick, withCheckbox, users } = this.props;
 		const prio = t.prio && !(t.isDone || t.isIgnored || t.isShifted) // there is only Prio 2 now , Prio 0 and 1 are deprecated. // needs to refactored in future to a Boolean Flag
+
 		return (
 			<fb className="taskItemWrapper">
-				{withCheckbox
-					? <RoundCheckbox
+				{withCheckbox &&
+					 <RoundCheckbox
 							invisible={t.isIgnored || (t.isShifted && !t.isDone) }
 							checked={t.isDone && !t.isIgnored}
 							clickHandler={(e) => onCheckboxClick(t)} />
-					: null}
+					}
 				<fb className={cN({ task: true, prio, isDone: t.isDone, isIgnored: t.isIgnored || t.isShifted })}>
 					<fb className="body" onTouchTap={clickHandler}>
 						<fb className="head">

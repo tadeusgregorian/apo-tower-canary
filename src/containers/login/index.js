@@ -18,13 +18,14 @@ class Login extends React.Component {
 			.catch((e) => { this.props.userCredentialsWereWrong() })
 	}
 
+
 	render() {
 		return (
 				<fb style={{ height: "100%"}}>
 					<fb className="vertical" id="login">
 						<header className="a-center j-center title">apoTower</header>
 						<fb className="login-container vertical">
-							{ this.props.authMessage && <fb className={'authMessage'}>{this.props.authMessage}</fb> }
+							{ this.props.authMessage && <fb className='authMessage'>{this.props.authMessage}</fb> }
 							<TextField type="text" floatingLabelText="Benutzername" value={this.state.username} onChange={e => this.setState({username: e.target.value})}/>
 							<TextField type="password" floatingLabelText="Passwort" value={this.state.password} onChange={e => this.setState({password: e.target.value})}/>
 							<fb className="j-end margin-top" style={{ width: "256px" }}>

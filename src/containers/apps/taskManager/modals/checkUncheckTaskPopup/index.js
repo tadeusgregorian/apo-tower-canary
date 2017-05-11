@@ -1,104 +1,82 @@
 import React, { Component } from 'react';
 import { getTypeAndPatternOfTask } from 'helpers';
-import RaisedButton from 'material-ui/RaisedButton';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import AssignedUsers from 'components/assignedUsers'
+import SButton from 'components/sButton'
 import DatePicker from 'material-ui/DatePicker';
+import ShiftedFromBox from './shiftedFromBox'
+import DoneByInfoRow from './doneByInfoRow'
 import moment from 'moment'
+import SModal from 'components/sModal'
+import _ from 'lodash'
 import 'styles/modals.scss';
 import './styles.scss';
 
-class CheckUncheckTaskPopup extends Component {
-
-	checkUncheckTask = (isUnchecking, checkType, shiftedTo = null) => {
-		this.props.closeCheckingTask()
-		this.props.checkUncheck(isUnchecking, this.props.checkingTask, checkType, this.props.selectedUser, shiftedTo)
-	}
+export default class CheckUncheckTaskPopup extends Component {
 
 	render() {
 		// this is a random Workaround for a bug ( after closing the Popup there is a last Render which causes bugs... MaterialUI bug )
 		if(!this.props.checkingTask) return <fb></fb>
 		const t = this.props.checkingTask
+		const users = this.props.users
 		const taskTypeAndPattern = getTypeAndPatternOfTask(t)
-		const creatorName = this.props.users.find(u => u.ID == t.creatorID).name
-		const userMode = !!this.props.selectedUser
-		const ignoreButton = (
-			<RaisedButton
-				label={t.isIgnored ? 'Ignorierung aufheben' : 'Ignorieren'}
-				onTouchTap={() => this.checkUncheckTask(t.isIgnored, 'ignored')}
-				disabled={!!t.isDone || !!t.isShifted}
-				primary={!!t.isIgnored}
-			/>)
+		const assignedUsers = _.keys(t.assignedUsers)
+		const isChecked = t.isDone || t.isIgnored || t.isShifted
 
-		const checkUncheckButton = 	(
-			<RaisedButton
-				primary={true}
-				label={t.isDone ? 'Nicht erledigt' : 'Erledigt'}
-				onTouchTap={() => this.checkUncheckTask(t.isDone, 'done')}
-				disabled={!!t.isIgnored || !!t.isShifted}
-			/>)
+		console.log(t)
 
-		const shiftButton = 	(
-			<RaisedButton
-				primary={true}
-				label={'Verschieben'}
-				onTouchTap={()=>this.refs.shiftTaskDatePicker.openDialog()}
-				disabled={!!t.isIgnored || !!t.isShifted || !!t.isDone}
-			/>)
+		const createdBy = 	t.creatorID 		&& users.find(u => u.ID == t.creatorID).name
+
+		const modalButtons = (
+			<fb>
+				<SButton
+					label={t.isIgnored ? 'Ignorierung aufheben' : 'Ignorieren'}
+					onClick={() => this.props.checkUncheck(t, !!t.isIgnored, 'ignored')}
+					disabled={!!t.isDone || !!t.isShifted}
+				/>
+				<SButton
+					label='Verschieben'
+					onClick={()=>this.refs.shiftTaskDatePicker.openDialog()}
+					disabled={isChecked}
+				/>
+				<fb className='rightSide'>
+					<SButton
+						color={'#2ECC71'}
+						label={t.isDone ? 'Nicht erledigt' : 'Erledigt'}
+						onClick={() => this.props.checkUncheck(t, !!t.isDone, 'done')}
+						disabled={!!t.isIgnored || !!t.isShifted}
+					/>
+				</fb>
+			</fb>
+		)
 
 		return (
-			<fb className='modal checkUncheckTaskPopupMain'>
-				<header>
-					<h4 className="no-margin">{t.subject}</h4>
-					<p>Erstellt von <b>{creatorName} </b>am<b> {moment(t.creationDate).format('DD.MM.YYYY')}</b></p>
-					<p><b>{taskTypeAndPattern.type} </b> {(taskTypeAndPattern.patternFullLength || taskTypeAndPattern.pattern)}</p>
-					{ t.isDone &&
-						<p>Erledigt am <b>{moment(t.isDoneDate).format('DD.MM.YYYY HH:mm')}</b> von <b>{this.props.users.find(u => u.ID == t.isDoneBy).name}</b></p>
-					}
-					{ t.isIgnored &&
-						<p>Ignoriert am <b>{moment(t.isIgnoredDate).format('DD.MM.YYYY HH:mm')}</b> von <b>{this.props.users.find(u => u.ID == t.isIgnoredBy).name}</b></p>
-					}
-					{ t.originalShiftedTask &&
-						<fb style={{flexDirection: 'column', border: '1px solid orange', padding: 3}}>
-							<fb>Verschobene Aufgabe</fb>
-							<fb>Wurde auf diesen Tag verschoben</fb>
-							<fb>Ursprünglich fällig am: <b>{moment(t.originalShiftedTask.date, 'YYYYMMDD').format('DD.MM.YY')}</b></fb>
-						</fb>
-					}
-				</header>
-				<content><fb className="no-shrink margin-bottom">{t.text}</fb></content>
-				<footer>
-					{userMode && ignoreButton}
-					{userMode && shiftButton}
-					<fb className="right no-grow">{userMode && checkUncheckButton}</fb>
-				</footer>
+			<SModal.Main title={t.subject} onClose={this.props.onClose}>
+				<SModal.Body>
+					<fb className='modalAssignedUsers'>
+						<AssignedUsers {...{assignedUsers, users}} usersRead={[t.isDoneBy]} colorStyle={isChecked ? 'blackAndWhite' : 'colorful'}/>
+					</fb>
+					<fb className='modalTaskTypeInfo'>
+						<icon className='icon-insert_invitation nop'/> <bo>{taskTypeAndPattern.type} </bo> {(taskTypeAndPattern.patternFullLength || taskTypeAndPattern.pattern)}
+					</fb>
+					<fb className='createdInfo'>
+						<icon className='icon-account_circle nop'/><p>Erstellt von <b>{createdBy}</b> am<b> {moment(t.creationDate).format('DD.MM.YYYY')}</b></p>
+					</fb>
+					<DoneByInfoRow task={t} users={users} />
+					{ t.originalShiftedTask && 	<ShiftedFromBox originalDate={t.originalShiftedTask.date}/> }
+					{ t.text && 								<fb className='modalTaskText'>{t.text}</fb> }
+				</SModal.Body>
+				<SModal.Footer>
+					{this.props.userMode && modalButtons}
+				</SModal.Footer>
 				<DatePicker style={{"display": "none"}}
 					ref='shiftTaskDatePicker'
-					onChange={(e, d) => { this.checkUncheckTask(false, 'shifted', parseInt(moment(d).format('YYYYMMDD')))}}
+					onChange={(e, d) => { this.props.checkUncheck(t, false, 'shifted', parseInt(moment(d).format('YYYYMMDD')))}}
 					floatingLabelText="fakeText_Shift"
 					cancelLabel="Abbrechen"
 					okLabel="Verschieben"
 					DateTimeFormat={window.DateTimeFormat}
 					locale="de-DE"/>
-			</fb>
+			</SModal.Main>
 		)
 	}
 }
-
-const mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({
-		setCheckingTask: 		(task) => ({type: 'SET_CHECKING_TASK', payload: task}),
-		closeCheckingTask: 	() => ({type: 'CLOSE_CHECKING_TASK'})
-	}, dispatch);
-}
-
-const mapStateToProps = (state) => {
-	return {
-		users: state.data.users,
-		selectedBranch: state.core.selectedBranch,
-		checkingTask: state.ui.taskManager.checkingTask,
-		selectedUser: state.core.selectedUser,
-	}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CheckUncheckTaskPopup)

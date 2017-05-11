@@ -41,7 +41,7 @@ export default class Day extends PureComponent {
 										key={t.ID}
 										withCheckbox={!!selectedUser}
 										dateString={this.props.day}
-										onCheckboxClick={() => this.props.checkUncheckTask(t.isDone, t, 'done')}
+										onCheckboxClick={() => this.props.checkUncheckTask(t, t.isDone, 'done')}
 										users={this.props.users}
 										clickHandler={() => this.props.openCheckUncheckTaskPopup(t)}/>)
 						: <fb className="noTasksBlock">Keine Aufgaben mehr!</fb>}

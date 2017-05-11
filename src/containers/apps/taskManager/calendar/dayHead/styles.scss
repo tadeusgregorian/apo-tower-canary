@@ -134,9 +134,18 @@
 			margin-bottom: 0px;
 			border-radius: 0px;
 			background-color: rgba(214, 214, 214, 0.64);
+			cursor: pointer;
 
 			&:active{
 				background-color: lightgrey;
+			}
+
+			&:hover{
+				background-color: grey;
+				color: white;
+				icon{
+					color: white;
+				}
 			}
 		}
 

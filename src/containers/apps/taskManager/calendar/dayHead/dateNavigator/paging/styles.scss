@@ -4,6 +4,7 @@
   flex: 0 0 auto;
   position: relative;
 	width: 44px;
+	cursor: pointer;
 
 	icon{
 		border: none !important;
@@ -27,3 +28,7 @@
     background-color: rgba(0, 0, 0, 0)!important;
   }
 }
+
+// .paging:hover{
+// 	//background-color: grey;
+// }

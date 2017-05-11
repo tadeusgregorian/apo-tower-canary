@@ -15,17 +15,20 @@ import Apps 	from './containers/apps'
 
 
 const Main = (props) => {
-	const loggedIn = props.authState === 'loggedIn'
-	const loggedOut = props.authState === 'loggedOut'
-	const isAuthenticating = props.authState === 'isAuthenticating'
 	if(!props.firebaseAuthListener) props.setAuthStateListener()
-	if(isAuthenticating) return (<fb>Loading... -authenticating-</fb>)
+	const loggedIn = props.authState === 'loggedIn'
+	const loggedOut = !props.authState || props.authState === 'loggedOut'
+	const isAuthenticating = props.authState === 'isAuthenticating'
 
 	return (
 		<div id='main'>
-			<Route path='/' exact render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender" /> : <Login /> } />
-			<Route path='/Login' 	render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender" /> : <Login /> } />
-			<Route path='/Apps' 	render={() => loggedOut ? <Redirect to="/Login" /> : <Apps /> } />
+			{isAuthenticating ? <fb>AUTHENTICATING...</fb> :
+				<fb style={{height: '100vh'}}>
+					<Route path='/' exact render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender" /> : <Login /> } />
+					<Route path='/Login' 	render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender" /> : <Login /> } />
+					<Route path='/Apps' 	render={() => loggedOut ? <Redirect to="/Login" /> : <Apps /> } />
+				</fb>
+			}
 		</div>
 	)
 }

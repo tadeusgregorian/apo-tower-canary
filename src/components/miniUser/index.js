@@ -4,8 +4,6 @@ import './styles.scss'
 
 //@param obj user
 //@param bool optional! grayedOut
-//@param bool optional! isReplacement
-// If user.Replacement is true -> Replacemtndesign
 
 
 const miniUser = (props) => {
@@ -30,7 +28,8 @@ const miniUser = (props) => {
 	const blackAndWhiteStyle = {
 		border: "1px solid",
 		borderColor: '#c1c1c1',
-		color: '#c1c1c1'
+		color: '#c1c1c1',
+		textShadow: 'none'
 	}
 
 	let colorStyle = liteStyle // default is liteStyle
@@ -39,8 +38,7 @@ const miniUser = (props) => {
 
 	return (
 		<fb key={props.user.ID} className={classes} style={ colorStyle }>
-			{props.isReplacement ? <fb className="isReplacementName">{props.user.nameInitials}</fb> : props.user.nameInitials}
-			{props.isReplacement ? <fb className="isReplacementIcon" style={{color:props.user.color}}>v</fb> : null}
+			{props.user.nameInitials}
 		</fb>
 	);
 }

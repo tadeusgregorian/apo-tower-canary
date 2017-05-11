@@ -7,40 +7,50 @@ const today = parseInt(moment().format('YYYYMMDD'))
 const getCategory = (task) => {return (task.onetimerDate ? 'singleTasks' : 'repeatingTasks')}
 
 
-export function checkTask(task, taskDate, checkType, userID, shiftedTo = null) {
-	const checkID = taskDate + task.ID
-	const currentIsoTime = moment().toISOString()
-	const checked = { ID: checkID, taskID: task.ID , taskDate, type: checkType,  by: userID, date: currentIsoTime}
-	if(shiftedTo) checked['shiftedTo'] = shiftedTo
-	let updates = {}
-	updates[getFirebasePath('checked')+checkID] = checked
-	updates[getFirebasePath('checkedMini')+taskDate+'/'+task.ID] = 1
+export function checkTask(task, checkType, shiftedTo = null) {
+	return(dispatch, getState) => {
+		// note: cant get task from store, because when checking task from checkbox, there is no taskObj in redux-store.
+		const taskDate = getState().ui.taskManager.currentDay
+		const userID = getState().core.selectedUser
 
-	if(checkType == 'shifted') { // create a new single Task as a copy of the shifted Task
-		const guid = createShortGuid()
-		const newShiftedTask = { ...task, ID: guid, onetimerDate: shiftedTo, originalShiftedTask: {ID: task.ID, date: taskDate}}
-		updates[getFirebasePath('singleTasks')+ guid] = newShiftedTask
+		const checkID = taskDate + task.ID
+		const currentIsoTime = moment().toISOString()
+		const checked = { ID: checkID, taskID: task.ID , taskDate, type: checkType,  by: userID, date: currentIsoTime}
+		if(shiftedTo) checked['shiftedTo'] = shiftedTo
+		let updates = {}
+		updates[getFirebasePath('checked')+checkID] = checked
+		updates[getFirebasePath('checkedMini')+taskDate+'/'+task.ID] = 1
+
+		if(checkType == 'shifted') { // create a new single Task as a copy of the shifted Task
+			const guid = createShortGuid()
+			const newShiftedTask = { ...task, ID: guid, onetimerDate: shiftedTo, originalShiftedTask: {ID: task.ID, date: taskDate}}
+			updates[getFirebasePath('singleTasks')+ guid] = newShiftedTask
+		}
+
+		//Update undoneTasks if task is in past
+		if(taskDate < today) updates[getFirebasePath('undoneTasks') + taskDate + task.ID] = null
+
+		FBInstance.database().ref().update(updates)
 	}
-
-	//Update undoneTasks if task is in past
-	if(taskDate < today) updates[getFirebasePath('undoneTasks') + taskDate + task.ID] = null
-
-	FBInstance.database().ref().update(updates)
 }
 
-export function uncheckTask(task, taskDate) {
-	const checkID = taskDate + task.ID
-	let updates = {}
-	updates[getFirebasePath('checked')+checkID] = null
-	updates[getFirebasePath('checkedMini')+taskDate+'/'+task.ID] = null
-	if(taskDate < today) {
-		updates[getFirebasePath('undoneTasks') + taskDate + task.ID] = {
-			ID: taskDate+task.ID,
-			taskDate: taskDate,
-			taskID: task.ID,
-			assignedUsers: task.assignedUsers }
+export function uncheckTask(task) {
+	return(dispatch, getState) => {
+		const taskDate = getState().ui.taskManager.currentDay
+
+		const checkID = taskDate + task.ID
+		let updates = {}
+		updates[getFirebasePath('checked')+checkID] = null
+		updates[getFirebasePath('checkedMini')+taskDate+'/'+task.ID] = null
+		if(taskDate < today) {
+			updates[getFirebasePath('undoneTasks') + taskDate + task.ID] = {
+				ID: taskDate+task.ID,
+				taskDate: taskDate,
+				taskID: task.ID,
+				assignedUsers: task.assignedUsers }
+		}
+		FBInstance.database().ref().update(updates)
 	}
-	FBInstance.database().ref().update(updates)
 }
 
 export function createTask(taskObj) {

@@ -49,10 +49,14 @@ class Calendar extends PureComponent {
 		this.addEditTaskWizard = <Wizard saveTaskToDB={this.saveOperatingTaskToDB}/>
 	}
 
-	checkUncheckTask = (isUnchecking, taskObj, checkType, userID = this.props.selectedUser, shiftedTo = false) => {
+	checkUncheckTask = (taskObj, isUnchecking, checkType, shiftedTo = false) => {
+		console.log(taskObj)
+		console.log(isUnchecking)
+		console.log(checkType)
 		//playTaskCheckSound(); // come back here and put sound back in.
-		if(!isUnchecking)  checkTask(taskObj, this.props.currentDay, checkType, userID, shiftedTo)
-		if(isUnchecking) uncheckTask(taskObj, this.props.currentDay)
+		if(!isUnchecking)  	this.props.checkTask(taskObj, checkType, shiftedTo)
+		if(isUnchecking) 		this.props.uncheckTask(taskObj)
+		this.props.closeCheckingTask()
 	}
 
 	saveOperatingTaskToDB = () => {
@@ -121,8 +125,14 @@ class Calendar extends PureComponent {
 					autoOk={true}
 					DateTimeFormat={window.DateTimeFormat}
 					locale="de-DE"/>
-				<Dialog open={!!this.props.checkingTask} onRequestClose={this.props.closeCheckingTask}>
-					<CheckUncheckTaskPopup checkUncheck={this.checkUncheckTask}/>
+				<Dialog bodyClassName='sModal' open={!!this.props.checkingTask} onRequestClose={this.props.closeCheckingTask}>
+					<CheckUncheckTaskPopup
+						checkUncheck={this.checkUncheckTask}
+						users={this.props.users}
+						checkingTask={this.props.checkingTask}
+						userMode={userMode}
+						onClose={this.props.closeCheckingTask}
+					/>
 				</Dialog>
 				<Dialog
 					className="materialDialog addEditTaskWizard"
@@ -138,6 +148,8 @@ const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
 		createTask,
 		setSingleTasksListener,
+		checkTask,
+		uncheckTask,
 		openAddTaskWizard: 	() => ({type: 'OPEN_ADD_TASK_WIZARD'}),
 		closeTaskWizard: 		() => ({type: 'CLOSE_TASK_WIZARD'}),
 		setCheckingTask: 		(task) => ({type: 'SET_CHECKING_TASK', payload: task}),

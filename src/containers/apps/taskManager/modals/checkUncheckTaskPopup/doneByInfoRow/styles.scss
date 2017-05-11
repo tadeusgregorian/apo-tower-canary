@@ -1,0 +1,23 @@
+.smallInfoRow{
+	font-size: 14px;
+	color: #90949c;
+	margin-top: 5px;
+
+	icon{
+		margin-right: 8px;
+		padding: 1px;
+		font-size: 17px;
+	}
+
+	&.done{
+		icon{
+			color: #2ECC71;
+		}
+	}
+
+	&.ignored{
+		icon{
+			color: orange;
+		}
+	}
+}

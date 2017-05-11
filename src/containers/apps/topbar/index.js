@@ -26,47 +26,36 @@ class Topbar extends PureComponent {
 	render() {
 		const {user, userMode, selectedUser, selectedBranch, branches} = this.props
 		const selectedBranchObj = branches.find(b => b.ID === selectedBranch)
-		const selectedBranchName = (selectedBranchObj && selectedBranchObj.name) || ''
+		const selectedBranchName = selectedBranchObj ? selectedBranchObj.name : ''
 
 		return (
 			<fb id="topbar" className={cN({topbarBoxshadow: userMode ? true : false})} style={{background: userMode ? user.color : '#134f77', height: userMode ? '48px' : ''}}>
 				<fb className="topbarContentWrapper">
 					<fb className="left">
-						{ userMode &&
-							<Link to='/Apps/TaskManager'>
-								<icon onClick={this.props.removeSelectedUser} className="backButton icon-arrow-left2"/>
-							</Link>
-							}
-						{ userMode &&
-							<fb className="topbarButton topbarTasksButton">
-								<Link to={`/Apps/TaskManager/Kalender/${selectedUser}`}><icon className="icon icon-stack no-border"></icon></Link>
-							</fb>
-						}
-						{ userMode &&
-							<fb className="topbarButton topbarQmsButton">
-								<Link to={`/Apps/QM/${selectedUser}`}><icon className="icon icon-mail no-border"></icon></Link>
-							</fb>
-						}
-						{ userMode &&
-							<fb className="topbarButton topbarAdminpanelButton">
-								<Link to={'/Apps/Adminpanel'}><icon className="icon icon-cogs no-border"></icon></Link>
-							</fb>
-						}
-						{ this.props.selectedBranch && !userMode &&
+						{ userMode ?
+							<fb>
+								<Link to='/Apps/TaskManager'>
+									<icon onClick={this.props.removeSelectedUser} className="backButton icon-arrow-left2"/>
+								</Link>
+								<Link to={`/Apps/TaskManager/Kalender/${selectedUser}`}>
+									<fb className="topbarButton topbarTasksButton"><icon className="icon icon-stack no-border"></icon></fb>
+								</Link>
+								<Link to={`/Apps/QM/${selectedUser}`}>
+									<fb className="topbarButton topbarQmsButton"><icon className="icon icon-mail no-border"></icon></fb>
+								</Link>
+								<Link to={'/Apps/Adminpanel'}>
+									<fb className="topbarButton topbarAdminpanelButton"><icon className="icon icon-cogs no-border"></icon></fb>
+								</Link>
+							</fb> :
 							<fb className="branchLabel">
 								<icon className="icon-cloud-download branchIcon"></icon>
 								<fb>{selectedBranchName}</fb>
 							</fb>
 						}
 					</fb>
-					<fb className="center"></fb>
 					<fb className="right">
-						<fb className="navigation">
-						</fb>
 						{ userMode ? 	<fb className="userName">{user.name}</fb> : null }
-						<icon className="menuButton icon-dehaze"
-									onTouchTap={(e) => this.setState({settingsPopoverIsOpen: true, settingsButton: e.currentTarget})}
-						/>
+						<icon className="menuButton icon-dehaze" onTouchTap={(e) => this.setState({settingsPopoverIsOpen: true, settingsButton: e.currentTarget})}/>
 				</fb>
 				<Popover
 					open={this.state.settingsPopoverIsOpen}
@@ -84,7 +73,7 @@ class Topbar extends PureComponent {
 				</Popover>
 				</fb>
 			</fb>
-		);
+		)
 	}
 }
 
@@ -97,7 +86,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => (
 	bindActionCreators({
 		logoutFromFirebase,
-		removeSelectedUser: () => dispatch({type: 'REMOVE_SELECTED_USER'})
+		removeSelectedUser: 		() => dispatch({type: 'REMOVE_SELECTED_USER'}),
+		openSelectbranchDialog: () => dispatch({type: 'OPEN_SELECT_BRANCH_DIALOG'})
 	}, dispatch)
 )
 

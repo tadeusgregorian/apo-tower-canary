@@ -11,7 +11,7 @@ const getExtendedTasks = (tasks, checked) => {
 		switch (cObj.type) {
 		case 'done' 		: return { ...t, isDone: true, 		isDoneBy: cObj.by,    isDoneDate: cObj.date}
 		case 'ignored' 	: return { ...t, isIgnored: true, isIgnoredBy: cObj.by, isIgnoredDate: cObj.date}
-		case 'shifted' 	: return { ...t, isShifted: true, isShiftedBy: cObj.by, isShiftedDate: cObj.date, isShiftedTo: cObj.to}
+		case 'shifted' 	: return { ...t, isShifted: true, isShiftedBy: cObj.by, isShiftedDate: cObj.date, isShiftedTo: cObj.shiftedTo}
 		default : return t
 		}
 	})

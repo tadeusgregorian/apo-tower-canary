@@ -2,92 +2,83 @@ import React, { Component } from 'react';
 import _ from 'lodash'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import composePopup from 'composers/popup';
 import toastr from 'toastr';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import EnterPinForm from './enterPinForm'
+import CreatePinForm from './createPinForm'
+import {requestAdminPinEmail} from 'actions'
+import SModal from 'components/sModal'
 import sha1 from 'sha1';
-import 'styles/popup.scss';
+import './styles.scss';
 
 class EnterAdminPinPopup extends Component {
-
 	constructor(props) {
-		super(props);
-		// using a state here so the dialog rerenders
-		this.state = {
-			pin: "",
-		}
+		super(props)
+		this.state = { pin: '' }
 	}
 
-	handlePinAddNumber = (n) => {
-		if(this.state.pin.length == 3) {
-			this.onAccess(this.state.pin + "" + n);
-		} else {
-			this.setState({pin : this.state.pin + "" + n })
-		}
+	checkPin = () => {
+		const encryptedPin = sha1(this.state.pin)
+		encryptedPin === this.props.adminUser.adminHash ? this.letUserEnter() : this.letUserTryAgain()
 	}
 
-	renderButtonForNumber = (i) => {
-		return (
-			<button
-				style={{height: "40px"}}
-				key={i}
-				onTouchTap={() => this.handlePinAddNumber(i)}>
-				{i}
-			</button>
-		)
+	onInpChange = (inp) => {
+		console.log(inp)
+		if(inp.length === 4 && sha1(inp) === this.props.adminUser.adminHash) this.letUserEnter()
+		this.setState({pin: inp})
 	}
 
-	onAccess = (pin) => {
-		const encryptedPin = sha1(pin)
-		if (encryptedPin == this.props.user.adminHash) {
-			sessionStorage["adminHash"] = encryptedPin
-			this.props.close();
-			this.props.onFinish();
-			toastr.success("Willkommen " + this.props.user.name);
-		} else {
-			this.setState({pin: ""})
-			toastr.error("Admin Pin falsch. Bitte erneut eingeben");
-		}
+	letUserEnter = () => {
+		this.props.closeAdminPinDialog()
+		this.props.setSelectedUser(this.props.adminUser.ID)
+		this.props.logAdminIn()
+		toastr.success("Willkommen " + this.props.adminUser.name)
+	}
+
+	letUserTryAgain = () => {
+		this.setState({pin: ''})
+		toastr.error("Admin Pin falsch. Bitte erneut eingeben")
+	}
+
+	sendEmail = (email) => {
+		console.log('sending email:')
+		console.log(email)
+		console.log(this.props.adminUser.ID)
+		requestAdminPinEmail(this.props.adminUser.ID, email)
+	}
+
+	getModalTitle = () => {
+		const adminPinExists = !!this.props.adminUser.adminHash
+		return (adminPinExists ? 'Admin Passwort eingeben' : 'Sie betreten einen Admin Bereich')
 	}
 
 	render() {
+		const adminPinExists = !!this.props.adminUser.adminHash
 		return (
-			<fb>
-				<header><h4>Pin eingeben für {this.props.user.name}</h4></header>
-				<content className="j-center a-center enterPinPopup">
-					<fb className="no-grow" style={{position: "relative"}}>
-						<TextField
-						  className="margin-bottom padding-bottom"
-							floatingLabelText="Pin"
-							type="password"
-						  value={this.state.pin}
-						/>
-						<icon className="icon-close no-border" onTouchTap={() => this.setState({pin: this.state.pin.slice(0, -1)})}></icon>
-					</fb>
-
-					<fb className="vertical a-center">
-						<fb className="horizontal offset slim">{ _.range(1,4).map(i => this.renderButtonForNumber(i))}</fb>
-						<fb className="horizontal offset slim">{ _.range(4,7).map(i => this.renderButtonForNumber(i))}</fb>
-						<fb className="horizontal offset slim">{ _.range(7,10).map(i => this.renderButtonForNumber(i))}</fb>
-						<fb className="horizontal offset slim j-center">{ ["0"].map(i => this.renderButtonForNumber(i))}</fb>
-					</fb>
-				</content>
-				<footer className="right">
-					<RaisedButton
-						label={"Eintreten"}
-						primary={true}
-						onTouchTap={this.onAccess} />
-				</footer>
-			</fb>
-		);
+			<SModal.Main title={this.getModalTitle()} onClose={this.props.closeAdminPinDialog}>
+				<SModal.Body>
+					{ adminPinExists ?
+						<EnterPinForm onInpChange={this.onInpChange} value={this.state.pin} onEnter={this.checkPin}/> :
+						<CreatePinForm sendEmail={this.sendEmail} enterWithoutPin={this.letUserEnter}/>
+					}
+				</SModal.Body>
+			</SModal.Main>
+		)
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
+		closeAdminPinDialog: 	() => 			dispatch({type: 'CLOSE_ADMIN_PIN_DIALOG'}),
+		logAdminIn: 					() => 			dispatch({type: 'ADMIN_LOGGED_IN'}),
+		setSelectedUser: 			(userID) => dispatch({type: 'SET_SELECTED_USER', payload: userID})
 	}, dispatch);
 };
 
+const mapStateToProps = (state) => {
+	return {
+		adminUser: state.ui.app.adminPinDialog,
+	}
+}
 
-export default composePopup(connect(null, mapDispatchToProps)(EnterAdminPinPopup));
+
+export default connect(mapStateToProps, mapDispatchToProps)(EnterAdminPinPopup)

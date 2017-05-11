@@ -12,7 +12,7 @@
     "jquery": "^3.1.1",
     "latest-version": "^3.1.0",
     "lodash": "^4.15.0",
-    "material-ui": "^0.17.3",
+    "material-ui": "^0.17.4",
     "moment": "^2.14.1",
     "node-sass": "^3.4.2",
     "normalize.css": "^6.0.0",

@@ -1,3 +1,44 @@
-.checkUncheckTaskPopupMain{
+.sModalMain{
 	flex-direction: column;
+
+	bo{
+		font-weight: 500;
+		margin-right: 4px;
+	}
+
+	.modalTaskTypeInfo{
+		icon{
+			padding: 0px;
+	    margin-right: 7px;
+	    font-size: 19px;
+		}
+	}
+
+	.createdInfo{
+		font-size: 14px;
+    color: #90949c;
+    margin-top: 5px;
+
+		icon{
+			margin-right: 8px;
+	    padding: 1px;
+	    font-size: 17px;
+		}
+	}
+
+	.rightSide{
+		flex: 1 0 auto;
+		justify-content: flex-end;
+	}
+
+	.modalAssignedUsers{
+		background-color: #efefef;
+	  padding: 3px;
+	  margin-top: -12px;
+	  margin-left: -16px;
+	  margin-right: -16px;
+	  padding: 5px 16px;
+	  margin-bottom: 10px;
+	  border-bottom: 1px solid #e4e4e4;
+	}
 }

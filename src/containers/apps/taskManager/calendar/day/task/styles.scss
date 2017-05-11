@@ -109,16 +109,6 @@
 		padding-right: 4px;
 	}
 
-	.alarm-icon {
-		padding: 0;
-		border: none;
-		transform: scale(0.6);
-		margin-right: 2px;
-		color: white;
-		position: relative;
-		top: -1px;
-	}
-
 	&::before {
 		content: "";
 		position: absolute;

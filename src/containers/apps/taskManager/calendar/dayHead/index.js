@@ -14,7 +14,6 @@ export default class DayHead extends PureComponent {
 		const dayMoment = moment(this.props.currentDay, 'YYYYMMDD')
 		const { isFuture, userMode, jumpToDate, numberOfUndoneTasks, lastDateWithUndoneTask} = this.props
 
-		console.log(this.props.lastDateWithUndoneTask)
 		return (
 			<fb className="head">
 				<fb className="a-center">
