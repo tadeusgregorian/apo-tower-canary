@@ -10,6 +10,7 @@ import {bindActionCreators} from 'redux';
 import SelectUserBar from 'components/selectUserBar';
 import { setTaskManagerListeners, refreshTaskManagerListeners } from 'actions/index'
 import _ from 'lodash';
+import iziToast from 'izitoast'
 
 class TaskManager extends PureComponent {
 
@@ -20,6 +21,14 @@ class TaskManager extends PureComponent {
 		if(branchHasChanged) this.props.refreshTaskManagerListeners()
 	}
 
+	showToast = (event) => {
+		iziToast.show({
+	    icon: 'icon-arrow_back',
+	    title: 'Hey',
+	    message: 'Welcome! Der Admin ist endlich DA!',
+	});
+}
+
 	render() {
 		const { selectedUser , match, selectedBranch } = this.props
 		// const navBarRoutes = [
@@ -28,7 +37,7 @@ class TaskManager extends PureComponent {
 		// ]
 
 		return (
-			<main className="vertical">
+			<main className="vertical" onClick={this.showToast}>
 				{ !selectedUser &&
 					//<Navbar user={selectedUser} routes={navBarRoutes}/> :
 					<SelectUserBar selectedBranch={selectedBranch}/>

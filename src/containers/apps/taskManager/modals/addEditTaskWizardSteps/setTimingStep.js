@@ -18,13 +18,13 @@ export default class SetTimingStep extends PureComponent {
 
 	toggleWeekday(wd) {
 		let weekly = this.props.OTask.weekly ? [...this.props.OTask.weekly] : []
-		weekly.includes(wd) ?  weekly.remove(wd) : weekly.push(wd)
+		weekly.includes(wd) ?  _.pull(weekly, wd) : weekly.push(wd)
 		this.props.editOTask({	weekly })
 	}
 
 	toggleMonthday(md) {
 		let monthly = this.props.OTask.monthly ? [...this.props.OTask.monthly] : []
-		monthly.includes(md) ? monthly.remove(md) : monthly.push(md)
+		monthly.includes(md) ? _.pull(monthly, md) : monthly.push(md)
 		this.props.editOTask({ monthly })
 	}
 
@@ -78,9 +78,9 @@ export default class SetTimingStep extends PureComponent {
 						<fb className="weekdays offset only-horizontal slim">
 							{Wochentage.map(w => (<fb
 								key={w}
-								className={(cN({weekdayBox: true, selected: weekly.find(w)}))}
+								className={(cN({weekdayBox: true, selected: _.includes(weekly, w) }))}
 								onClick={() => this.toggleWeekday(w)}
-								style={{borderColor: weekly.find(w) ? 'blue' : "#BBBBBB"}}
+								style={{borderColor: _.includes(weekly, w) ? 'blue' : "#BBBBBB"}}
 								>{w}</fb>))}
 						</fb>
 					</fb>
@@ -150,10 +150,7 @@ export default class SetTimingStep extends PureComponent {
 										locale="de-DE"
 							  />
 								<icon onClick={() => {
-									if(yearly.length===1) return
-								  let yearliesClone = [...yearly]
-								  yearliesClone.removeAt(i)
-								  this.props.editOTask({yearly: yearliesClone})
+								  yearly.length !== 1 && this.props.editOTask({yearly: _.without(yearly, i) })
 							  }} className="icon icon-remove_circle no-border"/></fb>)
 						)}
 					</fb>
@@ -236,17 +233,17 @@ export default class SetTimingStep extends PureComponent {
 		let relevantMonthlength = null;
 		const monthly = this.props.OTask.monthly || []
 
-		if(monthly.find(31)) relevantMonthlength = 31
-		if(monthly.find(30)) relevantMonthlength = 30
-		if(monthly.find(29)) relevantMonthlength = 29
+		if(_.includes(monthly, 31)) relevantMonthlength = 31
+		if(_.includes(monthly, 30)) relevantMonthlength = 30
+		if(_.includes(monthly, 29)) relevantMonthlength = 29
 
 		return (
 			<fb className="vertical">
 				<header><h3>Tage im Monat auswählen</h3></header>
 				<content>
 					<fb className="monthdays offset slim wrap margin-bottom no-grow no-shrink">
-						{monthdays.map(w => (<fb key={w} className={(cN({monthdayBox: true, selected: monthly.find(w)}))}
-							style={{borderColor: monthly.find(w) ? 'blue' : "#BBBBBB"}}
+						{monthdays.map(w => (<fb key={w} className={(cN({monthdayBox: true, selected: _.includes(monthly, w) }))}
+							style={{borderColor: _.includes(monthly, w) ? 'blue' : "#BBBBBB"}}
 							onClick={() => this.toggleMonthday(w)}
 							>{w}</fb>))}
 					</fb>

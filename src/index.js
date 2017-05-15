@@ -5,9 +5,16 @@ import configureStore from './configureStore'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { BrowserRouter as Router} from 'react-router-dom'
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import moment from 'moment'
+import initIziToast from 'helpers/iziToastSettings'
 
 const rootEl = document.getElementById("root");
 const store = configureStore()
+
+moment.locale('de')
+injectTapEventPlugin()
+window.DateTimeFormat = global.Intl.DateTimeFormat;
+initIziToast()
 
 let render = () => {
     const Main = require("./main").default;
@@ -44,7 +51,4 @@ if(module.hot) {
     module.hot.accept("./main", () => { setTimeout(render) })
 }
 
-render();
-
-injectTapEventPlugin()
-window.DateTimeFormat = global.Intl.DateTimeFormat;
+render()

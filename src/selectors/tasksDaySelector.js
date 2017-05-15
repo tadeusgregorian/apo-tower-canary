@@ -18,7 +18,7 @@ export const getTasksForDay = (repeatingTasks, singleTasks, day) => {
 	if(!tasks) return []
 
 	const dMoment = moment(day, 'YYYYMMDD')
-	const beginningOfWeekMs = moment(day, 'YYYYMMDD').startOf('week').format('x')
+	const currentWeekBeginning = moment(day, 'YYYYMMDD').startOf('week')
 	const daysInMonth = dMoment.daysInMonth()
 	const dayOfMonth = parseInt(String(day).substr(6, 2), 10)
 	const weekDay = dMoment.weekday()
@@ -36,16 +36,20 @@ export const getTasksForDay = (repeatingTasks, singleTasks, day) => {
 
 		if (t.weekly) {
 			if (t.repeatEvery) {
-				let weekMsDifference = beginningOfWeekMs - t.beginningOfWeekMs
-				if (!((weekMsDifference % (t.repeatEvery * MS_IN_WEEK))===0)) return false
+				const startWeekBeginning = moment(t.startDate, 'YYYYMMDD').startOf('week')
+				const weekDifference = currentWeekBeginning.diff(startWeekBeginning, 'weeks')
+				console.log(startWeekBeginning)
+				console.log(weekDifference)
+				if (weekDifference % t.repeatEvery !== 0) return false
 			}
 			return t.weekly.includes(Wochentage[weekDay])
 		}
 
 		if (t.monthly) {
 			if (t.repeatEvery) {
-				let yearDifference = smartYear(day) - smartYear(t.originalStartDate && t.startDate)
-				let monthsDifference = smartMonth(day) - smartMonth(t.originalStartDate ? t.originalStartDate : t.startDate) + (yearDifference * 12)
+				const startDate = t.originalStartDate || t.startDate
+				const yearDifference = smartYear(day) - smartYear(startDate)
+				const monthsDifference = smartMonth(day) - smartMonth(startDate) + (yearDifference * 12)
 				if (!(monthsDifference % t.repeatEvery)===0) return false
 			}
 			return t.monthly.find(md => { return md===dayOfMonth || (dayOfMonth===daysInMonth && md > daysInMonth) })
