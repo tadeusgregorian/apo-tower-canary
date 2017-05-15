@@ -20,7 +20,7 @@ export const getTasksForDay = (repeatingTasks, singleTasks, day) => {
 	const dMoment = moment(day, 'YYYYMMDD')
 	const beginningOfWeekMs = moment(day, 'YYYYMMDD').startOf('week').format('x')
 	const daysInMonth = dMoment.daysInMonth()
-	const dayOfMonth = parseInt(String(day).substr(6, 2))
+	const dayOfMonth = parseInt(String(day).substr(6, 2), 10)
 	const weekDay = dMoment.weekday()
 	const dayIsSaturday = weekDay === 5
 	const dayIsSunday = weekDay === 6
@@ -30,14 +30,14 @@ export const getTasksForDay = (repeatingTasks, singleTasks, day) => {
 		if (t.endDate 	&& t.endDate   < day) return false
 		if (t.startDate && t.startDate > day) return false
 
-		if (t.onetimerDate && t.onetimerDate == day) return true
-		if (t.irregularDates) return t.irregularDates.find(date => date == day)
-		if (t.type == TaskType.daily) return (!dayIsSaturday && !dayIsSunday || dayIsSaturday && t.includeSaturday || dayIsSunday && t.includeSunday)
+		if (t.onetimerDate && t.onetimerDate===day) return true
+		if (t.irregularDates) return t.irregularDates.find(date => date===day)
+		if (t.type===TaskType.daily) return ((!dayIsSaturday && !dayIsSunday) || (dayIsSaturday && t.includeSaturday) || (dayIsSunday && t.includeSunday))
 
 		if (t.weekly) {
 			if (t.repeatEvery) {
 				let weekMsDifference = beginningOfWeekMs - t.beginningOfWeekMs
-				if (!((weekMsDifference % (t.repeatEvery * MS_IN_WEEK)) == 0)) return false
+				if (!((weekMsDifference % (t.repeatEvery * MS_IN_WEEK))===0)) return false
 			}
 			return t.weekly.includes(Wochentage[weekDay])
 		}
@@ -46,17 +46,17 @@ export const getTasksForDay = (repeatingTasks, singleTasks, day) => {
 			if (t.repeatEvery) {
 				let yearDifference = smartYear(day) - smartYear(t.originalStartDate && t.startDate)
 				let monthsDifference = smartMonth(day) - smartMonth(t.originalStartDate ? t.originalStartDate : t.startDate) + (yearDifference * 12)
-				if (!(monthsDifference % t.repeatEvery) == 0) return false
+				if (!(monthsDifference % t.repeatEvery)===0) return false
 			}
-			return t.monthly.find(md => { return md == dayOfMonth || (dayOfMonth == daysInMonth && md > daysInMonth) })
+			return t.monthly.find(md => { return md===dayOfMonth || (dayOfMonth===daysInMonth && md > daysInMonth) })
 		}
 
 		if (t.yearly) {
 			if (t.repeatEvery) {
 				let yearDifference = smartYear(day) - smartYear(t.originalStartDate && t.startDate)
-				if (!(yearDifference % t.repeatEvery) == 0) return false
+				if (!(yearDifference % t.repeatEvery)===0) return false
 			}
-			return t.yearly.find(yD => String(yD).substr(4) == String(day).substr(4))
+			return t.yearly.find(yD => String(yD).substr(4)===String(day).substr(4))
 		}
 
 		return false;

@@ -11,7 +11,7 @@ import WizardFooter from 'components/wizardFooter'
 import WizardDatePicker from './wizardDatePicker'
 import _ from 'lodash';
 import { getTodaySmart, addDays} from 'helpers';
-import 'styles/modals.scss';
+import 'styles/modals.css';
 import moment from 'moment'
 
 export default class SetTimingStep extends PureComponent {
@@ -31,12 +31,12 @@ export default class SetTimingStep extends PureComponent {
 	// dateType is either 'startDate' or 'endDate'
 	renderWizardDatePicker = (dateType) => { return (
 		<WizardDatePicker
-			pickedDate={dateType == 'startDate' ? this.props.OTask.startDate : this.props.OTask.endDate}
-			label={dateType == 'startDate' ? 'Startdatum' : 'Enddatum'}
-			withToggle={dateType == 'endDate'}
-			disabled={dateType == 'startDate' && this.props.mode == 'edit' && this.props.OTask.startDate < getTodaySmart()}
-			changePickedDate={dateType == 'startDate' ? this.editStartDate : this.editEndDate}
-			firstAcceptableDate={dateType == 'startDate' ? getTodaySmart() : addDays(this.props.OTask.startDate, 1)}
+			pickedDate={dateType==='startDate' ? this.props.OTask.startDate : this.props.OTask.endDate}
+			label={dateType==='startDate' ? 'Startdatum' : 'Enddatum'}
+			withToggle={dateType==='endDate'}
+			disabled={dateType==='startDate' && this.props.mode==='edit' && this.props.OTask.startDate < getTodaySmart()}
+			changePickedDate={dateType==='startDate' ? this.editStartDate : this.editEndDate}
+			firstAcceptableDate={dateType==='startDate' ? getTodaySmart() : addDays(this.props.OTask.startDate, 1)}
 		/>)
 	}
 
@@ -56,9 +56,9 @@ export default class SetTimingStep extends PureComponent {
 
 	renderReapeatEveryBox = (defaultLabelText, labelText) => {
 		return (<fb className="materialUiMenuContainer margin-top">
-			<DropDownMenu maxHeight={300} value={this.props.OTask.repeatEvery || 1} onChange={(e, i, v) => this.props.editOTask({repeatEvery: v == 1 ? null : v})}>
+			<DropDownMenu maxHeight={300} value={this.props.OTask.repeatEvery || 1} onChange={(e, i, v) => this.props.editOTask({repeatEvery: v===1 ? null : v})}>
 				{_.range(1, 13).map(i => {
-					let primaryText = i == 1 ? defaultLabelText : `Alle ${i} ${labelText}`
+					let primaryText = i===1 ? defaultLabelText : `Alle ${i} ${labelText}`
 					return (<MenuItem value={i} key={i} primaryText={primaryText} />)
 				})}
 			</DropDownMenu>
@@ -79,7 +79,7 @@ export default class SetTimingStep extends PureComponent {
 							{Wochentage.map(w => (<fb
 								key={w}
 								className={(cN({weekdayBox: true, selected: weekly.find(w)}))}
-								onTouchTap={() => this.toggleWeekday(w)}
+								onClick={() => this.toggleWeekday(w)}
 								style={{borderColor: weekly.find(w) ? 'blue' : "#BBBBBB"}}
 								>{w}</fb>))}
 						</fb>
@@ -102,14 +102,14 @@ export default class SetTimingStep extends PureComponent {
 			<content>
 				<fb className="margin-top">
 					<Checkbox
-						onTouchTap={() => this.props.editOTask({includeSaturday: this.props.OTask.includeSaturday ? null : true})} // we prefere null because it creates no Firebase-entry
+						onClick={() => this.props.editOTask({includeSaturday: this.props.OTask.includeSaturday ? null : true})} // we prefere null because it creates no Firebase-entry
 						checked={!!this.props.OTask.includeSaturday}
 						label="Inklusive Samstag"
 					/>
 				</fb>
 				<fb className="margin-top">
 					<Checkbox
-						onTouchTap={() => this.props.editOTask({includeSunday: this.props.OTask.includeSunday ? null : true})} // we prefere null because it creates no Firebase-entry
+						onClick={() => this.props.editOTask({includeSunday: this.props.OTask.includeSunday ? null : true})} // we prefere null because it creates no Firebase-entry
 						checked={!!this.props.OTask.includeSunday}
 						label="Inklusive Sonntag"
 					/>
@@ -122,7 +122,7 @@ export default class SetTimingStep extends PureComponent {
 
 	yearlyDateSelected = (e, d, i) => {
 		let yearliesClone = [...this.props.OTask.yearly]
-		yearliesClone[i] = parseInt(moment(d).format('YYYYMMDD'))
+		yearliesClone[i] = parseInt(moment(d).format('YYYYMMDD'), 10)
 		this.props.editOTask({yearly: yearliesClone})
 	}
 
@@ -149,8 +149,8 @@ export default class SetTimingStep extends PureComponent {
 										DateTimeFormat={window.DateTimeFormat}
 										locale="de-DE"
 							  />
-								<icon onTouchTap={() => {
-									if(yearly.length == 1) return
+								<icon onClick={() => {
+									if(yearly.length===1) return
 								  let yearliesClone = [...yearly]
 								  yearliesClone.removeAt(i)
 								  this.props.editOTask({yearly: yearliesClone})
@@ -160,7 +160,7 @@ export default class SetTimingStep extends PureComponent {
 					<fb className="no-shrink no-grow">
 						<RaisedButton
 							label="Weiteren Tag hinzufügen"
-							onTouchTap={() => this.props.editOTask({yearly: [...yearly, getTodaySmart() ]})}
+							onClick={() => this.props.editOTask({yearly: [...yearly, getTodaySmart() ]})}
 							icon={<FontIcon className="icon icon-add_circle"/>}
 						/>
 					</fb>
@@ -178,7 +178,7 @@ export default class SetTimingStep extends PureComponent {
 
 	irregularDateSelected = (d, i) => {
 		let irregularDatesClone = [...this.props.OTask.irregularDates]
-		irregularDatesClone[i] = parseInt(moment(d).format('YYYYMMDD'))
+		irregularDatesClone[i] = parseInt(moment(d).format('YYYYMMDD'), 10)
 		this.props.editOTask({irregularDates: irregularDatesClone})
 	}
 
@@ -210,8 +210,8 @@ export default class SetTimingStep extends PureComponent {
 									okLabel="OK" cancelLabel="Abbrechen"
 									DateTimeFormat={window.DateTimeFormat} locale="de-DE"
 							  />
-								<icon onTouchTap={() => {
-									if(irregularDates.length == 1) return
+								<icon onClick={() => {
+									if(irregularDates.length===1) return
 								  let irregularDatesClone = [...irregularDates]
 								  irregularDatesClone.removeAt(i)
 								  this.setIrregularDates(irregularDatesClone)
@@ -222,7 +222,7 @@ export default class SetTimingStep extends PureComponent {
 					<fb className="no-shrink margin-bottom">
 						<RaisedButton
 							label="Weiteres Datum hinzufügen"
-							onTouchTap={()=>this.setIrregularDates([...irregularDates, getTodaySmart()])}
+							onClick={()=>this.setIrregularDates([...irregularDates, getTodaySmart()])}
 							icon={<FontIcon className="icon icon-add_circle"/>}
 						/>
 					</fb>
@@ -247,7 +247,7 @@ export default class SetTimingStep extends PureComponent {
 					<fb className="monthdays offset slim wrap margin-bottom no-grow no-shrink">
 						{monthdays.map(w => (<fb key={w} className={(cN({monthdayBox: true, selected: monthly.find(w)}))}
 							style={{borderColor: monthly.find(w) ? 'blue' : "#BBBBBB"}}
-							onTouchTap={() => this.toggleMonthday(w)}
+							onClick={() => this.toggleMonthday(w)}
 							>{w}</fb>))}
 					</fb>
 					{  relevantMonthlength &&
@@ -294,7 +294,7 @@ export default class SetTimingStep extends PureComponent {
 			<WizardFooter
 				stepForward={this.props.stepForward}
 				stepBackward={this.props.stepBackward}
-				disableBackward={this.props.mode == 'edit'}
+				disableBackward={this.props.mode==='edit'}
 				disableForward={!this.readyForNextStep()}/>
 		</fb>
 	)}

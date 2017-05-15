@@ -12,18 +12,18 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import moment from 'moment'
-import './styles.scss';
+import './styles.css';
 
 
 export default class EditCreatedTask extends PureComponent {
 
 	render() {
 		const {isInPast, task} = this.props
-		const creator = this.props.users.find(u => task.creatorID == u.ID)
+		const creator = this.props.users.find(u => task.creatorID===u.ID)
 		const taskTypeAndPattern = getTypeAndPatternOfTask(task);
 
 		return (
-			<fb className={cN({"taskRow": true, "ghostRow": isInPast })} onTouchTap={()=>this.props.openTaskDetailsPopup(task, isInPast)}>
+			<fb className={cN({"taskRow": true, "ghostRow": isInPast })} onClick={()=>this.props.openTaskDetailsPopup(task, isInPast)}>
 				<fb className="creator" style={{color: creator.color}}>{creator.nameInitials}</fb>
 				<fb className="taskInfo">
 					<fb className="taskTitle">{task.subject}</fb>

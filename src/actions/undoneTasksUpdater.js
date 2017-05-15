@@ -5,8 +5,24 @@ import { getTasksForDay } from 'selectors/tasksDaySelector'
 import moment from 'moment'
 import _ from 'lodash'
 
-const yesterday =  parseInt(moment().subtract(1, 'day').format('YYYYMMDD'))
-const today = parseInt(moment().format('YYYYMMDD'))
+const yesterday =  parseInt(moment().subtract(1, 'day').format('YYYYMMDD'), 10)
+const today = parseInt(moment().format('YYYYMMDD'), 10)
+
+const writeUndoneTasksToDB = (undoneTasksInRange) => {
+	let updates = {[getFirebasePath('lastUTUpdate')]: today}
+	undoneTasksInRange.forEach(t => updates[getFirebasePath('undoneTasks') + t.ID] = t)
+	FBInstance.database().ref().update(updates)
+}
+
+const getUndoneTasksInRange = (range, repeatingTasks, singleTasks, checkedMini) => {
+	const tasksGrid = range.map(day => {
+		const tasks = getTasksForDay(repeatingTasks, singleTasks, day)
+		return tasks.map(t => ({ID: day+t.ID, taskID: t.ID, taskDate: day, assignedUsers: t.assignedUsers}))
+	})
+
+	const tasksFlat =  tasksGrid.reduce((acc, curr) => acc.concat(curr))
+	return  tasksFlat.filter(t => !(checkedMini && checkedMini[t.taskDate] && checkedMini[t.taskDate][t.taskID]))
+}
 
 export const updateUndoneTasks = (lastUpdate) => {
 	return (dispatch, getState) => {
@@ -29,20 +45,4 @@ export const updateUndoneTasks = (lastUpdate) => {
 			})
 		})
 	}
-}
-
-const getUndoneTasksInRange = (range, repeatingTasks, singleTasks, checkedMini) => {
-	const tasksGrid = range.map(day => {
-		const tasks = getTasksForDay(repeatingTasks, singleTasks, day)
-		return tasks.map(t => ({ID: day+t.ID, taskID: t.ID, taskDate: day, assignedUsers: t.assignedUsers}))
-	})
-
-	const tasksFlat =  tasksGrid.reduce((acc, curr) => acc.concat(curr))
-	return  tasksFlat.filter(t => !(checkedMini && checkedMini[t.taskDate] && checkedMini[t.taskDate][t.taskID]))
-}
-
-const writeUndoneTasksToDB = (undoneTasksInRange) => {
-	let updates = {[getFirebasePath('lastUTUpdate')]: today}
-	undoneTasksInRange.forEach(t => updates[getFirebasePath('undoneTasks') + t.ID] = t)
-	FBInstance.database().ref().update(updates)
 }

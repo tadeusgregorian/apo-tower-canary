@@ -1,7 +1,7 @@
 import React  from 'react';
 import {PureComponent} from 'react';
 import _ from 'lodash'
-import './styles.scss';
+import './styles.css';
 import UndoneTasksButton from './undoneTasksButton';
 import moment from 'moment'
 import DateNavigator from './dateNavigator'

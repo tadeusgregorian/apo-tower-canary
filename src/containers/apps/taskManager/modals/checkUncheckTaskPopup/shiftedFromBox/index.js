@@ -1,6 +1,6 @@
 import React from 'react'
 import moment from 'moment'
-import './styles.scss'
+import './styles.css'
 
 export default ({originalDate}) => (
 		<fb className='shiftedFromInfoMain'>

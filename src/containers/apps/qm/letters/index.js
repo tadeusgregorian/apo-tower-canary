@@ -4,7 +4,7 @@ import _ from 'lodash';
 import LazyLoad from 'react-lazyload';
 import {forceCheck} from 'react-lazyload';
 import { stringIncludes } from 'helpers'
-import './styles.scss'
+import './styles.css'
 
 export default class QmLetters extends PureComponent {
 	//componentDidUpdate = () => { forceCheck() }
@@ -20,8 +20,8 @@ export default class QmLetters extends PureComponent {
 
 		//const qmLettersSorted =  this.props.qmLetters.sortBy((qm) => moment(qm.date).unix(), true)
 		let qmLettersSorted = [ ...qmLetters ].sort((a, b) => a.date < b.date ? 1 : -1).filter(qm => {
-			const isRelevant = qm.assignedUsers[userID] || qm.creatorID == this.props.userID
-			const isAssignedAndUnread = qm.assignedUsers[userID] && qm.assignedUsers[userID] != 2
+			const isRelevant = qm.assignedUsers[userID] || qm.creatorID===this.props.userID
+			const isAssignedAndUnread = qm.assignedUsers[userID] && qm.assignedUsers[userID] !== 2
 			const filterMatches = filterText && stringIncludes(qm.subject+' '+qm.text, filterText)
 
 			if(filterText && !filterMatches) return false
@@ -31,8 +31,8 @@ export default class QmLetters extends PureComponent {
 		})
 		return qmLettersSorted.map((qm, i) => {
 
-			const currentUserIsCreator = (userID == qm.creatorID)
-			const currentUserHasRed = qm.assignedUsers[userID] == 2
+			const currentUserIsCreator = (userID===qm.creatorID)
+			const currentUserHasRed = qm.assignedUsers[userID]===2
 			const hasRead = !!(currentUserHasRed || currentUserIsCreator)
 
 			return(

@@ -1,7 +1,7 @@
 import React from 'react';
 import cN from 'classnames';
 import MiniUser from 'components/miniUser';
-import './styles.scss';
+import './styles.css';
 
 // @param obj 		assignedUsers - {userID:userID,userID:userID,...}
 // @param obj 		usersRed (optional) - {userID:userID,userID:userID,...}
@@ -13,7 +13,7 @@ const AssignedUsers = (props) => {
 	const maxDisplayedMiniUsers = props.maxDisplayedMiniUsers || 100
 
 	let assignedUsersSorted = props.assignedUsers.map(userID =>{
-		const assignedUser = props.users.find(user => user.ID == userID)
+		const assignedUser = props.users.find(user => user.ID === userID)
 		return { ...assignedUser, hasRead: props.usersRead && props.usersRead.includes(userID)}
 	}).sort((a, b) => a.hasRead < b.hasRead)
 

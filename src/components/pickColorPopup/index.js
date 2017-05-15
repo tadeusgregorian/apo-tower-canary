@@ -3,7 +3,7 @@ import cN from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import composePopup from 'composers/popup';
-import 'styles/popup.scss';
+import 'styles/popup.css';
 
 
 class PickColorPopup extends Component {
@@ -43,7 +43,7 @@ class PickColorPopup extends Component {
 		this.setState({selectedColor: e.target.id});
 	}
 
-	onButtonTouchTaped() {
+	onButtonClicked() {
 		this.props.onColorPicked(this.colors[this.state.selectedColor]);
 		this.props.close(this);
 	}
@@ -55,16 +55,16 @@ class PickColorPopup extends Component {
 				<fb className="color-picker-content">
 					{ this.colors.map((color, index)=> <div
 							id={index}
-							className = {cN({'color-box': true, 'round-color-box': (index == this.state.selectedColor)})}
+							className = {cN({'color-box': true, 'round-color-box': (index === this.state.selectedColor)})}
 							key={color}
 							style={{backgroundColor: color}}
-							onTouchTap={this.colorClicked.bind(this)}
+							onClick={this.colorClicked.bind(this)}
 						></div>)}
 				</fb>
 				<footer>
 					<button
 						className={cN({'right': true, 'disabled': (this.state.selectedColor < 0)})}
-						onTouchTap={this.onButtonTouchTaped.bind(this)}>
+						onClick={this.onButtonClicked.bind(this)}>
 						Farbe wählen
 					</button>
 				</footer>

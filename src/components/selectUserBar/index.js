@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './styles.scss';
+import './styles.css';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import BigUserButton from 'components/bigUserButton';

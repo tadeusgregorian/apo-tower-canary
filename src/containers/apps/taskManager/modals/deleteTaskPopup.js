@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import 'styles/modals.scss';
+import 'styles/modals.css';
 
 //@param task obj
 //@param close function
@@ -42,10 +42,10 @@ export default class DeleteTaskPopup extends PureComponent {
 		      </content>
 		      <footer>
 		          <fb className="left">
-		              <RaisedButton label={'abbrechen'} onTouchTap={this.props.close} primary={true}/>
+		              <RaisedButton label={'abbrechen'} onClick={this.props.close} primary={true}/>
 		          </fb>
 		          <div className="content-right">
-		              <RaisedButton primary={true} label={buttonLabel} onTouchTap={this.deleteTask}/>
+		              <RaisedButton primary={true} label={buttonLabel} onClick={this.deleteTask}/>
 		          </div>
 		      </footer>
 		  </fb>

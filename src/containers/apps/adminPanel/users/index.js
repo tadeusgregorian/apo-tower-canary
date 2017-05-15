@@ -12,7 +12,7 @@ import Dialog from 'material-ui/Dialog';
 import AddEditUserPopup from './addEditUserPopup';
 import ConfirmPopup from 'components/confirmPopup';
 import toastr from 'toastr';
-import './styles.scss';
+import './styles.css';
 
 class EditUsers extends React.Component {
 	constructor(props) {
@@ -84,7 +84,7 @@ class EditUsers extends React.Component {
 		return (
 			<div className="edit-users-content">
 				<fb className="newUserButtonWrapper">
-					<button className="icon-plus button newUserButton" onTouchTap={this.openAddEditUserPopup.bind(this)}>
+					<button className="icon-plus button newUserButton" onClick={this.openAddEditUserPopup.bind(this)}>
 						neuen nutzer anlegen
 					</button>
 				</fb>

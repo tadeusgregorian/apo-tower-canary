@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import './styles.scss'
+import './styles.css'
 import cN from 'classnames'
 
 //@param
@@ -19,14 +19,14 @@ const LiteSwitch = (props) => {
 	return (
 		<fb className="templateModeSwitch">
 			<tadeButton
-				style={selectedOne == 'left' ? props.selectedStyleLeft : {}}
+				style={selectedOne === 'left' ? props.selectedStyleLeft : {}}
 				onClick={props.onLeftOneClicked}
-				className={cN({"weekShiftButton": true, "selected": selectedOne == 'left'})}>{props.labelLeft}
+				className={cN({"weekShiftButton": true, "selected": selectedOne === 'left'})}>{props.labelLeft}
 			</tadeButton>
 			<tadeButton
-				style={selectedOne == 'right' ? props.selectedStyleRight : {}}
+				style={selectedOne === 'right' ? props.selectedStyleRight : {}}
 				onClick={props.onRightOneClicked}
-				className={cN({"templateButton": true, "selected": selectedOne == 'right'})}>{props.labelRight}
+				className={cN({"templateButton": true, "selected": selectedOne === 'right'})}>{props.labelRight}
 			</tadeButton>
 		</fb>
 	)

@@ -4,8 +4,8 @@ import FontIcon from 'material-ui/FontIcon'
 import React, {PureComponent} from 'react'
 import {readQm, unreadQm} from 'actions'
 import AssignedUsers from 'components/assignedUsers'
-import 'styles/modals.scss'
-import './styles.scss'
+import 'styles/modals.css'
+import './styles.css'
 import { Storage } from '../../../../../firebaseInstance'
 import { downloadFile, playTaskCheckSound } from 'helpers'
 import _ from 'lodash'
@@ -14,7 +14,7 @@ export default class ReadUnreadQmPopup extends PureComponent {
 	constructor(props) {
 		super(props)
 
-		this.readerIsCreator = this.props.userID == this.props.qmData.creatorID;
+		this.readerIsCreator = this.props.userID===this.props.qmData.creatorID;
 		this.state = { downloadLinksForAttachments: [] }
 	}
 
@@ -37,7 +37,7 @@ export default class ReadUnreadQmPopup extends PureComponent {
 
 
 	tryToDownloadFile = (f) => {
-		let filteredUrls = this.state.downloadLinksForAttachments.filter(a => a.guid == f.guid)
+		let filteredUrls = this.state.downloadLinksForAttachments.filter(a => a.guid===f.guid)
 		let filteredFile = filteredUrls.length && filteredUrls[0]
 		if (filteredFile) {
 			downloadFile(filteredFile.url, filteredFile.name);
@@ -45,7 +45,7 @@ export default class ReadUnreadQmPopup extends PureComponent {
 	}
 
 	tryToOpenPDF = (f) => {
-		let filteredUrls = this.state.downloadLinksForAttachments.filter(a => a.guid == f.guid)
+		let filteredUrls = this.state.downloadLinksForAttachments.filter(a => a.guid===f.guid)
 		let filteredUrl = filteredUrls.length && filteredUrls[0].url
 		if (filteredUrl) {
 			window.open(filteredUrl)
@@ -67,7 +67,7 @@ export default class ReadUnreadQmPopup extends PureComponent {
 				<content>
 					<p>{this.props.qmData.text}</p>
 					{this.props.qmData.files && this.props.qmData.files.map(f => {
-						const fileIsViewable = f.name.substr(-4) == ".pdf";
+						const fileIsViewable = f.name.substr(-4)===".pdf";
 						console.log(f.name.substr(-4))
 						return (
 							<fb key={f.name + f.uploadTime + f.size} className="file downloadable">
@@ -75,13 +75,13 @@ export default class ReadUnreadQmPopup extends PureComponent {
 							<FlatButton
 								primary={true}
 								className="iconButton"
-								onTouchTap={() => this.tryToDownloadFile(f)}
+								onClick={() => this.tryToDownloadFile(f)}
 								icon={<FontIcon className="icon icon-download" />} />
 								{ fileIsViewable ?
 									<FlatButton
 										primary={true}
 										className="iconButton"
-										onTouchTap={() => this.tryToOpenPDF(f)}
+										onClick={() => this.tryToOpenPDF(f)}
 										icon={<FontIcon className="icon icon-eye" />} />
 								: null}
 								<fb className="name">{f.name}</fb>
@@ -94,14 +94,14 @@ export default class ReadUnreadQmPopup extends PureComponent {
 							<fb className="editDeleteButtonWrapper">
 								<RaisedButton
 									label='bearbeiten'
-									primary={true} onTouchTap={ () => {
+									primary={true} onClick={ () => {
 										this.props.openAddEditQmWizard(false, this.props.qmData)
 										this.props.close();
 									}}
 								/>
 								<RaisedButton
 									label='löschen'
-									primary={true} onTouchTap={ () => {
+									primary={true} onClick={ () => {
 										this.props.openDeleteQmPopup(this.props.qmData)
 										this.props.close();
 									}}
@@ -110,7 +110,7 @@ export default class ReadUnreadQmPopup extends PureComponent {
 						 : null}
 						<RaisedButton
 							label={this.props.hasRead ? 'Ungelesen' : 'Gelesen'}
-							primary={true} onTouchTap={() => this.readUnread()}
+							primary={true} onClick={() => this.readUnread()}
 							disabled={this.readerIsCreator}
 						/>
 					</div>

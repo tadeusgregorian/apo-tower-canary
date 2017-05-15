@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import _ from 'lodash';
 import cN from 'classnames';
-import './styles.scss';
+import './styles.css';
 import AssignedUsers from 'components/assignedUsers';
 import moment from 'moment'
 
@@ -9,13 +9,13 @@ export default class QmLetter extends PureComponent {
 
 	render() {
 		let {qm, users, hasRead} = this.props
-		let creator = users.find(u => u.ID && u.ID == qm.creatorID)
-		const usersRead = _.keys(qm.assignedUsers).filter(uID => qm.assignedUsers[uID] == 2)
-		//let userIsCreator = (user.ID == qm.creatorID)
+		let creator = users.find(u => u.ID && u.ID===qm.creatorID)
+		const usersRead = _.keys(qm.assignedUsers).filter(uID => qm.assignedUsers[uID]===2)
+		//let userIsCreator = (user.ID===qm.creatorID)
 		//let userIsCreatorOrAdmin = user.adminHash || userIsCreator
 
 		return (
-			<fb className={cN({letter: true, "hasRed": hasRead, needsBorderBottom: true })} onTouchTap={() => this.props.openReadUnreadQmModal(hasRead, qm)}>
+			<fb className={cN({letter: true, "hasRed": hasRead, needsBorderBottom: true })} onClick={() => this.props.openReadUnreadQmModal(hasRead, qm)}>
 				<fb className="author" style={{ color: creator.color }}>
 					{creator.nameInitials}
 				</fb>

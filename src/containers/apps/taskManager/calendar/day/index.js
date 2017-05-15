@@ -3,7 +3,7 @@ import cN from 'classnames';
 import _ from 'lodash';
 import moment from 'moment';
 import TaskTransitionGroup from './taskTransitionGroup';
-import './styles.scss';
+import './styles.css';
 import DayFooter from './dayFooter'
 import Task from './task';
 

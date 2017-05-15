@@ -2,7 +2,7 @@ import React from 'react';
 import cN from 'classnames';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import TransitionGroup from 'react-addons-css-transition-group';
-import 'styles/modals.scss';
+import 'styles/modals.css';
 
 export default function composePopup(Comp) {
 	class Popup extends React.Component {
@@ -32,7 +32,7 @@ export default function composePopup(Comp) {
 							? (<RefreshIndicator size={80} left={100} top={100} status="loading" style={this.busyStyle}/>)
 							: null}
 					</TransitionGroup>
-					<div className="close" onTouchTap={() => this.props.close()}>X</div>
+					<div className="close" onClick={() => this.props.close()}>X</div>
 					<Comp {...this.props} isBusy={this.state.busy} busy={this.busy}/>
 				</fb>
 			);

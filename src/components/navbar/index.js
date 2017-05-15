@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles.scss';
+import './styles.css';
 import FlatButton from 'material-ui/FlatButton';
 import { NavLink } from 'react-router-dom';
 

@@ -11,7 +11,7 @@ import TextField from 'material-ui/TextField'
 import Checkbox from 'material-ui/Checkbox'
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
 
-import './styles.scss'
+import './styles.css'
 
 export default class FilterBar extends PureComponent {
 
@@ -22,8 +22,8 @@ export default class FilterBar extends PureComponent {
 		const assignedUserMenuItems = users.map(u => <MenuItem key={u.ID} value={u.ID} primaryText={u.name} />)
 		assignedUserMenuItems.unshift(<MenuItem key={"test"} value={"none"} primaryText={'Kein Filter'} />)
 
-		let selectedCreatorUser =  users.find(u => u.ID == this.props.filterCreator)
-		let selectedAssignedUser = users.find(u => u.ID == this.props.filterAssignedUser)
+		let selectedCreatorUser =  users.find(u => u.ID===this.props.filterCreator)
+		let selectedAssignedUser = users.find(u => u.ID===this.props.filterAssignedUser)
 
 		return(
 			<fb className="searchFilterBar">

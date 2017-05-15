@@ -8,8 +8,8 @@ import DoneByInfoRow from './doneByInfoRow'
 import moment from 'moment'
 import SModal from 'components/sModal'
 import _ from 'lodash'
-import 'styles/modals.scss';
-import './styles.scss';
+import 'styles/modals.css';
+import './styles.css';
 
 export default class CheckUncheckTaskPopup extends Component {
 
@@ -24,7 +24,7 @@ export default class CheckUncheckTaskPopup extends Component {
 
 		console.log(t)
 
-		const createdBy = 	t.creatorID 		&& users.find(u => u.ID == t.creatorID).name
+		const createdBy = 	t.creatorID 		&& users.find(u => u.ID===t.creatorID).name
 
 		const modalButtons = (
 			<fb>
@@ -70,7 +70,7 @@ export default class CheckUncheckTaskPopup extends Component {
 				</SModal.Footer>
 				<DatePicker style={{"display": "none"}}
 					ref='shiftTaskDatePicker'
-					onChange={(e, d) => { this.props.checkUncheck(t, false, 'shifted', parseInt(moment(d).format('YYYYMMDD')))}}
+					onChange={(e, d) => { this.props.checkUncheck(t, false, 'shifted', parseInt(moment(d).format('YYYYMMDD'), 10))}}
 					floatingLabelText="fakeText_Shift"
 					cancelLabel="Abbrechen"
 					okLabel="Verschieben"

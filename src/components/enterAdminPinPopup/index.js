@@ -8,7 +8,7 @@ import CreatePinForm from './createPinForm'
 import {requestAdminPinEmail} from 'actions'
 import SModal from 'components/sModal'
 import sha1 from 'sha1';
-import './styles.scss';
+import './styles.css';
 
 class EnterAdminPinPopup extends Component {
 	constructor(props) {

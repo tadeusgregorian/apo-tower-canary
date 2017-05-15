@@ -7,8 +7,8 @@ import _ from 'lodash';
 import toastr from 'toastr';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Storage} from '../../../../../firebaseInstance';
-import 'styles/modals.scss';
-import './styles.scss';
+import 'styles/modals.css';
+import './styles.css';
 
 
 class AssignUsersStep extends Component {
@@ -16,7 +16,7 @@ class AssignUsersStep extends Component {
 		super(props)
 
 		this.state = {
-			assignedUsers: props.subState.assignedUsers || props.initData && props.initData.assignedUsers || {},
+			assignedUsers: props.subState.assignedUsers || (props.initData && props.initData.assignedUsers) || {},
 			selectedGroups: [],
 			selectedBranches: []
 		}
@@ -41,7 +41,7 @@ class AssignUsersStep extends Component {
 
 		if (this.props.subState.filesToBeDeleted.length) {
 			this.props.subState.filesToBeDeleted.forEach((f) => {
-				qmData.files = [...qmData.files].remove(file => file.guid == f.guid);
+				qmData.files = [...qmData.files].remove(file => file.guid===f.guid);
 				Storage.ref().child(`qm/${f.guid}/${f.name}`).delete().then(s => {
 				})
 			})
@@ -67,7 +67,7 @@ class AssignUsersStep extends Component {
 							.putString(
 								fileReader.result.from(fileReader.result.indexOf(',') + 1),
 								'base64',
-								f.name.last(4) == ".pdf" ? getPdfMedataData(f.name) : getSimpleAttachmentMetaData(f.name)
+								f.name.last(4)===".pdf" ? getPdfMedataData(f.name) : getSimpleAttachmentMetaData(f.name)
 							).then(snapshot => {
 								resolve(snapshot);
 							}).catch(c => reject(c))
@@ -149,7 +149,7 @@ class AssignUsersStep extends Component {
 
 		let selectedUsersIds = {};
 		for (let i of selectedBranches) {
-			let usersArray = filterUsersByBranch(this.props.users, i).filter(u => u.ID != this.props.user.ID)
+			let usersArray = filterUsersByBranch(this.props.users, i).filter(u => u.ID !== this.props.user.ID)
 			for (let f of usersArray) {
 				selectedUsersIds[f.ID] = 1
 			}
@@ -178,7 +178,7 @@ class AssignUsersStep extends Component {
 											? 'blue'
 											: "#BBBBBB")
 										}}
-										onTouchTap={() => this.selectUsersByBranch(b)}>
+										onClick={() => this.selectUsersByBranch(b)}>
 										{b.name}
 									</div>
 								);
@@ -199,7 +199,7 @@ class AssignUsersStep extends Component {
 												? 'blue'
 												: "#BBBBBB")
 											}}
-											onTouchTap={() => this.selectUsersByGroup(g)}>
+											onClick={() => this.selectUsersByGroup(g)}>
 											{g.name}
 										</div>
 									);
@@ -208,14 +208,14 @@ class AssignUsersStep extends Component {
 					</fb>
 
 					<fb className="qm-modal-user-wrapper padding-top">
-						{this.props.users.filter(u => u.ID != this.props.user.ID).map(u => {
+						{this.props.users.filter(u => u.ID !== this.props.user.ID).map(u => {
 							let isSelected = !!(this.state.assignedUsers[u.ID]);
 							return (
 								<fb
 									key={u.ID}
 									className={cN({'modal-user': true, 'selected': isSelected})}
 									style={{ color: (isSelected ? 'blue' : "#353535"), borderColor: (isSelected ? 'blue': "grey")}}
-									onTouchTap={() => this.selectDeselectUser(u)}>
+									onClick={() => this.selectDeselectUser(u)}>
 									{u.name}
 								</fb>
 							)
@@ -224,14 +224,14 @@ class AssignUsersStep extends Component {
 				</content>
 				<footer>
 					<buttonWrapper className={cN({'left': true})}>
-						<RaisedButton label='Zurück' primary={true} onTouchTap={this.safeAndPreviousStep.bind(this)}/>
+						<RaisedButton label='Zurück' primary={true} onClick={this.safeAndPreviousStep.bind(this)}/>
 					</buttonWrapper>
 					<buttonWrapper className={cN({'right': true})}>
 						<RaisedButton
 							label='Fertig'
 							disabled={_.isEmpty(this.state.assignedUsers)}
 							primary={true}
-							onTouchTap={this.onFinish}/>
+							onClick={this.onFinish}/>
 					</buttonWrapper>
 				</footer>
 			</div>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import InputMinimal from 'components/inputMinimal'
 import SButton from 'components/sButton'
 import lockIcon from './lockIcon.png'
-import './styles.scss';
+import './styles.css';
 
 export default class EnterPinForm extends Component {
 

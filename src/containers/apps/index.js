@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, {PureComponent} from 'react'
 import {connect} from 'react-redux'
 import { Route, withRouter } from 'react-router-dom'
@@ -11,27 +11,32 @@ import {
 	registerGroupsDataListener,
 	registerBranchesDataListener,
 	setQmLettersListener
-} from 'actions'
+} from 'actions/index'
 
 import Topbar 			from './topbar'
 import TaskManager 	from './taskManager'
 import QmApp 				from './qm'
 import AdminPanel 	from './adminPanel'
 
-class Apps extends PureComponent {
+type Props = {
+  registerUsersDataListener: () => void;
+  registerGroupsDataListener: () => void;
+  registerBranchesDataListener: () => void;
+}
+class Apps extends PureComponent <*, Props, *> {
 
 	componentDidMount() {
-		this.props.usersDataStatus 		== 'NOT_REQUESTED' && this.props.registerUsersDataListener()
-		this.props.groupsDataStatus 	== 'NOT_REQUESTED' && this.props.registerGroupsDataListener()
-		this.props.branchesDataStatus == 'NOT_REQUESTED' && this.props.registerBranchesDataListener()
+		this.props.usersDataStatus 		=== 'NOT_REQUESTED' && this.props.registerUsersDataListener()
+		this.props.groupsDataStatus 	=== 'NOT_REQUESTED' && this.props.registerGroupsDataListener()
+		this.props.branchesDataStatus === 'NOT_REQUESTED' && this.props.registerBranchesDataListener()
 
-		this.props.qmLettersDataStatus  == 'NOT_REQUESTED' && this.props.setQmLettersListener()
+		this.props.qmLettersDataStatus  === 'NOT_REQUESTED' && this.props.setQmLettersListener()
 		window.selectedBranch = this.props.selectedBranch || null
 		window.accountID = this.props.accountID
 	}
 
 	componentWillReceiveProps(nP) {
-		!nP.selectedBranch && nP.branches.length && !this.props.selectBranchDialog && this.openSelectbranchDialog()
+		!nP.selectedBranch && nP.branches.length && !this.props.selectBranchDialog && this.props.openSelectbranchDialog()
 
 		const branchHasChanged = nP.selectedBranch !== this.props.selectedBranch
 		if(branchHasChanged) { window.selectedBranch = nP.selectedBranch }
@@ -47,7 +52,7 @@ class Apps extends PureComponent {
 
 	render() {
 		if(!this.requiredDataIsLoaded()) return <fb>loading...</fb>
-		const user = this.props.selectedUser && this.props.users && this.props.users.find(u => u.ID == this.props.selectedUser)
+		const user = this.props.selectedUser && this.props.users && this.props.users.find(u => u.ID===this.props.selectedUser)
 		return (
 			<fb id="apps">
 				<fb className="vertical">
@@ -96,10 +101,10 @@ const mapDispatchToProps = (dispatch) => {
 		registerGroupsDataListener,
 		registerBranchesDataListener,
 		setQmLettersListener,
-		setSelectedUser: 		(userID) => dispatch({type: 'SET_SELECTED_USER', payload: userID}),
-		closeAdminPinDialog: 			() => dispatch({type: 'CLOSE_ADMIN_PIN_DIALOG'}),
-		openSelectbranchDialog: 	() => dispatch({type: 'OPEN_SELECT_BRANCH_DIALOG'}),
-		closeSelectbranchDialog: 	() =>	dispatch({type: 'CLOSE_SELECT_BRANCH_DIALOG'})
+		setSelectedUser: 		(userID) => ({type: 'SET_SELECTED_USER', payload: userID}),
+		closeAdminPinDialog: 			() => ({type: 'CLOSE_ADMIN_PIN_DIALOG'}),
+		openSelectbranchDialog: 	() => ({type: 'OPEN_SELECT_BRANCH_DIALOG'}),
+		closeSelectbranchDialog: 	() =>	({type: 'CLOSE_SELECT_BRANCH_DIALOG'})
 	}, dispatch)
 };
 

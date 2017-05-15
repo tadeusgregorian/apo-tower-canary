@@ -7,7 +7,7 @@ import {openPopup} from 'actions/index';
 import {addNewBranch} from 'actions/index';
 import CreateBranchPopup from './createBranchPopup';
 import Dialog from 'material-ui/Dialog';
-import '../styles.scss';
+import '../styles.css';
 
 class EditBranches extends React.Component {
 	constructor(props) {
@@ -43,15 +43,15 @@ class EditBranches extends React.Component {
 					<div className="group-list-element list-head">Filialen</div>
 					{this.props.branches.map((branch) => <div key={branch.ID} id={branch.ID} className={cN({
 						'groups-list-element': true,
-						'selected': (branch.ID == selectedBranchID)
-					})} onTouchTap={this.branchElementClicked.bind(this)}>{branch.name}
+						'selected': (branch.ID === selectedBranchID)
+					})} onClick={this.branchElementClicked.bind(this)}>{branch.name}
 					</div>)}
 					<div className="new-group-element">
-						<button className="button icon-folder-plus" onTouchTap={this.openCreateBranchPopup.bind(this)}>Filiale Erstellen</button>
+						<button className="button icon-folder-plus" onClick={this.openCreateBranchPopup.bind(this)}>Filiale Erstellen</button>
 					</div>
 				</div>
 				{< EditBranchesContent setSelectedBranch={ this.setSelectedBranch.bind(this) }
-				branch={ this.props.branches.find(g => g.ID == selectedBranchID) } />}
+				branch={ this.props.branches.find(g => g.ID === selectedBranchID) } />}
 				<Dialog className="materialDialog" open={this.state.createBranchPopupOpen} onRequestClose={this.closeAddMemberPopup.bind(this)}>
 					{this.createBranchPopup}
 				</Dialog>

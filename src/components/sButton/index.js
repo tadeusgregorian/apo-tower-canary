@@ -1,5 +1,5 @@
 import React from 'react'
-import './styles.scss'
+import './styles.css'
 
 export default ({label, disabled, onClick, color, sStyle}) => {
 	const colorStyle = {

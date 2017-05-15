@@ -5,7 +5,7 @@ const getChecked = (state) => state.taskManager.checked
 
 const getExtendedTasks = (tasks, checked) => {
 	const extendedTasks = tasks.map(t => {
-		const cObj = checked.find(c => c.taskID == t.ID)
+		const cObj = checked.find(c => c.taskID===t.ID)
 		if(!cObj) return t
 
 		switch (cObj.type) {

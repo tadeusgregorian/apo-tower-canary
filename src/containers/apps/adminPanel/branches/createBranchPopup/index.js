@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { addNewBranch } from 'actions/index'
 import composePopup  from 'composers/popup';
-import '../../styles.scss';
-import 'styles/popup.scss';
+import '../../styles.css';
+import 'styles/popup.css';
 
 class CreateBranchPopup extends Component {
 	constructor(props) {
@@ -20,7 +20,7 @@ class CreateBranchPopup extends Component {
 		this.props.close(this);
 	}
 
-	onButtonTouchTaped() {
+	onButtonClicked() {
 		this.props.addNewBranch(this.state.branchName, this.branchWasAdded.bind(this));
 	}
 
@@ -44,7 +44,7 @@ class CreateBranchPopup extends Component {
 				<footer>
 					<button
 						className={cN({'right': true, 'disabled': (!this.state.branchName)})}
-						onTouchTap={(this.onButtonTouchTaped).bind(this)}>
+						onClick={(this.onButtonClicked).bind(this)}>
 						Filliale erstellen
 					</button>
 				</footer>

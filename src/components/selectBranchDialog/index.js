@@ -21,7 +21,7 @@ class SelectBranchDialog extends Component {
 				<content className="j-center a-center horizontal wrap no-grow offset">
 					{this.props.branches.map(b => (
 						<fb className="no-grow" key={b.ID}>
-							<RaisedButton label={b.name} primary={true} onTouchTap={() => this.selectBranch(b)}/>
+							<RaisedButton label={b.name} primary={true} onClick={() => this.selectBranch(b)}/>
 						</fb>
 					))
 				}

@@ -9,8 +9,8 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import ActionLabel from 'material-ui/svg-icons/action/label';
 import MenuItem from 'material-ui/MenuItem';
 import {userColors} from 'helpers/colors';
-import './styles.scss';
-import 'styles/popup.scss';
+import './styles.css';
+import 'styles/popup.css';
 
 //@param user.name optional str
 //@param user.nameInitials optional str (4 characters!)
@@ -35,9 +35,9 @@ class AddEditUserPopup extends Component {
 		this.props.close(this);
 	}
 
-	onButtonTouchTaped() {
+	onButtonClicked() {
 
-		if(this.state.name == '') {
+		if(this.state.name === '') {
 			this.setState({userinputMissingText: 'Bitte geben Sie einen Benutzernamen ein.'})
 			return;
 		}
@@ -45,7 +45,7 @@ class AddEditUserPopup extends Component {
 			this.setState({userinputMissingText: 'Bitte geben Sie einen 4 stelligen Namenskürzel ein.'})
 			return;
 		}
-		if(this.state.color == '') {
+		if(this.state.color === '') {
 			this.setState({userinputMissingText: 'Bitte wählen Sie eine Farbe aus.'})
 			return;
 		}
@@ -82,7 +82,7 @@ class AddEditUserPopup extends Component {
 		this.setState({nameInitials: input.target.value});
 	}
 	onHoursPerWeekChanged(input) {
-		const hours = parseInt(input.target.value || 0)
+		const hours = parseInt((input.target.value || 0), 10)
 		if(isNaN(hours) || hours < 0 || hours > 80) return;
 		this.setState({hoursPerWeek: hours});
 	}
@@ -117,8 +117,8 @@ class AddEditUserPopup extends Component {
 								<fb className={cN({'userColor': true, 'selected': false})}
 										style={{backgroundColor: colorString}}
 										key={colorString}
-										onTouchTap={ () => this.onColorTouchTaped(colorString)} >
-										{ (this.state.color == colorString) ? <icon className="icon icon-checkmark" /> : null}
+										onClick={ () => this.onColorTouchTaped(colorString)} >
+										{ (this.state.color === colorString) ? <icon className="icon icon-checkmark" /> : null}
 								</fb>)})}
 						</fb>
 					</fb>
@@ -127,7 +127,7 @@ class AddEditUserPopup extends Component {
 					<button className={cN({
 						'right': true,
 						'disabled': (false)
-					})} onTouchTap={(this.onButtonTouchTaped).bind(this)}>
+					})} onClick={(this.onButtonClicked).bind(this)}>
 						{ this.props.editingMode ? 'speichern ' : 'Nurtzer Erstellen' }
 					</button>
 				</footer>

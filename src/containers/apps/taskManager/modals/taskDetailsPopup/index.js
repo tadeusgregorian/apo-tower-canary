@@ -5,8 +5,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import AssignedUsers from 'components/assignedUsers';
 import moment from 'moment'
 import _ from 'lodash'
-import 'styles/modals.scss';
-import './styles.scss';
+import 'styles/modals.css';
+import './styles.css';
 
 
 export default class TaskDetailsPopup extends PureComponent {
@@ -30,7 +30,7 @@ export default class TaskDetailsPopup extends PureComponent {
 				<header>
 					<h4 className="no-margin">{t.subject}</h4>
 					{ t.prio > 0 ? <p><b style={{color: 'red'}}>Aufgabe mit hoher Priorität</b></p> : null }
-					<p>Erstellt von <b>{this.props.users.find(u => u.ID == t.creatorID).name }
+					<p>Erstellt von <b>{this.props.users.find(u => u.ID===t.creatorID).name }
 					</b> am <b> {moment(t.creationDate).format('DD.MM.YYYY')}</b></p>
 					<p><b>{taskTypeAndPattern.type} </b> {(taskTypeAndPattern.patternFullLength || taskTypeAndPattern.pattern)}</p>
 					<fb className="assignedUsersWrapper">
@@ -39,14 +39,14 @@ export default class TaskDetailsPopup extends PureComponent {
 				</header>
 				<footer>
 					<RaisedButton
-					  onTouchTap={this.editTask}
+					  onClick={this.editTask}
 					  label="Bearbeiten"
 					  primary={true}
 					  disabled={!this.props.editable}
 					/>
 					<RaisedButton
 						className="margin-left"
-						onTouchTap={this.deleteTask}
+						onClick={this.deleteTask}
 						label={t.onetimerDate || t.irregularDates ? "Löschen" : "Löschen"}
 						primary={true}
 						disabled={!this.props.editable}

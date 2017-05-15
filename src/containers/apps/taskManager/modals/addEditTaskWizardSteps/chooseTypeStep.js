@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import 'styles/modals.scss';
+import 'styles/modals.css';
 import {TaskType} from 'constants'
 import {getTodaySmart} from 'helpers'
 

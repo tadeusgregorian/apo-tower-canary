@@ -4,7 +4,7 @@ import {createShortGuid, shortenGuid, shortISOToSmartDate} from 'helpers';
 import _ from 'lodash'
 import moment from 'moment'
 
-const toSmart = (dDate) => parseInt(dDate.substr(0, 4) + dDate.substr(5, 2) + dDate.substr(8, 2))
+const toSmart = (dDate) => parseInt((dDate.substr(0, 4) + dDate.substr(5, 2) + dDate.substr(8, 2)), 10)
 
 export const updateKeysToSmart = (target) => {
 	let result = {}
@@ -61,16 +61,16 @@ const refreshTasks = (_tasks) => {
 
 		// add endDate as eternety, where there is no end Date. Its Needed for filtering from DB
 		if(!t.endDate) {
-			if(t.type == TaskType.onetimer) 	t.endDate = t.onetimerDate
-			if(t.type == TaskType.irregular) 	t.endDate = _.max(t.irregularDates)
+			if(t.type===TaskType.onetimer) 	t.endDate = t.onetimerDate
+			if(t.type===TaskType.irregular) 	t.endDate = _.max(t.irregularDates)
 
-			if(t.type == TaskType.daily) 			t.endDate = eternitySmart
-			if(t.type == TaskType.weekly) 		t.endDate = eternitySmart
-			if(t.type == TaskType.monthly) 		t.endDate = eternitySmart
-			if(t.type == TaskType.yearly) 		t.endDate = eternitySmart
+			if(t.type===TaskType.daily) 			t.endDate = eternitySmart
+			if(t.type===TaskType.weekly) 		t.endDate = eternitySmart
+			if(t.type===TaskType.monthly) 		t.endDate = eternitySmart
+			if(t.type===TaskType.yearly) 		t.endDate = eternitySmart
 		}
 
-		if(t.type == TaskType.onetimer)  t.startDate = null // delte startdate, some onetimers have fucking startdates, i think caused by a already fixed bug.
+		if(t.type===TaskType.onetimer)  t.startDate = null // delte startdate, some onetimers have fucking startdates, i think caused by a already fixed bug.
 
 		t.withDetailedTime = null
 		t.isDeadline = null
@@ -83,7 +83,7 @@ const refreshTasks = (_tasks) => {
 		t.checked = null
 		if(t.hour) t.hour = null
 		if(t.minute) t.minute = null
-		if(t.prio == 0) t.prio = null
+		if(t.prio===0) t.prio = null
 		if(t.replacementBoxOpen) t.replacementBoxOpen = null	// so random shit in the db
 		if(t.replacementPopupIsOpen) t.replacementPopupIsOpen = null // so random shit in db
 

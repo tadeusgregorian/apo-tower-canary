@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { addUserToGroup } from 'actions/index'
 import { addUserToBranch } from 'actions/index'
 import composePopup from 'composers/popup';
-import 'styles/popup.scss';
+import 'styles/popup.css';
 
 class SelectMemberPopup extends Component {
 	constructor(props) {
@@ -17,14 +17,14 @@ class SelectMemberPopup extends Component {
 	}
 
 	onUserClicked(userID) {
-		const clickedUser = (this.props.users.find(user => user.ID == userID));
-		if(this.props.case == 'group'){
+		const clickedUser = (this.props.users.find(user => user.ID === userID));
+		if(this.props.case === 'group'){
 			const groupID = this.props.groupID;
 			const assignedGroups = clickedUser.assignedGroups;
 			const assignedGroupsNew = Object.assign({[groupID]: groupID}, assignedGroups);
 			this.props.addUserToGroup(userID, assignedGroupsNew, this.userWasAdded);
 		}
-		if(this.props.case == 'branch'){
+		if(this.props.case === 'branch'){
 			const branchID = this.props.branchID;
 			const branches = clickedUser.branches;
 			const branchesNew = Object.assign({[branchID]: branchID}, branches);
@@ -38,14 +38,14 @@ class SelectMemberPopup extends Component {
 
 	renderUsers() {
 		let nonMembers = {};
-		if (this.props.case == 'group'){
+		if (this.props.case === 'group'){
 			nonMembers = this.props.users.filter(user => !user.assignedGroups || !user.assignedGroups[this.props.groupID]);
 		}
-		if(this.props.case == 'branch'){
+		if(this.props.case === 'branch'){
 			nonMembers = this.props.users.filter(user => !user.branches || !user.branches[this.props.branchID]);
 		}
 		const res = nonMembers.map(user =>
-			<button key={user.ID} onTouchTap={ (() => this.onUserClicked(user.ID)) } className="button icon-plus username-button">{user.name}</button>
+			<button key={user.ID} onClick={ (() => this.onUserClicked(user.ID)) } className="button icon-plus username-button">{user.name}</button>
 		);
 		return res;
 	}
@@ -60,7 +60,7 @@ class SelectMemberPopup extends Component {
 				<footer>
 					<button
 						className="right"
-						onTouchTap={(this.onFinish).bind(this)}>
+						onClick={(this.onFinish).bind(this)}>
 						Fertig
 					</button>
 				</footer>

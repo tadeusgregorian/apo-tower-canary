@@ -27,12 +27,12 @@ export function filterUsersByBranch(users, branchID) {
 }
 
 export function getUserById(users, userID) {
-	return users.find(u => u.ID == userID);
+	return users.find(u => u.ID===userID);
 }
 
 export const filterTasksForUser = (tasks, user) => {
 	// console.log("not exiting")
-	return tasks.filter(t => !user || (!!_.values(t.assignedUsers).filter(auID => auID == user.ID).length))
+	return tasks.filter(t => !user || (!!_.values(t.assignedUsers).filter(auID => auID===user.ID).length))
 }
 
 export const getTypeAndPatternOfTask = (task) => {

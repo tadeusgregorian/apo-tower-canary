@@ -4,8 +4,8 @@ import { getFirebasePath } from '../actionHelpers'
 import { updateUndoneTasks } from '../undoneTasksUpdater'
 import moment from 'moment'
 
-const today = parseInt(moment().format('YYYYMMDD'))
-const yesterday =  parseInt(moment().subtract(1, 'day').format('YYYYMMDD'))
+const today = parseInt(moment().format('YYYYMMDD'), 10)
+const yesterday =  parseInt(moment().subtract(1, 'day').format('YYYYMMDD'), 10)
 
 export const setRepeatingTasksListener = () => {
 	return (dispatch, getState) => {
@@ -40,9 +40,9 @@ export const setLastUTUpdateListener = () => {
 
 export const setTaskManagerListeners = () => {
 	return (dispatch, getState) => {
-		getState().taskManager.repeatingTasksDataStatus 	== 'NOT_REQUESTED' && setRepeatingTasksListener()(dispatch, getState)
-		getState().taskManager.singleTasksDataStatus 			== 'NOT_REQUESTED' && setSingleTasksListener()(dispatch, getState)
-		getState().taskManager.undoneTasksDataStatus 			== 'NOT_REQUESTED' && setUndoneTasksListener()(dispatch, getState)
+		getState().taskManager.repeatingTasksDataStatus 	=== 'NOT_REQUESTED' && setRepeatingTasksListener()(dispatch, getState)
+		getState().taskManager.singleTasksDataStatus 			=== 'NOT_REQUESTED' && setSingleTasksListener()(dispatch, getState)
+		getState().taskManager.undoneTasksDataStatus 			=== 'NOT_REQUESTED' && setUndoneTasksListener()(dispatch, getState)
 	}
 }
 

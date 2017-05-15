@@ -8,7 +8,7 @@ import cN from 'classnames';
 import { openPopup, addNewGroup } from 'actions/index';
 import CreateGroupPopup from './createGroupPopup';
 import Dialog from 'material-ui/Dialog';
-import '../styles.scss';
+import '../styles.css';
 
 
 class EditGroups extends React.Component {
@@ -59,15 +59,15 @@ class EditGroups extends React.Component {
 						<div
 							key={group.ID}
 							id={group.ID}
-							className={cN({'groups-list-element': true, 'selected': (group.ID == selectedGroupID)})}
-							onTouchTap={this.groupElementClicked.bind(this)}>{group.name}
+							className={cN({'groups-list-element': true, 'selected': (group.ID === selectedGroupID)})}
+							onClick={this.groupElementClicked.bind(this)}>{group.name}
 						</div>
 					)}
 					<div className="new-group-element">
-						<button className="button icon-folder-plus" onTouchTap={ this.openCreateGroupPopup.bind(this) } >Gruppe Erstellen</button>
+						<button className="button icon-folder-plus" onClick={ this.openCreateGroupPopup.bind(this) } >Gruppe Erstellen</button>
 					</div>
 				</div>
-				{ <EditGroupsContent setSelectedGroup={this.setSelectedGroup.bind(this)} group={this.props.groups.find(g => g.ID == selectedGroupID)} /> }
+				{ <EditGroupsContent setSelectedGroup={this.setSelectedGroup.bind(this)} group={this.props.groups.find(g => g.ID===selectedGroupID)} /> }
 				<Dialog className="materialDialog" open={this.state.createGroupPopupOpen} onRequestClose={this.closeAddMemberPopup.bind(this)}>
 					{this.createGroupPopup}
 				</Dialog>

@@ -2,7 +2,7 @@ import React from 'react'
 import DatePicker from 'material-ui/DatePicker'
 import Toggle from 'material-ui/Toggle'
 import moment from 'moment'
-import 'styles/modals.scss'
+import 'styles/modals.css'
 
 
 export default function WizardDatePicker(props) {
@@ -14,7 +14,7 @@ export default function WizardDatePicker(props) {
 					<Toggle
 					  label={"Mit " + label}
 						labelPosition="right"
-					  onTouchTap={() => changePickedDate(pickedDate ? null : firstAcceptableDate)} //toogling leads to adding or removing a date to the OTask
+					  onClick={() => changePickedDate(pickedDate ? null : firstAcceptableDate)} //toogling leads to adding or removing a date to the OTask
 					  toggled={!!pickedDate}
 						/>
 				</fb>
@@ -25,7 +25,7 @@ export default function WizardDatePicker(props) {
 					<DatePicker
 						disabled={disabled}
 						value={moment(pickedDate, 'YYYYMMDD').toDate()}
-						onChange={(e, d) => changePickedDate(parseInt(moment(d).format('YYYYMMDD')))}
+						onChange={(e, d) => changePickedDate(parseInt(moment(d).format('YYYYMMDD'), 10))}
 						shouldDisableDate={(d) => moment(d).format('YYYYMMDD') < firstAcceptableDate}
 						floatingLabelText={label}
 						okLabel="OK"

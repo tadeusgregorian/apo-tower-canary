@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { deleteQm } from 'actions';
 import RaisedButton from 'material-ui/RaisedButton';
-import 'styles/modals.scss';
+import 'styles/modals.css';
 import {Storage} from '../../../../../firebaseInstance';
 
 export default class DeleteQmPopup extends Component {
@@ -28,13 +28,13 @@ export default class DeleteQmPopup extends Component {
 						<RaisedButton
 							label='abbrechen'
 							primary={true}
-							onTouchTap={this.props.close} />
+							onClick={this.props.close} />
 					</div>
 					<div className="content-right">
 						<RaisedButton
 							label='löschen'
 							primary={true}
-							onTouchTap={this.deleteQm} />
+							onClick={this.deleteQm} />
 					</div>
 				</footer>
 			</fb>

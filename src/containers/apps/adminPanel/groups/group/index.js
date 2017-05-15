@@ -7,7 +7,7 @@ import SelectMemberPopup from 'components/selectMemberPopup';
 import ConfirmPopup from 'components/confirmPopup';
 import { deleteGroup, openPopup, removeUserFromGroup } from 'actions/index';
 import Dialog from 'material-ui/Dialog';
-import '../../styles.scss';
+import '../../styles.css';
 
 class EditGroupsContent extends React.Component {
 	constructor(props) {
@@ -22,7 +22,7 @@ class EditGroupsContent extends React.Component {
 		this.deleteGroupPopup = null;
 	}
 
-	removeUserButtonTouchTaped(userID) {
+	removeUserButtonClicked(userID) {
 		this.props.removeUserFromGroup(this.props.group.ID, userID, this.userRemovedFromGroup);
 
 
@@ -72,7 +72,7 @@ class EditGroupsContent extends React.Component {
 		let result = members && members.map(user =>
 				<div className="group-member-element" key={user.ID}>
 					<div className="group-member-name">{user.name}</div>
-					<button onTouchTap={() => this.removeUserButtonTouchTaped(user.ID)} className="button icon-minus slim no-margin">Aus Gruppe entfernen</button>
+					<button onClick={() => this.removeUserButtonClicked(user.ID)} className="button icon-minus slim no-margin">Aus Gruppe entfernen</button>
 				</div>
 		);
 		return result;
@@ -86,12 +86,12 @@ class EditGroupsContent extends React.Component {
                     <div className="group-name">
                         {group ? group.name : null}
                     </div>
-                    <button className="button icon-bin" onTouchTap={this.openDeleteGroupPopup.bind(this)} >Gruppe löschen</button>
+                    <button className="button icon-bin" onClick={this.openDeleteGroupPopup.bind(this)} >Gruppe löschen</button>
                 </div>
 				<div className="group-member-list" >
 					{this.renderMemberElements()}
 				</div>
-				<button className="button icon-plus add-to-group-btn" onTouchTap={this.openAddMemberPopup.bind(this)}>Nutzer hinzufügen</button>
+				<button className="button icon-plus add-to-group-btn" onClick={this.openAddMemberPopup.bind(this)}>Nutzer hinzufügen</button>
 				<Dialog className="materialDialog" open={this.state.addMemberPopupOpen} onRequestClose={this.closeAddMemberPopup.bind(this)}>
 					{this.addMemberPopup}
 				</Dialog>

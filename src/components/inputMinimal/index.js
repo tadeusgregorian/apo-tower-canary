@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import './styles.scss'
+import './styles.css'
 
 
 export default class InputMinimal extends PureComponent {

@@ -5,17 +5,17 @@ import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
-import 'styles/modals.scss';
-import './styles.scss';
+import 'styles/modals.css';
+import './styles.css';
 
 export default class DefineContentStep extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			subject: props.subState.subject || props.initData && props.initData.subject || "",
-			text: props.subState.text || props.initData && props.initData.text || "",
-			isUrgent: props.subState.isUrgent || props.initData && props.initData.isUrgent || false,
-			files: props.subState.files || props.initData && props.initData.files || [],
+			subject: props.subState.subject || (props.initData && props.initData.subject) || "",
+			text: props.subState.text || (props.initData && props.initData.text) || "",
+			isUrgent: props.subState.isUrgent || (props.initData && props.initData.isUrgent) || false,
+			files: props.subState.files || (props.initData && props.initData.files) || [],
 			filesToUpload: props.subState.filesToUpload || [],
 			filesToBeDeleted: props.subState.filesToBeDeleted || []
 		};
@@ -84,18 +84,18 @@ export default class DefineContentStep extends Component {
 						<Checkbox
 							label="Dringend"
 							checked={this.state.isUrgent}
-							onTouchTap={() => this.setState({
+							onClick={() => this.setState({
 								isUrgent: !this.state.isUrgent
 							})}/>
 					</fb>
 					<fb className="no-shrink margin-top vertical">
-					{this.state.files.filter(f => !this.state.filesToBeDeleted.filter(d => d.guid == f.guid).length).map(f => (
+					{this.state.files.filter(f => !this.state.filesToBeDeleted.filter(d => d.guid===f.guid).length).map(f => (
 						<fb key={f.name + f.lastModified} className="qm-file">
 							<fb className="name">{f.name}</fb>
 							<FlatButton
 								primary={true}
 								className="iconButton"
-								onTouchTap={() => this.removeFile(f)}
+								onClick={() => this.removeFile(f)}
 								icon={<FontIcon className="icon icon-close" />} />
 							</fb>
 					))}
@@ -105,7 +105,7 @@ export default class DefineContentStep extends Component {
 								<FlatButton
 									primary={true}
 									className="iconButton"
-									onTouchTap={() => this.removeFile(f)}
+									onClick={() => this.removeFile(f)}
 									icon={<FontIcon className="icon icon-close" />} />
 								</fb>
 						))}
@@ -132,7 +132,7 @@ export default class DefineContentStep extends Component {
 						label='weiter'
 						disabled={disabled}
 						primary={true}
-						onTouchTap={this.safeAndNextStep.bind(this)}/>
+						onClick={this.safeAndNextStep.bind(this)}/>
 				</footer>
 			</div>
 		)

@@ -9,7 +9,7 @@ import { deleteBranch } from 'actions/index';
 import Dialog from 'material-ui/Dialog';
 import _ from 'lodash';
 import toastr from 'toastr';
-import '../../styles.scss';
+import '../../styles.css';
 
 
 class EditBranchesContent extends React.Component {
@@ -25,8 +25,8 @@ class EditBranchesContent extends React.Component {
 		this.deleteBranchPopup = null;
 	}
 
-	removeUserButtonTouchTaped(user) {
-		if ( user.adminHash &&  _.keys(user.branches).length == 1 ){
+	removeUserButtonClicked(user) {
+		if ( user.adminHash &&  _.keys(user.branches).length === 1 ){
 			toastr.error("Der Admin-User muss mindestens einer Filliale zugehören.");
 			return;
 		}
@@ -77,7 +77,7 @@ class EditBranchesContent extends React.Component {
 		let result = members && members.map(user =>
 				<div className="group-member-element" key={user.ID}>
 					<div className="group-member-name">{user.name}</div>
-					<button onTouchTap={() => this.removeUserButtonTouchTaped(user)} className="button icon-minus slim no-margin">Aus Filiale entfernen</button>
+					<button onClick={() => this.removeUserButtonClicked(user)} className="button icon-minus slim no-margin">Aus Filiale entfernen</button>
 				</div>
 		);
 		return result;
@@ -91,12 +91,12 @@ class EditBranchesContent extends React.Component {
                     <div className="group-name">
                         {branch ? branch.name : null}
                     </div>
-                    <button className="button icon-bin" onTouchTap={this.openDeleteBranchPopup.bind(this)} >Filliale löschen</button>
+                    <button className="button icon-bin" onClick={this.openDeleteBranchPopup.bind(this)} >Filliale löschen</button>
                 </div>
 				<div className="group-member-list" >
 					{this.renderMemberElements()}
 				</div>
-				<button className="button icon-plus add-to-group-btn" onTouchTap={this.openAddMemberPopup.bind(this)}>Nutzer hinzufügen</button>
+				<button className="button icon-plus add-to-group-btn" onClick={this.openAddMemberPopup.bind(this)}>Nutzer hinzufügen</button>
 				<Dialog className="materialDialog" open={this.state.addMemberPopupOpen} onRequestClose={this.closeAddMemberPopup.bind(this)}>
 					{this.addMemberPopup}
 				</Dialog>

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import './styles.scss'
+import './styles.css'
 
 //@param obj user
 //@param bool optional! grayedOut
@@ -33,8 +33,8 @@ const miniUser = (props) => {
 	}
 
 	let colorStyle = liteStyle // default is liteStyle
-	if ( props.colorStyle == 'colorful' ) colorStyle = colorfulStyle
-	if ( props.colorStyle == 'blackAndWhite' ) colorStyle = blackAndWhiteStyle
+	if ( props.colorStyle === 'colorful' ) colorStyle = colorfulStyle
+	if ( props.colorStyle === 'blackAndWhite' ) colorStyle = blackAndWhiteStyle
 
 	return (
 		<fb key={props.user.ID} className={classes} style={ colorStyle }>

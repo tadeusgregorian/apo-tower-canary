@@ -3,7 +3,7 @@ import { createShortGuid } from 'helpers';
 import { getFirebasePath } from './actionHelpers'
 import moment from 'moment';
 
-const today = parseInt(moment().format('YYYYMMDD'))
+const today = parseInt(moment().format('YYYYMMDD'), 10)
 const getCategory = (task) => {return (task.onetimerDate ? 'singleTasks' : 'repeatingTasks')}
 
 
@@ -21,7 +21,7 @@ export function checkTask(task, checkType, shiftedTo = null) {
 		updates[getFirebasePath('checked')+checkID] = checked
 		updates[getFirebasePath('checkedMini')+taskDate+'/'+task.ID] = 1
 
-		if(checkType == 'shifted') { // create a new single Task as a copy of the shifted Task
+		if(checkType === 'shifted') { // create a new single Task as a copy of the shifted Task
 			const guid = createShortGuid()
 			const newShiftedTask = { ...task, ID: guid, onetimerDate: shiftedTo, originalShiftedTask: {ID: task.ID, date: taskDate}}
 			updates[getFirebasePath('singleTasks')+ guid] = newShiftedTask

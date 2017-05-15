@@ -4,7 +4,7 @@ export const addFBListener = (ref, fbAction, target, dispatch, childrenCount = 0
 	let childrenAdded = 0
 	ref.on(fbAction, snapshot => {
 		// this is a workaround because Firebase fires initial child_added events even though we have already done once(value)
-		if(fbAction == 'child_added' && childrenAdded < childrenCount) { childrenAdded++; return }
+		if(fbAction === 'child_added' && childrenAdded < childrenCount) { childrenAdded++; return }
 		dispatch({ type: fbAction + '_' + target, payload: snapshot.val(), key: snapshot.key })
 	})
 }

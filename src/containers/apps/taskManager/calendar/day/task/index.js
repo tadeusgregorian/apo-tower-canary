@@ -2,7 +2,7 @@ import cN  from 'classnames';
 import RoundCheckbox  from 'components/roundCheckbox';
 import React, { PureComponent } from 'react';
 import AssignedUsers from 'components/assignedUsers';
-import './styles.scss';
+import './styles.css';
 import _ from 'lodash'
 
 
@@ -22,7 +22,7 @@ export default class Task extends PureComponent {
 							clickHandler={(e) => onCheckboxClick(t)} />
 					}
 				<fb className={cN({ task: true, prio, isDone: t.isDone, isIgnored: t.isIgnored || t.isShifted })}>
-					<fb className="body" onTouchTap={clickHandler}>
+					<fb className="body" onClick={clickHandler}>
 						<fb className="head">
 							<fb className="subject">{t.subject}</fb>
 						</fb>

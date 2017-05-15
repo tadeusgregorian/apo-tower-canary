@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import composePopup  from 'composers/popup';
-import 'styles/popup.scss';
+import 'styles/popup.css';
 
 //props:
 //noDenyOption : boolean
@@ -10,12 +10,12 @@ class ConfirmPopup extends Component {
 		this.props.close(this);
 	}
 
-	onConfirmButtonTouchTaped() {
+	onConfirmButtonClicked() {
 		if(this.props.onDecisionMade)  this.props.onDecisionMade(true, this.props.whatToConfirm);
 		this.onFinish();
 	}
 
-	onDenyButtonTouchTaped() {
+	onDenyButtonClicked() {
 		if(this.props.onDecisionMade) this.props.onDecisionMade(false);
 		this.onFinish();
 	}
@@ -33,12 +33,12 @@ class ConfirmPopup extends Component {
 				</content>
 				<footer>
 					{ this.props.noDenyOption ? null :
-						<button onTouchTap={this.onDenyButtonTouchTaped.bind(this)}>
+						<button onClick={this.onDenyButtonClicked.bind(this)}>
 							Abbrechen
 						</button>
 					}
 					<right>
-						<button onTouchTap={this.onConfirmButtonTouchTaped.bind(this)}>
+						<button onClick={this.onConfirmButtonClicked.bind(this)}>
 							{ this.props.noDenyOption ? 'OK' : 'Bestätigen' }
 						</button>
 					</right>

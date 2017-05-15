@@ -1,4 +1,3 @@
-/* @flow weak */
 
 export * from './firebaseListeners/taskManager';
 export * from './firebaseListeners/core';

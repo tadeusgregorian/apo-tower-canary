@@ -6,7 +6,7 @@ import { logoutFromFirebase } from 'actions'
 import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
-import './styles.scss'
+import './styles.css'
 import _ from 'lodash'
 import cN from 'classnames'
 
@@ -55,7 +55,7 @@ class Topbar extends PureComponent {
 					</fb>
 					<fb className="right">
 						{ userMode ? 	<fb className="userName">{user.name}</fb> : null }
-						<icon className="menuButton icon-dehaze" onTouchTap={(e) => this.setState({settingsPopoverIsOpen: true, settingsButton: e.currentTarget})}/>
+						<icon className="menuButton icon-dehaze" onClick={(e) => this.setState({settingsPopoverIsOpen: true, settingsButton: e.currentTarget})}/>
 				</fb>
 				<Popover
 					open={this.state.settingsPopoverIsOpen}
@@ -64,11 +64,11 @@ class Topbar extends PureComponent {
 					targetOrigin={{horizontal: 'right', vertical: 'bottom'}}
 					onRequestClose={() => this.setState({settingsPopoverIsOpen: false})}>
 					<Menu>
-						<MenuItem primaryText="Filliale wechseln" onTouchTap={() => {
+						<MenuItem primaryText="Filliale wechseln" onClick={() => {
 							this.props.openSelectbranchDialog();
 							this.setState({settingsPopoverIsOpen: false})
 						}}/>
-						<MenuItem primaryText="Abmelden" onTouchTap={() => this.props.logoutFromFirebase()}/>
+						<MenuItem primaryText="Abmelden" onClick={() => this.props.logoutFromFirebase()}/>
 					</Menu>
 				</Popover>
 				</fb>

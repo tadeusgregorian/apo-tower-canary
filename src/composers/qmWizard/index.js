@@ -1,8 +1,7 @@
 import React from 'react';
 import cN from 'classnames';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
-import TransitionGroup from 'react-addons-css-transition-group';
-import 'styles/modals.scss';
+import 'styles/modals.css';
 
 export default function composeWizard(stepComponents) {
 	class QmWizard extends React.Component {

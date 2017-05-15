@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import './styles.scss'
+import './styles.css'
 
 
 class Login extends React.Component {

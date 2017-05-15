@@ -21,7 +21,7 @@ import LazyLoad, {forceCheck} from 'react-lazyload'
 
 import DeleteTaskPopup from '../../modals/deleteTaskPopup'
 import TaskDetailsPopup from '../../modals/taskDetailsPopup'
-import './styles.scss'
+import './styles.css'
 
 class EditCreatedTasks extends PureComponent {
 	constructor(props) {
@@ -38,7 +38,7 @@ class EditCreatedTasks extends PureComponent {
 	componentDidUpdate = () => forceCheck()
 
 	openTaskDetailsPopup = (task, isInPast) => {
-		const editable = !isInPast && task.creatorID == this.props.selectedUser
+		const editable = !isInPast && task.creatorID===this.props.selectedUser
 		this.props.openTaskDetailsPopup(task, editable)
 	}
 
@@ -61,7 +61,7 @@ class EditCreatedTasks extends PureComponent {
 		if(task.onetimerDate || (!task.onetimerDate && task.startDate >= getTodaySmart())) {
 			createTask(task) // this just overrides the task with new version.
 		} else {
-			const yesterdaySmart = parseInt(moment().subtract(1, 'day').format('YYYYMMDD'))
+			const yesterdaySmart = parseInt(moment().subtract(1, 'day').format('YYYYMMDD'), 10)
 			editAndCreateTask(
 				{ID: task.ID, endDate: yesterdaySmart},
 				{ ...task, ID: createShortGuid(), startDate: getTodaySmart(), originalStartDate: task.startDate, originalTaskID: task.ID }
@@ -72,20 +72,20 @@ class EditCreatedTasks extends PureComponent {
 
 	filteredSortedTasks() {
 		const {filterCreator, filterAssignedUser, taskSearchString} = this.state
-		const tasks = this.state.selectedCategory == 'repeating' ? this.props.repeatingTasks : this.props.singleTasks
+		const tasks = this.state.selectedCategory==='repeating' ? this.props.repeatingTasks : this.props.singleTasks
 		let filtTs = tasks.filter(t => !t.isDuplicate && !t.originalShiftedTask);
-		if (filterCreator && filterCreator !== "none") 						filtTs = filtTs.filter(t => t.creatorID == filterCreator)
+		if (filterCreator && filterCreator !== "none") 						filtTs = filtTs.filter(t => t.creatorID===filterCreator)
 		if (filterAssignedUser && filterAssignedUser !== "none") 	filtTs = filtTs.filter(t => t.assignedUsers && t.assignedUsers[filterAssignedUser])
 		if (this.state.taskSearchString) 													filtTs = filtTs.filter(t => stringIncludes(t.subject+' '+t.text, taskSearchString))
 		return filtTs.sortBy(((t) => moment(t.creationDate).format('YYYYMMDD')), true)
 	}
 
 	renderTasks = () => {
-		if (this.state.selectedCategory == 'single' && this.props.singleTasks_dataStatus != 'LOADED') return (<fb>loading...</fb>)
+		if (this.state.selectedCategory==='single' && this.props.singleTasks_dataStatus !== 'LOADED') return (<fb>loading...</fb>)
 
 		const today = getTodaySmart()
 		return this.filteredSortedTasks().map(t => {
-			const isInPast =  t.endDate && t.endDate < today || t.onetimerDate && t.onetimerDate < today
+			const isInPast =  t.endDate && (t.endDate < today || (t.onetimerDate && t.onetimerDate < today))
 			if (this.state.hidePastTask && isInPast) return false
 			return (
 				<LazyLoad height={44} overflow={true} offset={30} once={true} debounce={80} key={t.ID} placeholder={(<fb style={{height:'44px', borderTop:'1px solid #d3d3d3', paddingTop:'14px', paddingLeft:'14px', color:'#d3d3d3'}}>loading...</fb>)} >
@@ -128,7 +128,7 @@ class EditCreatedTasks extends PureComponent {
 
 	changeCategoryTo = (category) => {
 		this.setState({selectedCategory: category})
-		if(this.props.singleTasks_dataStatus == 'NOT_REQUESTED') this.props.setSingleTasksNoShiftedListener()
+		if(this.props.singleTasks_dataStatus==='NOT_REQUESTED') this.props.setSingleTasksNoShiftedListener()
 	}
 
 	render() {
@@ -143,7 +143,7 @@ class EditCreatedTasks extends PureComponent {
 								{this.renderTasks()}
 							</fb>
 						</fb>
-						<Dialog open={this.props.taskWizard == 'edit'} onRequestClose={this.props.closeTaskWizard}>
+						<Dialog open={this.props.taskWizard==='edit'} onRequestClose={this.props.closeTaskWizard}>
 							{this.addEditTaskWizard}
 						</Dialog>
 						<Dialog open={!!this.props.deleteTaskPopup} onRequestClose={this.props.closeDeleteTaskPopup}>

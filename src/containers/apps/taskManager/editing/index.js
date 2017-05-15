@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles.scss'
+import './styles.css'
 
 export default class TasksEdit extends React.Component {
 	render() {

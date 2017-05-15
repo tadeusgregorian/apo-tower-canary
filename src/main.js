@@ -7,7 +7,7 @@ import { setAuthStateListener } from 'actions'
 import 'normalize.css/normalize.css';
 import 'skeleton.css/skeleton.css';
 import 'toastr/build/toastr.min.css';
-import "./styles/main.scss";
+import "./styles/main.css";
 
 import Login 	from './containers/login'
 import Apps 	from './containers/apps'

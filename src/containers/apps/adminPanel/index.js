@@ -1,11 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { fetch } from 'redux';
-import { Link } from 'react-router';
 import { PropTypes } from 'prop-types'
 import cN from 'classnames';
-import './styles.scss';
+import './styles.css';
 
 
 export default class AdminPanel extends React.Component {
@@ -21,9 +17,9 @@ export default class AdminPanel extends React.Component {
 			<fb className="adminpanel">
 				<fb className='adminpanel-body edgebox'>
 					<div className='adminpanel-navbar'>
-						<div className={cN({'navbar-item': true, 'selected': (pathname.includes('Users'))})} onTouchTap={() => this.context.router.push(`/Apps/Adminpanel/${this.props.params.id}/Users/`)}>Mitarbeiter</div>
-						<div className={cN({'navbar-item': true, 'selected': (pathname.includes('Branches'))})}  onTouchTap={() => this.context.router.push(`/Apps/Adminpanel/${this.props.params.id}/Branches/`)} >Filianen</div>
-						<div className={cN({'navbar-item': true, 'selected': (pathname.includes('Groups'))})}  onTouchTap={() => this.context.router.push(`/Apps/Adminpanel/${this.props.params.id}/Groups/`)} >Gruppen</div>
+						<div className={cN({'navbar-item': true, 'selected': (pathname.includes('Users'))})} onClick={() => this.context.router.push(`/Apps/Adminpanel/${this.props.params.id}/Users/`)}>Mitarbeiter</div>
+						<div className={cN({'navbar-item': true, 'selected': (pathname.includes('Branches'))})}  onClick={() => this.context.router.push(`/Apps/Adminpanel/${this.props.params.id}/Branches/`)} >Filianen</div>
+						<div className={cN({'navbar-item': true, 'selected': (pathname.includes('Groups'))})}  onClick={() => this.context.router.push(`/Apps/Adminpanel/${this.props.params.id}/Groups/`)} >Gruppen</div>
 					</div>
 					<div className='content'>{this.props.children}</div>
 				</fb>

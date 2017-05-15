@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { addNewGroup } from 'actions/index'
 import composePopup  from 'composers/popup';
-import '../../styles.scss';
-import 'styles/popup.scss';
+import '../../styles.css';
+import 'styles/popup.css';
 
 class CreateGroupPopup extends Component {
 	constructor(props) {
@@ -20,7 +20,7 @@ class CreateGroupPopup extends Component {
 		this.props.close(this);
 	}
 
-	onButtonTouchTaped() {
+	onButtonClicked() {
 		this.props.addNewGroup(this.state.groupName, this.groupWasAdded.bind(this));
 	}
 
@@ -46,7 +46,7 @@ class CreateGroupPopup extends Component {
 					<button className={cN({
 						'right': true,
 						'disabled': (!this.state.groupName)
-					})} onTouchTap={(this.onButtonTouchTaped).bind(this)}>
+					})} onClick={(this.onButtonClicked).bind(this)}>
 						Gruppe erstellen
 					</button>
 				</footer>

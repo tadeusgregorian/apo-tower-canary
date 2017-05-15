@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux';
 import _ from 'lodash';
-import 'styles/modals.scss';
+import 'styles/modals.css';
 
 
 export default function composeWizard(stepComponents) {

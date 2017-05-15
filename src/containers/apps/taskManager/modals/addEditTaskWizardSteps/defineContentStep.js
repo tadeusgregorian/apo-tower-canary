@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox'
 import WizardFooter from 'components/wizardFooter'
-import 'styles/modals.scss';
+import 'styles/modals.css';
 
 export default class DefineContentStep extends PureComponent {
 	constructor(props) {
@@ -47,7 +47,7 @@ export default class DefineContentStep extends PureComponent {
 					</fb>
 					<fb className="vertical j-center a-center margin-top no-shrink">
 						<Checkbox
-							onTouchTap={() => this.props.editOTask({prio: this.props.OTask.prio ? null : true})}
+							onClick={() => this.props.editOTask({prio: this.props.OTask.prio ? null : true})}
 							checked={!!this.props.OTask.prio}
 							label="Hohe Priorität"
 						/>

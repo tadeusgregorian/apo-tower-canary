@@ -1,3 +1,4 @@
+
 import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -22,15 +23,16 @@ import { setSingleTasksListener } 		from 'actions'
 import { extendTasksWithChecked } 		from 'selectors/extendTasksWithChecked'
 import { taskDataLoaded }							from 'selectors/taskDataLoaded'
 import { getLastDateWithUndoneTask }	from 'selectors/lastDateWithUndoneTask'
-import './styles.scss';
+import './styles.css';
 
 
-class Calendar extends PureComponent {
+class Calendar extends PureComponent{
+
 	constructor(props) {
 		super(props)
 
-		this.state = { removeDay: false }
-		this.today = parseInt(moment().format('YYYYMMDD'))
+		this.state = { removeDay: false, movingDayBackward: false}
+		this.today = parseInt(moment().format('YYYYMMDD'), 10)
 	}
 
 	componentWillReceiveProps = (nP) => {
@@ -100,7 +102,7 @@ class Calendar extends PureComponent {
 					<DayHead
 						goToNextDay={this.goToNextDay}
 						goToPrevDay={this.goToPrevDay}
-						isToday={this.props.currentDay == this.today}
+						isToday={this.props.currentDay===this.today}
 						currentDay={this.props.currentDay}
 						isFuture={this.props.currentDay > this.today}
 						openAddEditTaskWizard={this.openAddEditTaskWizard}
@@ -119,7 +121,7 @@ class Calendar extends PureComponent {
 				</fb>
 				<DatePicker style={{"display": "none"}}
 					ref='jumpToDatePicker'
-					onChange={(e, d) => {if (!(typeof d === 'string' || d instanceof String)) this.jumpToDate(parseInt(moment(d).format('YYYYMMDD')))}}
+					onChange={(e, d) => {if (!(typeof d === 'string' || d instanceof String)) this.jumpToDate(parseInt(moment(d).format('YYYYMMDD'), 10))}}
 					floatingLabelText="asd"
 					cancelLabel="Abbrechen"
 					autoOk={true}

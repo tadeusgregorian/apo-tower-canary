@@ -10,7 +10,7 @@ import { deleteUser} from 'actions/index';
 import {changeVacationStatusOfUser} from 'actions/index';
 import PickColorPopup from 'components/pickColorPopup';
 import toastr from 'toastr';
-import './styles.scss';
+import './styles.css';
 
 //@param isOnVacation bool
 
@@ -37,10 +37,10 @@ class EditUserElement extends React.Component {
 					<icon className={cN({	'icon-aircraft':true,
 																'onVacationButton':true,
 																'isOnVacation':this.props.user.isOnVacation})}
-								onTouchTap={() => this.changeVacationStatus(this.props.user.ID, !this.props.user.isOnVacation)}
+								onClick={() => this.changeVacationStatus(this.props.user.ID, !this.props.user.isOnVacation)}
 					></icon>
-					<button className="editUserButton" onTouchTap={() => { this.props.editUser(this.props.user) }}>bearbeiten</button>
-					<icon onTouchTap={ () => { this.props.deleteUser(this.props.user) }} className="icon-bin delteUserButton"></icon>
+					<button className="editUserButton" onClick={() => { this.props.editUser(this.props.user) }}>bearbeiten</button>
+					<icon onClick={ () => { this.props.deleteUser(this.props.user) }} className="icon-bin delteUserButton"></icon>
     		</fb>
     	);
 	}

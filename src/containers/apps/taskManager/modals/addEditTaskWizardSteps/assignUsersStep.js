@@ -4,7 +4,7 @@ import {filterUsersByGroup} from 'helpers';
 import _ from 'lodash';
 import {connect} from 'react-redux';
 import WizardFooter from 'components/wizardFooter'
-import 'styles/modals.scss';
+import 'styles/modals.css';
 
 class AssignUsersStep extends PureComponent {
 	constructor(props) {
@@ -48,7 +48,7 @@ class AssignUsersStep extends PureComponent {
 							let isSelected = (this.state.selectedGroups.indexOf(g.ID) >= 0);
 							return (
 								<div key={g.ID} className={cN({"user-group": true, "selected": isSelected})} style={{
-									backgroundColor: (isSelected ? 'blue' : "#BBBBBB") }} onTouchTap={() => this.selectUsersByGroup(g)}>
+									backgroundColor: (isSelected ? 'blue' : "#BBBBBB") }} onClick={() => this.selectUsersByGroup(g)}>
 									{g.name}
 								</div>
 							)
@@ -59,7 +59,7 @@ class AssignUsersStep extends PureComponent {
 						{this.props.users.map(u => {
 							let isSelected = assignedUsers && assignedUsers[u.ID]
 							return (
-								<fb key={u.ID} className={cN({'modal-user': true, 'selected': isSelected})} onTouchTap={() => this.selectDeselectUser(u.ID)} style={{
+								<fb key={u.ID} className={cN({'modal-user': true, 'selected': isSelected})} onClick={() => this.selectDeselectUser(u.ID)} style={{
 									color: (isSelected ? 'blue': '#353535'), borderColor: (isSelected ? 'blue' : 'grey')
 								}}>
 									{u.name}
@@ -69,7 +69,7 @@ class AssignUsersStep extends PureComponent {
 					</fb>
 				</content>
 				<WizardFooter
-					disableForward={_.keys(this.props.OTask.assignedUsers).length == 0}
+					disableForward={_.keys(this.props.OTask.assignedUsers).length===0}
 					stepForward={this.props.saveTaskToDB}
 					stepBackward={this.props.stepBackward}
 					finalStep={true}

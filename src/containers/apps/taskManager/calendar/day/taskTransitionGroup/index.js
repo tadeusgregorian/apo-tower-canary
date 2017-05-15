@@ -1,6 +1,6 @@
 import React  from 'react';
 import ReactCSSTransitionGroup  from 'react-addons-css-transition-group';
-import './styles.scss';
+import './styles.css';
 
 const AnimationWrapperElement = ({children}) => (<fb className="tasksTransitionWrapper no-grow vertical no-shrink">{children}</fb>)
 

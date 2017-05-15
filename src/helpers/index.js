@@ -16,7 +16,7 @@ export function createGuid() {
 	let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
 		let r = (d + Math.random() * 16) % 16 | 0;
 		d = Math.floor(d / 16);
-		return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+		return (c==='x' ? r : (r & (0x3 | 0x8))).toString(16);
 	});
 	return uuid;
 }
@@ -29,7 +29,7 @@ export const createShortGuid = () => {
 	let uuid = 'xxxxxxxxyxxx'.replace(/[xy]/g, function (c) {
 		let r = (d + Math.random() * 16) % 16 | 0;
 		d = Math.floor(d / 16);
-		return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+		return (c==='x' ? r : (r & (0x3 | 0x8))).toString(16);
 	});
 	return uuid;
 }
@@ -40,14 +40,14 @@ export const shortenGuid = (longGuid) => {
 
 export const formatHourAndMinute = (hour, minute) => {
 	let hourString = hour.toString();
-	hourString = hourString.length == 1
+	hourString = hourString.length===1
 		? '0' + hourString
 		: hourString;
-	if (typeof minute == "undefined") {
+	if (typeof minute==="undefined") {
 		return hourString + ":00"
 	}
 	let minuteString = minute.toString();
-	minuteString = minuteString.length == 1
+	minuteString = minuteString.length===1
 		? '0' + minuteString
 		: minuteString;
 	return hourString + ':' + minuteString;
@@ -55,15 +55,15 @@ export const formatHourAndMinute = (hour, minute) => {
 
 export const wizardStepStatePropertyGenerator = (props, propertyName, defaultValue, forceBool = false) => {
 	if (forceBool) {
-		return !!props.subState[propertyName] || props.initData && !!props.initData[propertyName] || defaultValue
+		return !!props.subState[propertyName] || (props.initData && (!!props.initData[propertyName] || defaultValue))
 	} else {
-		return props.subState[propertyName] || props.initData && props.initData[propertyName] || defaultValue
+		return props.subState[propertyName] || (props.initData && (props.initData[propertyName] || defaultValue))
 	}
 }
 
 export const wizardStepStateGenerator = (props, properties) => {
 	const propertyNames = properties.map(p => p.name);
-	const propertyValues = properties.map(p => wizardStepStatePropertyGenerator(props, p.name, (typeof p.defaultValue == "undefined"
+	const propertyValues = properties.map(p => wizardStepStatePropertyGenerator(props, p.name, (typeof p.defaultValue==="undefined"
 		? false
 		: p.defaultValue), p.forceBool || false));
 	return _.zipObject(propertyNames, propertyValues);
@@ -115,7 +115,7 @@ export const downloadFile = (fileURL, fileName) => {
 }
 
 export const yearAndWeekToWeekID = (year, week) => {
-	const weekStr = String(week).length == 2 ? String(week) : '0'+week		// turn 7 into 07
+	const weekStr = String(week).length===2 ? String(week) : '0'+week		// turn 7 into 07
 	return year + weekStr // the format is 201643 , for year: 2016 and week 43
 }
 
@@ -133,17 +133,17 @@ export const shallowEqual = (a, b) => {
 }
 
 export const doubleDigit = (num) => {
-	return (String(num).length == 1) ? '0'+num : ''+num
+	return (String(num).length===1) ? '0'+num : ''+num
 }
 
 export const isNum = (input) => {
-	return !isNaN(parseInt(input))
+	return !isNaN(parseInt(input, 10))
 }
 
 export const shortISOToSmartDate = (shortISO) => {
 	const shortISOString = String(shortISO)
 	const smartString =  shortISOString.substr(0, 4) + shortISOString.substr(5, 2) + shortISOString.substr(8, 2)
-	return parseInt(smartString)
+	return parseInt(smartString, 10)
 }
 
 export const toSmartDate = (isoDate) => {
@@ -152,7 +152,7 @@ export const toSmartDate = (isoDate) => {
 	const month = momentDate.month()+1 // we add 1 because moment counts months from 0 - 11
 	const day = momentDate.date()
 	const smartDate_str = year+doubleDigit(month)+doubleDigit(day)
-	return parseInt(smartDate_str)
+	return parseInt(smartDate_str, 10)
 }
 
 export const smartDateToIso = (smartDate) => {
@@ -163,13 +163,13 @@ export const smartDateToIso = (smartDate) => {
 export const addDays = (smartDate, days) => {
 	const momentDate = moment(smartDate, 'YYYYMMDD')
 	const momentNextDay = momentDate.add(days, 'day')
-	return parseInt(momentNextDay.format('YYYYMMDD'))
+	return parseInt(momentNextDay.format('YYYYMMDD'), 10)
 }
 
 export const subtractDays = (smartDate, days) => {
 	const momentDate = moment(smartDate, 'YYYYMMDD')
 	const momentNextDay = momentDate.subtract(days, 'day')
-	return parseInt(momentNextDay.format('YYYYMMDD'))
+	return parseInt(momentNextDay.format('YYYYMMDD'), 10)
 }
 
 export const getLastOfDates = (datesArr) => {
@@ -179,23 +179,23 @@ export const getLastOfDates = (datesArr) => {
 }
 
 export const smartYear = (smartDate) => {
-	return parseInt(String(smartDate).substr(0, 4))
+	return parseInt(String(smartDate).substr(0, 4), 10)
 }
 
 export const smartMonth = (smartDate) => {
-	return parseInt(String(smartDate).substr(4, 2))
+	return parseInt(String(smartDate).substr(4, 2), 10)
 }
 
 export const smartDay = (smartDate) => {
-	return parseInt(String(smartDate).substr(6, 2))
+	return parseInt(String(smartDate).substr(6, 2), 10)
 }
 
 export const getTodaySmart = () => {
-	return parseInt(moment().format('YYYYMMDD'))
+	return parseInt(moment().format('YYYYMMDD'), 10)
 }
 
 export const getYesterdaySmart = () => {
-	return parseInt(moment().subtract(1, 'day').format('YYYYMMDD'))
+	return parseInt(moment().subtract(1, 'day').format('YYYYMMDD'), 10)
 }
 
 export const smartDatesDiff = (startDate, endDate) => {

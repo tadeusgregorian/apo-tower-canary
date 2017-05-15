@@ -35,7 +35,7 @@ class CreateUserElement extends React.Component {
 		this.setState({nameInitials: input});
 	}
 
-	onButtonTouchTaped() {
+	onButtonClicked() {
 		let nameMissing = !this.state.name;
 		let nameInitialsMissing = this.state.nameInitials.length < 4;
 		let colorMissing = !this.state.color;
@@ -90,9 +90,9 @@ class CreateUserElement extends React.Component {
 		return(
 			<fb className={this.outsidefbClasses}>
 				<input className={cN({'user-name-input': true, 'highlighted': (!this.state.name && this.state.someInputMissing)})}type="text" value={this.state.name} placeholder="Neuer Nutzername" onChange={this.nameChanged.bind(this)}/>
-				<div className={cN({'color-box': true, 'highlighted': (!this.state.color && this.state.someInputMissing)})} onTouchTap={this.openPickColorPopup} style={{background: this.state.color }}></div>
+				<div className={cN({'color-box': true, 'highlighted': (!this.state.color && this.state.someInputMissing)})} onClick={this.openPickColorPopup} style={{background: this.state.color }}></div>
 				<input className={cN({'user-initial-input': true, 'short': true, 'highlighted': ((this.state.nameInitials.length < 4) && this.state.someInputMissing)})} type="text" value={this.state.nameInitials} placeholder="Init" maxLength="4" onChange={this.initialsChanged.bind(this)}/>
-				<button onTouchTap={this.onButtonTouchTaped.bind(this)} className={buttonClasses}>Nutzer Erstellen</button>
+				<button onClick={this.onButtonClicked.bind(this)} className={buttonClasses}>Nutzer Erstellen</button>
 			</fb>
 	    );
 	}

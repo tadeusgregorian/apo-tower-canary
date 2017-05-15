@@ -12,7 +12,7 @@ import ReadUnreadQmPopup from './modals/readUnreadQmPopup/index.js';
 import DeleteQmPopup from './modals/deleteQmPopup';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
-import './styles.scss'
+import './styles.css'
 
 
 class QmApp extends PureComponent {

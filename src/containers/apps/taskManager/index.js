@@ -1,3 +1,5 @@
+// @flow
+
 import React, {PureComponent} from 'react';
 import { Route, Redirect } from 'react-router-dom'
 import Calendar 				from './calendar'
@@ -6,7 +8,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 //import Navbar from 'components/navbar';
 import SelectUserBar from 'components/selectUserBar';
-import { setTaskManagerListeners, refreshTaskManagerListeners } from 'actions'
+import { setTaskManagerListeners, refreshTaskManagerListeners } from 'actions/index'
 import _ from 'lodash';
 
 class TaskManager extends PureComponent {
