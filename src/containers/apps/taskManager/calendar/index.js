@@ -48,7 +48,11 @@ class Calendar extends PureComponent{
 	openAddEditTaskWizard = () => {
 		this.props.openAddTaskWizard()
 		let Wizard = composeWizard([ChooseTypeStep, SetTimingStep, DefineContentStep, AssignUsersStep])
-		this.addEditTaskWizard = <Wizard saveTaskToDB={this.saveOperatingTaskToDB}/>
+		this.addEditTaskWizard =
+			<Wizard
+				onStepsComplete={this.saveOperatingTaskToDB}
+				onClose={this.props.closeTaskWizard}
+			/>
 	}
 
 	checkUncheckTask = (taskObj, isUnchecking, checkType, shiftedTo = false) => {
@@ -61,8 +65,8 @@ class Calendar extends PureComponent{
 		this.props.closeCheckingTask()
 	}
 
-	saveOperatingTaskToDB = () => {
-		createTask({ ...this.props.operatingTask, creatorID: this.props.selectedUser })
+	saveOperatingTaskToDB = (freshTask) => {
+		createTask({ ...freshTask, creatorID: this.props.selectedUser })
 		this.props.closeTaskWizard()
 	}
 
@@ -134,10 +138,11 @@ class Calendar extends PureComponent{
 						checkingTask={this.props.checkingTask}
 						userMode={userMode}
 						onClose={this.props.closeCheckingTask}
+						currentDay={this.props.currentDay}
 					/>
 				</Dialog>
 				<Dialog
-					className="materialDialog addEditTaskWizard"
+					bodyClassName='sModal'
 					open={this.props.taskWizard === 'add'}
 					onRequestClose={this.props.closeTaskWizard}
 					children={this.addEditTaskWizard} />

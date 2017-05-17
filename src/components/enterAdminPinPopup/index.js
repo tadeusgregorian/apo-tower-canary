@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import _ from 'lodash'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import toastr from 'toastr';
 import EnterPinForm from './enterPinForm'
 import CreatePinForm from './createPinForm'
 import {requestAdminPinEmail} from 'actions'
 import SModal from 'components/sModal'
 import sha1 from 'sha1';
 import './styles.css';
+import { Toast } from 'helpers'
 
 class EnterAdminPinPopup extends Component {
 	constructor(props) {
@@ -31,12 +31,12 @@ class EnterAdminPinPopup extends Component {
 		this.props.closeAdminPinDialog()
 		this.props.setSelectedUser(this.props.adminUser.ID)
 		this.props.logAdminIn()
-		toastr.success("Willkommen " + this.props.adminUser.name)
+		Toast.success("Willkommen " + this.props.adminUser.name)
 	}
 
 	letUserTryAgain = () => {
 		this.setState({pin: ''})
-		toastr.error("Admin Pin falsch. Bitte erneut eingeben")
+		Toast.error("Admin Pin falsch. Bitte erneut eingeben")
 	}
 
 	sendEmail = (email) => {

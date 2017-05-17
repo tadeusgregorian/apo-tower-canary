@@ -13,17 +13,13 @@ import {
 	setQmLettersListener
 } from 'actions/index'
 
-import Topbar 			from './topbar'
+import UserTopbar 	from './topbar/userTopbar'
+import PublicTopbar from './topbar/publicTopbar'
 import TaskManager 	from './taskManager'
 import QmApp 				from './qm'
 import AdminPanel 	from './adminPanel'
 
-type Props = {
-  registerUsersDataListener: () => void;
-  registerGroupsDataListener: () => void;
-  registerBranchesDataListener: () => void;
-}
-class Apps extends PureComponent <*, Props, *> {
+class Apps extends PureComponent{
 
 	componentDidMount() {
 		this.props.usersDataStatus 		=== 'NOT_REQUESTED' && this.props.registerUsersDataListener()
@@ -56,12 +52,13 @@ class Apps extends PureComponent <*, Props, *> {
 		return (
 			<fb id="apps">
 				<fb className="vertical">
-					<Topbar userMode={!!user} user={user} location={this.props.location} />
-						<fb id="app">
-							<Route path='/Apps/TaskManager' component={TaskManager} />
-							<Route path='/Apps/QM/:userID' 	component={QmApp} />
-							<Route path='/Apps/Adminpanel' 	component={AdminPanel} />
-						</fb>
+					{user ? <UserTopbar /> : <PublicTopbar />}
+					{/* <Route path='/Apps/TaskManager' component={PublicTopbar} /> */}
+					<fb id="app">
+						<Route path='/Apps/TaskManager' component={TaskManager} />
+						<Route path='/Apps/QM/:userID' 	component={QmApp} />
+						<Route path='/Apps/Adminpanel' 	component={AdminPanel} />
+					</fb>
 				</fb>
 				<Dialog open={!!this.props.selectBranchDialog} modal={true}>
 					<SelectBranchDialog close={this.props.closeSelectbranchDialog}/>

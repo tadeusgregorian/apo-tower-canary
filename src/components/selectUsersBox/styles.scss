@@ -1,0 +1,31 @@
+.selectUsersBoxMain{
+  flex: 0 0 auto;
+  width: auto;
+  margin-right: -8px;
+  flex-wrap: wrap;
+  flex-shrink: 1;
+  margin-bottom: 12px;
+  flex: 0 0 auto;
+
+  .userElement{
+    height: 34px;
+    margin: 4px;
+    border: 1px solid grey;
+    border-radius: 4px;
+    width: 208px;
+    flex: 0 0 auto;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #353535;
+    border-color: grey;
+    box-sizing: border-box;
+
+    &.selected{
+      box-sizing: border-box;
+      border: 2px solid green;
+      color: green;
+      font-weight: 400;
+    }
+  }
+}

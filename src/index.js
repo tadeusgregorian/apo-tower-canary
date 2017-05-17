@@ -6,7 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { BrowserRouter as Router} from 'react-router-dom'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import moment from 'moment'
-import initIziToast from 'helpers/iziToastSettings'
+import { initIziToast } from 'helpers'
 
 const rootEl = document.getElementById("root");
 const store = configureStore()

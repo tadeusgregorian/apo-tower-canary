@@ -1,31 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetch } from 'redux';
-import { openWizard } from 'actions/index';
-import { openPopup } from 'actions/index';
 import cN from 'classnames';
-import { editUser } from 'actions/index';
-import { deleteUser} from 'actions/index';
 import {changeVacationStatusOfUser} from 'actions/index';
-import PickColorPopup from 'components/pickColorPopup';
-import toastr from 'toastr';
+import { Toast } from 'helpers';
 import './styles.css';
 
-//@param isOnVacation bool
-
 class EditUserElement extends React.Component {
-	constructor(props) {
-		super(props);
-	}
 
 	changeVacationStatus = (userID, isOnVacation) => {
 		this.props.changeVacationStatusOfUser(userID, isOnVacation, this.vacationStatusChanged)
 	}
 
 	vacationStatusChanged = (userIsInVacationNow) => {
-		const toastrMsg = userIsInVacationNow ? " ist ab jetzt im Urlaub" : " ist nicht mehr im Urlaub."
-		toastr.success(this.props.user.name+toastrMsg);
+		const toastMsg = userIsInVacationNow ? " ist ab jetzt im Urlaub" : " ist nicht mehr im Urlaub."
+		Toast.success(this.props.user.name+toastMsg);
 	}
 
 

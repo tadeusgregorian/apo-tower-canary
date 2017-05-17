@@ -1,47 +1,80 @@
 import React, {PureComponent} from 'react';
-import { connect } from 'react-redux'
-import {bindActionCreators} from 'redux';
-import _ from 'lodash';
-import 'styles/modals.css';
+import SModal from 'components/sModal'
+import WizardFooter from 'components/wizardFooter'
 
+export default function composeWizard(stepComponents, defaultState) {
+	return class Wizard extends PureComponent {
+		constructor(props){
+			super(props)
 
-export default function composeWizard(stepComponents) {
-	class Wizard extends PureComponent {
-		render() {
-			const Comp = stepComponents[this.props.currentStep || 0]
-			const compProps = {
-				stepForward: this.props.stepForward,
-				stepBackward: this.props.stepBackward,
-				editOTask: this.props.editOperatingTask,
-				setOTask: this.props.setOperatingTask,
-				saveTaskToDB: this.props.saveTaskToDB,
-				OTask: this.props.operatingTask,
-				mode: this.props.taskWizard  // its either 'add' or 'edit'
+			this.footerDefaultState = {
+				noFooter: false,
+				stepForwardDisabled: false,
+				stepCompleteChecker: null
 			}
+
+			this.state = {
+				stepTitle: '-e-',
+				currentStep: 0,
+				wiz: defaultState,
+				...this.footerDefaultState
+			}
+		}
+
+		stepIsComplete = () => {
 			return(
-				<fb className='modal wizardMain'>
-					<Comp {...compProps} />
-				</fb>
+				!this.state.stepCompleteChecker || this.state.stepCompleteChecker(this.state.wiz)
+			)
+		}
+
+
+		setStepCompleteChecker = (func) => this.setState({stepCompleteChecker: func })
+
+		editWizState = (edit) => { this.setState({ wiz: { ...this.state.wiz, ...edit} })}
+		setWizState  = (wizS) => { this.setState({ wiz: wizS })}
+
+		setStepTitle = 			 	(title) => this.setState({stepTitle: title})
+		removeFooter = 			 	() 			=> this.setState({noFooter: true})
+		enableStepForward =  	() 			=> this.setState({stepForwardDisabled: false})
+		disableStepForward = 	() 			=> this.setState({stepForwardDisabled: true})
+
+		stepForward  = () => { this.setState({ currentStep: this.state.currentStep  + 1, ...this.footerDefaultState })}
+		stepBackward = () => { this.setState({ currentStep: this.state.currentStep  - 1, ...this.footerDefaultState })}
+
+		onStepsComplete = () => { this.props.onStepsComplete(this.state.wiz) }
+
+		render() {
+			const Comp = stepComponents[this.state.currentStep || 0]
+			const compProps = {
+				setStepTitle: this.setStepTitle,
+				stepForward: 	this.stepForward,
+				removeFooter: this.removeFooter,
+				enableStepForward: this.enableStepForward,
+				editOTask: this.editWizState,
+				setOTask: this.setWizState,
+				OTask: this.state.wiz,
+				setStepCompleteChecker: this.setStepCompleteChecker
+			}
+
+			return(
+				<SModal.Main title={this.state.stepTitle} onClose={this.props.onClose}>
+					<SModal.Body>
+						<Comp {...compProps} />
+					</SModal.Body>
+						{ !this.state.noFooter &&
+							<SModal.Footer>
+								<WizardFooter
+									stepForward={this.stepForward}
+									stepBackward={this.stepBackward}
+									currentStep={this.state.currentStep}
+									totalSteps={stepComponents.length}
+									onStepsComplete={this.onStepsComplete}
+									stepForwardDisabled={!this.stepIsComplete()}
+								/>
+							</SModal.Footer>
+						}
+				</SModal.Main>
 			)
 		}
 	}
-
-	const mapDispatchToProps = (dispatch) => {
-		return bindActionCreators({
-			stepForward:  () => ({type: 'NEXT_WIZARD_STEP'}),
-			stepBackward: () => ({type: 'PREVIOUS_WIZARD_STEP'}),
-			editOperatingTask: (edit) => ({type: 'EDIT_OPERATING_TASK', payload: edit}),
-			setOperatingTask: (OTask) => ({type: 'SET_OPERATING_TASK', payload: OTask})
-		}, dispatch)
-	}
-
-	const mapStateToProps = (state) => {
-		return {
-			currentStep: state.ui.taskManager.currentWizardStep,
-			operatingTask: state.ui.taskManager.operatingTask,
-			taskWizard: state.ui.taskManager.taskWizard
-		}
-	}
-
-	return connect(mapStateToProps, mapDispatchToProps)(Wizard)
 }

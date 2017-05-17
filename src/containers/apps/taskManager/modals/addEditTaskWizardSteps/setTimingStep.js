@@ -7,14 +7,32 @@ import { Wochentage, TaskType } from 'constants'
 import FontIcon from 'material-ui/FontIcon'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
-import WizardFooter from 'components/wizardFooter'
 import WizardDatePicker from './wizardDatePicker'
 import _ from 'lodash';
 import { getTodaySmart, addDays} from 'helpers';
 import 'styles/modals.css';
 import moment from 'moment'
+import {connect} from 'react-redux';
+import { Toast } from 'helpers'
 
-export default class SetTimingStep extends PureComponent {
+class SetTimingStep extends PureComponent {
+
+	componentWillMount(){
+		this.props.setStepTitle(this.getStepTitle())
+		this.props.setStepCompleteChecker(this.readyForNextStep)
+	}
+
+	getStepTitle = () => {
+		switch (this.props.OTask.type) {
+		case TaskType.onetimer: 	return 'Einmalige Aufgabe - Datum auswählen'
+		case TaskType.daily: 			return 'Tägliche Aufgabe'
+		case TaskType.yearly: 		return 'Järliche Aufgabe - Datum auswählen'
+		case TaskType.irregular:	return 'Multidatum - Daten auswählen'
+		case TaskType.weekly: 		return 'Wochentage auswählen'
+		case TaskType.monthly: 		return 'Tage im Monat auswählen'
+		default: return false
+		}
+	}
 
 	toggleWeekday(wd) {
 		let weekly = this.props.OTask.weekly ? [...this.props.OTask.weekly] : []
@@ -42,15 +60,12 @@ export default class SetTimingStep extends PureComponent {
 
 	renderOneTimerSelector() { return (
 		<fb className='vertical'>
-			<header><h3>Datum auswählen</h3></header>
-			<content>
 				<WizardDatePicker
 					pickedDate={this.props.OTask.onetimerDate}
 					label={'Datum'}
 					firstAcceptableDate={getTodaySmart()}
 					changePickedDate={(newDate) => this.props.editOTask({onetimerDate: newDate})}
 				/>
-			</content>
 		</fb>
 	)}
 
@@ -65,15 +80,20 @@ export default class SetTimingStep extends PureComponent {
 		</fb>)
 	}
 
-	editStartDate = (newDate) => this.props.editOTask({startDate: newDate})
+	editStartDate = (newDate) => {
+		this.props.editOTask({startDate: newDate})
+		const endDate = this.props.OTask.endDate
+		if (newDate && endDate && newDate >= endDate) {
+			this.props.editOTask({endDate: addDays(newDate, 1)})
+			Toast.warning('Achtung, das Enddatum wurde angepasst.')
+		}
+	}
 	editEndDate   = (newDate) => this.props.editOTask({endDate: newDate})
 
 	renderWeeklySelector() {
 		const weekly = this.props.OTask.weekly || []
 		return (
 			<fb className="vertical">
-				<header><h3>Wochentage auswählen</h3></header>
-				<content>
 					<fb className="horizontal padding-bottom">
 						<fb className="weekdays offset only-horizontal slim">
 							{Wochentage.map(w => (<fb
@@ -91,15 +111,12 @@ export default class SetTimingStep extends PureComponent {
 					<fb className="margin-top panel no-shrink">
 						{ this.renderWizardDatePicker('endDate') }
 					</fb>
-				</content>
 			</fb>
 		)
 	}
 
 	renderDailySelector() {	return (
 		<fb className="vertical">
-			<header><h3>Tägliche Aufgabe</h3></header>
-			<content>
 				<fb className="margin-top">
 					<Checkbox
 						onClick={() => this.props.editOTask({includeSaturday: this.props.OTask.includeSaturday ? null : true})} // we prefere null because it creates no Firebase-entry
@@ -116,7 +133,6 @@ export default class SetTimingStep extends PureComponent {
 				</fb>
 				<fb className="margin-top">{ this.renderWizardDatePicker('startDate') }</fb>
 				<fb className="margin-top panel">{ this.renderWizardDatePicker('endDate') }</fb>
-			</content>
 		</fb>
 	)}
 
@@ -130,8 +146,6 @@ export default class SetTimingStep extends PureComponent {
 		const yearly = this.props.OTask.yearly
 		return (
 			<fb className="vertical">
-				<header><h3>Jährliche Aufgaben</h3></header>
-				<content>
 					<fb className="margin-bottom wrap overflowY offset only-horizontal no-grow no-shrink">
 						{ yearly.map((smartDate, i) => (
 							<fb key={i} style={{paddingBottom: "2px"}}>
@@ -168,7 +182,6 @@ export default class SetTimingStep extends PureComponent {
 					<fb className="margin-top no-shrink panel">
 						{ this.renderWizardDatePicker('endDate') }
 					</fb>
-				</content>
 			</fb>
 		)
 	}
@@ -193,8 +206,6 @@ export default class SetTimingStep extends PureComponent {
 		const irregularDates = this.props.OTask.irregularDates
 		return (
 			<fb className="vertical">
-				<header><h3>Unregelmäßige Aufgaben</h3></header>
-				<content>
 					<fb className="margin-bottom wrap overflowY offset only-horizontal">
 						{irregularDates.map((smartDate, i) =>
 							(<fb key={i} style={{paddingBottom: "2px"}}>
@@ -223,7 +234,6 @@ export default class SetTimingStep extends PureComponent {
 							icon={<FontIcon className="icon icon-add_circle"/>}
 						/>
 					</fb>
-				</content>
 			</fb>
 		)
 	}
@@ -239,8 +249,6 @@ export default class SetTimingStep extends PureComponent {
 
 		return (
 			<fb className="vertical">
-				<header><h3>Tage im Monat auswählen</h3></header>
-				<content>
 					<fb className="monthdays offset slim wrap margin-bottom no-grow no-shrink">
 						{monthdays.map(w => (<fb key={w} className={(cN({monthdayBox: true, selected: _.includes(monthly, w) }))}
 							style={{borderColor: _.includes(monthly, w) ? 'blue' : "#BBBBBB"}}
@@ -256,7 +264,6 @@ export default class SetTimingStep extends PureComponent {
 						{ this.renderWizardDatePicker('startDate') }
 					</fb>
 					<fb className="margin-top panel no-grow no-shrink">{ this.renderWizardDatePicker('endDate') }</fb>
-				</content>
 			</fb>
 		)
 	}
@@ -273,14 +280,15 @@ export default class SetTimingStep extends PureComponent {
 		}
 	}
 
-	readyForNextStep = () => {
-		switch (this.props.OTask.type) {
+	readyForNextStep = (task) => {
+		console.log(task)
+		switch (task.type) {
 		case TaskType.onetimer: 	return true
 		case TaskType.daily: 			return true
 		case TaskType.yearly: 		return true
 		case TaskType.irregular:	return true
-		case TaskType.weekly: 		return this.props.OTask.weekly && this.props.OTask.weekly.length
-		case TaskType.monthly: 		return this.props.OTask.monthly && this.props.OTask.monthly.length
+		case TaskType.weekly: 		return task.weekly  && task.weekly.length
+		case TaskType.monthly: 		return task.monthly && task.monthly.length
 		default: return false
 		}
 	}
@@ -288,11 +296,12 @@ export default class SetTimingStep extends PureComponent {
 	render() { return (
 		<fb className='vertical setTimingStepMain'>
 			{	this.renderContent() }
-			<WizardFooter
-				stepForward={this.props.stepForward}
-				stepBackward={this.props.stepBackward}
-				disableBackward={this.props.mode==='edit'}
-				disableForward={!this.readyForNextStep()}/>
 		</fb>
 	)}
 }
+
+const mapStateToProps = (state) => ({
+	mode: state.ui.taskManager.taskWizard
+})
+
+export default connect(mapStateToProps)(SetTimingStep)

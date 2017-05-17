@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import moment from 'moment'
 import {filterUsersByBranch, createGuid, filterUsersByGroup, playTaskCreatedSound} from 'helpers'
 import _ from 'lodash';
-import toastr from 'toastr';
+import { Toast } from 'helpers';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Storage} from '../../../../../firebaseInstance';
 import 'styles/modals.css';
@@ -82,7 +82,7 @@ class AssignUsersStep extends Component {
 				this.props.onFinish(qmData)
 				this.props.close()
 			}).catch(e => {
-				toastr.error(`Fehler beim hochladen der Anhänge:` + e);
+				Toast.error(`Fehler beim hochladen der Anhänge:` + e);
 				this.props.close();
 			})
 

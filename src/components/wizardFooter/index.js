@@ -1,15 +1,27 @@
 import React from 'react'
-import RaisedButton from 'material-ui/RaisedButton';
-import 'styles/modals.css';
+import SButton from 'components/sButton';
+import './styles.css';
 
 
 export default function WizardFooter(props) {
-	const {finalStep, disableForward, disableBackward, stepForward, stepBackward} = props
+	const {totalSteps, currentStep, stepForwardDisabled, stepForward, stepBackward, onStepsComplete} = props
+
+	const isFinalStep = totalSteps === (currentStep + 1)
+	const isFirstStep = currentStep === 0
+
+	const stepForwardClicked = isFinalStep ? onStepsComplete : stepForward
+	const stepBackwardClicked = stepBackward
 
 	return(
-		<footer>
-			<RaisedButton className="left" label='Zurück' primary={true} disabled={disableBackward} onClick={stepBackward}/>
-			<RaisedButton className="right" label={finalStep ? 'Fertig' : 'Weiter'} disabled={disableForward} primary={true} onClick={stepForward}/>
-		</footer>
+		<fb className='wizardFooter'>
+			<SButton label='Zurück' disabled={isFirstStep} onClick={stepBackwardClicked}/>
+			<fb className='nextButton'>
+				<SButton
+					color={'#2ECC71'}
+					label={isFinalStep ? 'Fertig' : 'Weiter'}
+					disabled={stepForwardDisabled}
+					onClick={stepForwardClicked}/>
+			</fb>
+		</fb>
 	)
 }

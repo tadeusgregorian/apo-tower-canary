@@ -1,0 +1,16 @@
+.chooseTypeStep{
+  flex-direction: row;
+  padding: 10px;
+
+  > fb {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0px 18px;
+
+
+    > fb {
+      margin: 6px;
+    }
+  }
+}

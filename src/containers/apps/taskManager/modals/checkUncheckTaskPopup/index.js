@@ -13,6 +13,12 @@ import './styles.css';
 
 export default class CheckUncheckTaskPopup extends Component {
 
+	firstAcceptableDate = () => {
+		const today = moment().startOf('day')
+		const currentDay = moment(this.props.currentDay, 'YYYYMMDD')
+		return today.isBefore(currentDay) ? currentDay.add(1, 'day').toDate() : today.add(1, 'day').toDate()
+	}
+
 	render() {
 		// this is a random Workaround for a bug ( after closing the Popup there is a last Render which causes bugs... MaterialUI bug )
 		if(!this.props.checkingTask) return <fb></fb>
@@ -75,6 +81,7 @@ export default class CheckUncheckTaskPopup extends Component {
 					cancelLabel="Abbrechen"
 					okLabel="Verschieben"
 					DateTimeFormat={window.DateTimeFormat}
+					minDate={this.firstAcceptableDate()}
 					locale="de-DE"/>
 			</SModal.Main>
 		)

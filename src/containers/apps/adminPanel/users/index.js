@@ -1,17 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {fetch} from 'redux';
-import {Link} from 'react-router';
 import EditUserElement from './user';
-import CreateUserElement from './newUser';
 import {addNewUser} from 'actions/index';
 import {deleteUser} from 'actions/index';
 import {changeVacationStatusOfUser} from 'actions/index';
 import Dialog from 'material-ui/Dialog';
 import AddEditUserPopup from './addEditUserPopup';
 import ConfirmPopup from 'components/confirmPopup';
-import toastr from 'toastr';
+import { Toast } from 'helpers';
 import './styles.css';
 
 class EditUsers extends React.Component {
@@ -26,7 +23,7 @@ class EditUsers extends React.Component {
 
 	deleteUser(user){
 		if( user.adminHash){
-			toastr.error("der Admin-User darf nicht gelöscht werden.");
+			Toast.error("der Admin-User darf nicht gelöscht werden.");
 			return;
 		}
 		this.openDeleteUserPopup(user);

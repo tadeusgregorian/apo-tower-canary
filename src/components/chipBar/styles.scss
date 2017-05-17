@@ -1,0 +1,25 @@
+.chipBarMain{
+  flex: 0 0 auto;
+  margin-top: 8px;
+  align-items: center;
+  max-width: 643px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding-bottom: 6px;
+
+  .chip{
+    margin: 3px;
+    color: #89b0d3;
+    border-radius: 22px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    height: 30px;
+    background-color: #e4f4ff;
+
+    &.selected{
+      background-color: #60bcfd;
+      color: white;
+    }
+  }
+}

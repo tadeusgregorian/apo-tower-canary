@@ -8,7 +8,7 @@ import { openPopup } from 'actions/index';
 import { deleteBranch } from 'actions/index';
 import Dialog from 'material-ui/Dialog';
 import _ from 'lodash';
-import toastr from 'toastr';
+import { Toast } from 'helpers';
 import '../../styles.css';
 
 
@@ -27,7 +27,7 @@ class EditBranchesContent extends React.Component {
 
 	removeUserButtonClicked(user) {
 		if ( user.adminHash &&  _.keys(user.branches).length === 1 ){
-			toastr.error("Der Admin-User muss mindestens einer Filliale zugehören.");
+			Toast.error("Der Admin-User muss mindestens einer Filliale zugehören.");
 			return;
 		}
 		this.props.removeUserFromBranch(this.props.branch.ID, user.ID, this.userRemovedFromBranch);

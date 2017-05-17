@@ -7,6 +7,7 @@ export * from './sounds'
 export * from './databaseUpdates'
 export * from './firebaseListeners'
 export * from './databaseUpdate_qmLetters'
+export * from './iziToast'
 
 export function createGuid() {
 	let d = new Date().getTime()
