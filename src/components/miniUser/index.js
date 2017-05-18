@@ -1,29 +1,24 @@
 import React from 'react';
-import classNames from 'classnames';
 import './styles.css'
 
-//@param obj user
-//@param bool optional! grayedOut
+export default ({user, grayedOut, colorStyle}) => {
 
-
-const miniUser = (props) => {
-	const classes = classNames({
-		'user': true,
-		'superMini': true,
-		'has-red': props.grayedOut,
-		'isReplacement': props.isReplacement
-	});
-
+	const grayedOutStyle = {
+		borderColor: '#b6b6b6',
+		backgroundColor: '#b6b6b6',
+		color: '#efefef',
+		paddingTop: '2px'
+	}
 	const colorfulStyle = {
 		border: '1px solid',
-		borderColor: props.user.color,
-		backgroundColor: props.user.color,
+		borderColor: user.color,
+		backgroundColor: user.color,
 		color: 'white'
 	}
-	const liteStyle = {
+	const liteColorfulStyle = {
 		border: "1px solid",
-		borderColor: props.user.color,
-		color: props.user.color
+		borderColor: user.color,
+		color: user.color
 	}
 	const blackAndWhiteStyle = {
 		border: "1px solid",
@@ -32,15 +27,15 @@ const miniUser = (props) => {
 		textShadow: 'none'
 	}
 
-	let colorStyle = liteStyle // default is liteStyle
-	if ( props.colorStyle === 'colorful' ) colorStyle = colorfulStyle
-	if ( props.colorStyle === 'blackAndWhite' ) colorStyle = blackAndWhiteStyle
+	let style = liteColorfulStyle // default is liteStyle
+	if ( colorStyle === 'colorful' ) 			style = colorfulStyle
+	if ( colorStyle === 'blackAndWhite' ) style = blackAndWhiteStyle
+	// if is grayed out , this overrides the style
+	if (grayedOut) style = grayedOutStyle
 
 	return (
-		<fb key={props.user.ID} className={classes} style={ colorStyle }>
-			{props.user.nameInitials}
+		<fb key={user.ID} className='miniUserMain' style={ style }>
+			{user.nameInitials}
 		</fb>
-	);
+	)
 }
-
-export default miniUser;

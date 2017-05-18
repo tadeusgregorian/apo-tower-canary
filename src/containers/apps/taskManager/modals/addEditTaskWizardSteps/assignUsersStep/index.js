@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import cN from 'classnames';
 import {filterUsersByGroup} from 'helpers';
 import _ from 'lodash';
 import {connect} from 'react-redux';

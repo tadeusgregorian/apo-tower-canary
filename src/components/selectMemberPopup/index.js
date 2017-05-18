@@ -1,4 +1,3 @@
-import cN  from 'classnames'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -8,13 +7,8 @@ import composePopup from 'composers/popup';
 import 'styles/popup.css';
 
 class SelectMemberPopup extends Component {
-	constructor(props) {
-		super(props);
-	}
 
-	onFinish() {
-		this.props.close(this);
-	}
+	onFinish = () => this.props.close(this)
 
 	onUserClicked(userID) {
 		const clickedUser = (this.props.users.find(user => user.ID === userID));

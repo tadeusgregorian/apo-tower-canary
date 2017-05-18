@@ -13,7 +13,14 @@ const adminPinDialog = simpleReducer({
 	CLOSE_ADMIN_PIN_DIALOG: false,
 })
 
+const confirmPopup = simpleReducer({
+	default: 							null,
+	OPEN_CONFIRM_POPUP: 	'PAYLOAD',
+	CLOSE_CONFIRM_POPUP:	null
+})
+
 export default combineReducers({
 	selectBranchDialog,
-	adminPinDialog
+	adminPinDialog,
+  confirmPopup
 })

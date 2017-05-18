@@ -43,7 +43,7 @@
 .sModalBody{
 	//min-height: 100px;
 	flex-direction: column;
-	padding: 12px 16px;
+	//padding: 12px 16px;
 	font-size: 17px;
 }
 
@@ -52,7 +52,7 @@
 	border-top: 1px solid #ececec;
 	padding-right: 0px;
 
-	.sButton {
+	>*{
 		margin-right: 16px;
 	}
 }

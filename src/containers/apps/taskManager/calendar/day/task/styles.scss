@@ -6,7 +6,9 @@
 		flex: 1 0 40px;
 		height: 40px;
 
-		.userWrapper {
+		.assignedUsersWrapper {
+			flex: 0 0 auto;
+			justify-content: flex-end;
 			padding:4px;
 			margin-right: 3px;
 		}

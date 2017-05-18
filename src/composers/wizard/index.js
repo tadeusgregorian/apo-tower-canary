@@ -7,53 +7,61 @@ export default function composeWizard(stepComponents, defaultState) {
 		constructor(props){
 			super(props)
 
-			this.footerDefaultState = {
+			this.defaultStepState = {
 				noFooter: false,
-				stepForwardDisabled: false,
 				stepCompleteChecker: null
 			}
 
 			this.state = {
 				stepTitle: '-e-',
 				currentStep: 0,
-				wiz: defaultState,
-				...this.footerDefaultState
+				stepsCompleteListener: null,
+				wiz: defaultState || {},
+				wizMemory: {},
+				...this.defaultStepState
 			}
 		}
 
-		stepIsComplete = () => {
-			return(
-				!this.state.stepCompleteChecker || this.state.stepCompleteChecker(this.state.wiz)
-			)
+		stepIsComplete = () => (
+			!this.state.stepCompleteChecker || this.state.stepCompleteChecker(this.state.wiz)
+		)
+
+		// this can be used to disable the stepForward Button by a func that returns true if
+		//step input is sufficinet.
+		setStepCompleteChecker = (func) => this.setState({stepCompleteChecker: func })
+		// this can be used if a stepComponent wants to register a listener that gets triggered
+		// when last step was completed.
+		setStepsCompleteListener = (func) => this.setState({stepsCompleteListener: func})
+
+		editWizState 	= (edit) => { this.setState({ wiz: { ...this.state.wiz, ...edit} })}
+		editWizMemory = (edit) => { this.setState({ wizMemory: { ...this.state.wizMemory, ...edit} })}
+		setWizState  	= (wizS) => { this.setState({ wiz: wizS })}
+
+		setStepTitle = (title) => this.setState({stepTitle: title})
+		removeFooter = () 		 => this.setState({noFooter: true})
+
+		stepForward  = () => { this.setState({ currentStep: this.state.currentStep  + 1, ...this.defaultStepState })}
+		stepBackward = () => { this.setState({ currentStep: this.state.currentStep  - 1, ...this.defaultStepState })}
+
+		onStepsComplete = () => {
+			if(this.state.stepsCompleteListener) this.state.stepsCompleteListener()
+			this.props.onStepsComplete(this.state.wiz)
 		}
 
-
-		setStepCompleteChecker = (func) => this.setState({stepCompleteChecker: func })
-
-		editWizState = (edit) => { this.setState({ wiz: { ...this.state.wiz, ...edit} })}
-		setWizState  = (wizS) => { this.setState({ wiz: wizS })}
-
-		setStepTitle = 			 	(title) => this.setState({stepTitle: title})
-		removeFooter = 			 	() 			=> this.setState({noFooter: true})
-		enableStepForward =  	() 			=> this.setState({stepForwardDisabled: false})
-		disableStepForward = 	() 			=> this.setState({stepForwardDisabled: true})
-
-		stepForward  = () => { this.setState({ currentStep: this.state.currentStep  + 1, ...this.footerDefaultState })}
-		stepBackward = () => { this.setState({ currentStep: this.state.currentStep  - 1, ...this.footerDefaultState })}
-
-		onStepsComplete = () => { this.props.onStepsComplete(this.state.wiz) }
-
 		render() {
+			console.log('IMhere')
 			const Comp = stepComponents[this.state.currentStep || 0]
 			const compProps = {
 				setStepTitle: this.setStepTitle,
 				stepForward: 	this.stepForward,
 				removeFooter: this.removeFooter,
-				enableStepForward: this.enableStepForward,
 				editOTask: this.editWizState,
 				setOTask: this.setWizState,
 				OTask: this.state.wiz,
-				setStepCompleteChecker: this.setStepCompleteChecker
+				wizMemory: this.state.wizMemory,
+				editWizMemory: this.editWizMemory,
+				setStepCompleteChecker: this.setStepCompleteChecker,
+				setStepsCompleteListener: this.setStepsCompleteListener,
 			}
 
 			return(

@@ -56,10 +56,6 @@ class Calendar extends PureComponent{
 	}
 
 	checkUncheckTask = (taskObj, isUnchecking, checkType, shiftedTo = false) => {
-		console.log(taskObj)
-		console.log(isUnchecking)
-		console.log(checkType)
-		//playTaskCheckSound(); // come back here and put sound back in.
 		if(!isUnchecking)  	this.props.checkTask(taskObj, checkType, shiftedTo)
 		if(isUnchecking) 		this.props.uncheckTask(taskObj)
 		this.props.closeCheckingTask()

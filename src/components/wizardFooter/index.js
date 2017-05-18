@@ -14,7 +14,7 @@ export default function WizardFooter(props) {
 
 	return(
 		<fb className='wizardFooter'>
-			<SButton label='Zurück' disabled={isFirstStep} onClick={stepBackwardClicked}/>
+			{!!currentStep && <SButton label='Zurück' disabled={isFirstStep} onClick={stepBackwardClicked}/>}
 			<fb className='nextButton'>
 				<SButton
 					color={'#2ECC71'}

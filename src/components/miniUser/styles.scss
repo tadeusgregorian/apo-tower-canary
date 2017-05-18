@@ -1,43 +1,39 @@
-.userWrapper{
+.miniUserMain {
+	width: 36px;
+  height: 26px;
+  font-size: 18px;
+  line-height: 26px;
+  margin: 1px;
+  box-shadow: none;
+  margin-left: 3px;
+  border-radius: 2px;
+  justify-content: center;
+  padding-top: 1px;
+  letter-spacing: 0.3px;
+	font-family: 'RBNo2Light' !important;
 
-	.superMini {
-		width: 36px;
-    height: 26px;
-    font-size: 18px;
-    line-height: 26px;
-    margin: 1px;
-    box-shadow: none;
-    margin-left: 3px;
-    border-radius: 2px;
-    justify-content: center;
-    padding-top: 1px;
-    letter-spacing: 0.3px;
-
-		&.isReplacement{
-			width: 44px !important;
-			flex-direction: row;
-
-			.isReplacementName {
-				justify-content: center;
-		    line-height: 21px;
-		    flex: 0 0 auto;
-		    width: 33px;
-		    padding-top: 2px;
-			}
-
-			.isReplacementIcon {
-				justify-content: center;
-				background-color: white;
-				width: 9px;
-				height: 16px;
-				flex: 0 0 auto;
-				border-radius: 1px;
-				margin-right: 4px;
-		    margin-top: -3px;
-		    line-height: 17px;
-			}
-		}
-
-
-	}
+	// &.isReplacement{
+	// 	width: 44px !important;
+	// 	flex-direction: row;
+	//
+	// 	.isReplacementName {
+	// 		justify-content: center;
+	//     line-height: 21px;
+	//     flex: 0 0 auto;
+	//     width: 33px;
+	//     padding-top: 2px;
+	// 	}
+	//
+	// 	.isReplacementIcon {
+	// 		justify-content: center;
+	// 		background-color: white;
+	// 		width: 9px;
+	// 		height: 16px;
+	// 		flex: 0 0 auto;
+	// 		border-radius: 1px;
+	// 		margin-right: 4px;
+	//     margin-top: -3px;
+	//     line-height: 17px;
+	// 	}
+	// }
 }

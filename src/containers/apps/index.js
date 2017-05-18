@@ -66,6 +66,9 @@ class Apps extends PureComponent{
 				<Dialog open={!!this.props.adminPinDialog} onRequestClose={this.props.closeAdminPinDialog} bodyClassName='sModal' contentStyle={{width: '480px'}}>
 					<EnterAdminPinPopup />
 				</Dialog>
+				<Dialog open={!!this.props.confirmPopup} onRequestClose={this.props.closeConfirmPopup} bodyClassName='sModal'>
+					{this.props.confirmPopup}
+				</Dialog>
 			</fb>
 		)
 	}
@@ -87,7 +90,9 @@ const mapStateToProps = (state) => {
 		selectedUser: state.core.selectedUser,
 		currentDay: state.ui.taskManager.currentDay,
 		adminPinDialog: state.ui.app.adminPinDialog,
-		selectBranchDialog: state.ui.app.selectBranchDialog
+		selectBranchDialog: state.ui.app.selectBranchDialog,
+
+		confirmPopup: state.ui.app.confirmPopup
 	}
 }
 
@@ -101,7 +106,8 @@ const mapDispatchToProps = (dispatch) => {
 		setSelectedUser: 		(userID) => ({type: 'SET_SELECTED_USER', payload: userID}),
 		closeAdminPinDialog: 			() => ({type: 'CLOSE_ADMIN_PIN_DIALOG'}),
 		openSelectbranchDialog: 	() => ({type: 'OPEN_SELECT_BRANCH_DIALOG'}),
-		closeSelectbranchDialog: 	() =>	({type: 'CLOSE_SELECT_BRANCH_DIALOG'})
+		closeSelectbranchDialog: 	() =>	({type: 'CLOSE_SELECT_BRANCH_DIALOG'}),
+		closeConfirmPopup:				() => ({type: 'CLOSE_CONFIRM_POPUP'}),
 	}, dispatch)
 };
 

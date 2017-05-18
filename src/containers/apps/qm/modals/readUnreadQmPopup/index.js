@@ -1,13 +1,12 @@
-import RaisedButton from 'material-ui/RaisedButton'
-import FlatButton from 'material-ui/FlatButton'
-import FontIcon from 'material-ui/FontIcon'
+import SButton from 'components/sButton'
 import React, {PureComponent} from 'react'
 import {readQm, unreadQm} from 'actions'
 import AssignedUsers from 'components/assignedUsers'
-import 'styles/modals.css'
 import './styles.css'
 import { Storage } from '../../../../../firebaseInstance'
 import { downloadFile, playTaskCheckSound } from 'helpers'
+import AttachmentBar from './attachmentBar'
+import SModal from 'components/sModal'
 import _ from 'lodash'
 
 export default class ReadUnreadQmPopup extends PureComponent {
@@ -32,7 +31,7 @@ export default class ReadUnreadQmPopup extends PureComponent {
 		const userID 	= this.props.userID
 		playTaskCheckSound()
 		this.props.close()
-		this.props.hasRead ? unreadQm(qmID, userID) : readQm(qmID, userID)
+		this.props.hasRed ? unreadQm(qmID, userID) : readQm(qmID, userID)
 	}
 
 
@@ -53,69 +52,50 @@ export default class ReadUnreadQmPopup extends PureComponent {
 	}
 
 	render() {
+		const assignedUsers = _.keys(this.props.qmData.assignedUsers)
+		const usersRed = assignedUsers.filter(uid => this.props.qmData.assignedUsers[uid] === 2)
+		const users = this.props.users
 		return (
-			<fb className="readUnreadQmPopup modal">
-				<header>
-					<h4 style={{color: this.props.qmData.isUrgent ? 'red' : ''}}>{this.props.qmData.subject}</h4>
-					<fb className="assignedUsersWrapper">
-						<AssignedUsers
-							assignedUsers={_.keys(this.props.qmData.assignedUsers)}
-							usersRed={this.props.qmData.usersRed}
-							users={this.props.users} />
+			<SModal.Main title={this.props.qmData.subject} onClose={this.props.onClose}>
+				<SModal.Body>
+					<fb className='rurModalAssignedUsers'>
+						<AssignedUsers {...{assignedUsers, users, usersRed}} />
 					</fb>
-				</header>
-				<content>
-					<p>{this.props.qmData.text}</p>
-					{this.props.qmData.files && this.props.qmData.files.map(f => {
-						const fileIsViewable = f.name.substr(-4)===".pdf";
-						console.log(f.name.substr(-4))
-						return (
-							<fb key={f.name + f.uploadTime + f.size} className="file downloadable">
-
-							<FlatButton
-								primary={true}
-								className="iconButton"
-								onClick={() => this.tryToDownloadFile(f)}
-								icon={<FontIcon className="icon icon-download" />} />
-								{ fileIsViewable ?
-									<FlatButton
-										primary={true}
-										className="iconButton"
-										onClick={() => this.tryToOpenPDF(f)}
-										icon={<FontIcon className="icon icon-eye" />} />
-								: null}
-								<fb className="name">{f.name}</fb>
-							</fb>
-						)})}
-				</content>
-				<footer>
-					<div className="content-right">
-					  { this.readerIsCreator ? (
-							<fb className="editDeleteButtonWrapper">
-								<RaisedButton
+					<fb className="rurModalBodyContent">
+						<p>{this.props.qmData.text}</p>
+						{this.props.qmData.files && this.props.qmData.files.map(f => (
+								<AttachmentBar file={f} key={f.name + f.uploadTime + f.size}/>
+						))}
+					</fb>
+				</SModal.Body>
+				<SModal.Footer>
+					  { this.readerIsCreator &&
+							[
+								<SButton key='1'
 									label='bearbeiten'
-									primary={true} onClick={ () => {
+									onClick={ () => {
 										this.props.openAddEditQmWizard(false, this.props.qmData)
-										this.props.close();
+										this.props.onClose();
 									}}
-								/>
-								<RaisedButton
+								/>,
+								<SButton key='2'
 									label='löschen'
-									primary={true} onClick={ () => {
+									onClick={ () => {
 										this.props.openDeleteQmPopup(this.props.qmData)
-										this.props.close();
+										this.props.onClose();
 									}}
 								/>
-							</fb>)
-						 : null}
-						<RaisedButton
-							label={this.props.hasRead ? 'Ungelesen' : 'Gelesen'}
-							primary={true} onClick={() => this.readUnread()}
-							disabled={this.readerIsCreator}
-						/>
-					</div>
-				</footer>
-			</fb>
-		);
+							]
+						 }
+							<SButton
+								position='right'
+								color={this.props.hasRed ?  '#f39c12' : '#2ecc71'}
+								label={this.props.hasRed ? 'Ungelesen' : 'Gelesen'}
+								onClick={() => this.readUnread()}
+								disabled={this.readerIsCreator}
+							/>
+				</SModal.Footer>
+			</SModal.Main>
+		)
 	}
 }

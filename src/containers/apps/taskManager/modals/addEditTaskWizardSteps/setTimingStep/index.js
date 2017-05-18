@@ -7,13 +7,13 @@ import { Wochentage, TaskType } from 'constants'
 import FontIcon from 'material-ui/FontIcon'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
-import WizardDatePicker from './wizardDatePicker'
+import WizardDatePicker from '../wizardDatePicker'
 import _ from 'lodash';
 import { getTodaySmart, addDays} from 'helpers';
-import 'styles/modals.css';
 import moment from 'moment'
 import {connect} from 'react-redux';
 import { Toast } from 'helpers'
+import './styles.css';
 
 class SetTimingStep extends PureComponent {
 

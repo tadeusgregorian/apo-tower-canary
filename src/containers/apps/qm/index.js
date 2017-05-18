@@ -2,16 +2,17 @@ import React, { PureComponent } from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
 import QmLetters from './letters'
-import composeWizard from 'composers/qmWizard';
+import composeWizard from 'composers/wizard';
 import DefineContentStep from './modals/defineContentStep'
 import AssignUsersStep from './modals/assignUsersStep'
-import { createQm, editQm} from 'actions/index';
+import { createQm, editQm, deleteQm } from 'actions'
+import { openConfirmPopup, closeConfirmPopup } from 'actions'
 import _ from 'lodash';
 import Dialog from 'material-ui/Dialog';
 import ReadUnreadQmPopup from './modals/readUnreadQmPopup/index.js';
-import DeleteQmPopup from './modals/deleteQmPopup';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
+import ConfirmPopup from 'components/confirmPopup'
 import './styles.css'
 
 
@@ -21,47 +22,56 @@ class QmApp extends PureComponent {
 		this.state = {
 			readUnreadQmDialogOpen: false,
 			addEditQmWizardOpen: false,
-			deleteQmPopupOpen: false,
 			showOnlyUnreadQms: false,
 			filter: ""
 		}
 	}
 
-	componentDidMount = () => this.props.setSelectedUser(this.props.match.params.userID)
-
+	//componentDidMount = () => this.props.setSelectedUser(this.props.match.params.userID)
 	closeReadUnreadQmModal = () => 	this.setState({readUnreadQmDialogOpen: false})
+	closeAddEditQmWizard = () => this.setState({addEditQmWizardOpen: false})
 
-	openReadUnreadQmModal = (hasRead, qmData) => {
+	openReadUnreadQmModal = (hasRed, qmData) => {
+		console.log(qmData)
 		this.readUnreadQmPopup = (<ReadUnreadQmPopup
 			userID={this.props.selectedUser}
 			users={this.props.users}
-			hasRead={hasRead}
+			hasRed={hasRed}
 			qmData={qmData}
-			close={this.closeReadUnreadQmModal}
+			onClose={this.closeReadUnreadQmModal}
 			openAddEditQmWizard={this.openAddEditQmWizard}
 			openDeleteQmPopup={this.openDeleteQmPopup}
 		/>)
 		this.setState({readUnreadQmDialogOpen: true})
 	};
 
-	// -------- Add and edit qm letter (When adding new qm, param must be true)
-	openAddEditQmWizard = (isAdding, qmData) => {
+	// -------- Add and edit qm letter
+	openAddEditQmWizard = (isAdding = true, qmData = null) => {
 		this.setState({addEditQmWizardOpen: true});
 		let Wizard = composeWizard([DefineContentStep, AssignUsersStep]);
 		this.addEditQmWizard = (<Wizard
-			user={this.props.user}
-			creatorID={this.props.user.ID}
-			initData={qmData}
-			close={this.closeAddEditQmWizard}
-			onFinish={isAdding ? createQm : editQm}
+			onClose={this.closeAddEditQmWizard}
+			onStepsComplete={isAdding ? this.saveFreshQmToDB : editQm}
 		/>)
 	}
 
-	closeAddEditQmWizard = () => this.setState({addEditQmWizardOpen: false})
+	saveFreshQmToDB = (qm) => {
+		createQm({...qm, creatorID: this.props.selectedUser})
+		this.closeAddEditQmWizard()
+	}
 
 	openDeleteQmPopup = (qm) => {
-		this.setState({deleteQmPopupOpen: true})
-		this.deleteQmPopup = (<DeleteQmPopup qm={qm} close={()=>this.setState({deleteQmPopupOpen: false})}/>)
+		const deleteQmPopup =
+			<ConfirmPopup
+				acceptBtnLabel='Löschen'
+				declineBtnLabel='Abbrechen'
+				acceptBtnRed={true}
+				title={'Löschen einer Ansage'}
+				text={'Möchten sie diese Ansage wirklich löschen ?'}
+				onAccept={() => deleteQm(qm.ID)}
+				onClose={this.props.closeConfirmPopup}
+			/>
+		this.props.openConfirmPopup(deleteQmPopup)
 	}
 
 	onSearchFieldChanged = (e) => {
@@ -85,7 +95,7 @@ class QmApp extends PureComponent {
 								onCheck={()=>{ this.setState({showOnlyUnreadQms: !this.state.showOnlyUnreadQms})}}
 							/>
 						</fb>
-						<fb className='addQmButton' onClick={() => this.openAddEditQmWizard(true)}>
+						<fb className='addQmButton' onClick={this.openAddEditQmWizard}>
 							<fb className='addQmButtonIconWrapper'><icon className='icon icon-plus'/></fb>
 							<fb className='addQmButtonText'>QM ERSTELLEN</fb>
 						</fb>
@@ -98,20 +108,15 @@ class QmApp extends PureComponent {
 						openReadUnreadQmModal={this.openReadUnreadQmModal}
 						filterText={this.state.filter}
 					/>
-					<Dialog className="materialDialog"
+					<Dialog bodyClassName='sModal'
 						open={this.state.readUnreadQmDialogOpen}
 						onRequestClose={this.closeReadUnreadQmModal}>
 						{this.readUnreadQmPopup}
 					</Dialog>
-					<Dialog className="materialDialog"
+					<Dialog bodyClassName='sModal'
 						open={this.state.addEditQmWizardOpen}
 						onRequestClose={this.closeAddEditQmWizard}>
 						{this.addEditQmWizard}
-					</Dialog>
-					<Dialog className="materialDialog"
-						open={this.state.deleteQmPopupOpen}
-						onRequestClose={this.closeDeleteQmPopup}>
-						{this.deleteQmPopup}
 					</Dialog>
 				</fb>
 			</fb>
@@ -121,7 +126,9 @@ class QmApp extends PureComponent {
 
 const mapDispatchToProps = (dispatch) => (
 	bindActionCreators({
-		setSelectedUser: (userID) => dispatch({type: 'SET_SELECTED_USER', payload: userID})
+		setSelectedUser: (userID) => ({type: 'SET_SELECTED_USER', payload: userID}),
+		openConfirmPopup,
+		closeConfirmPopup,
 	}, dispatch)
 )
 

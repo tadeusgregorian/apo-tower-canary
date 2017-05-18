@@ -1,7 +1,7 @@
 import React from 'react'
 import './styles.css'
 
-export default ({label, disabled, onClick, color, sStyle}) => {
+export default ({label, disabled, onClick, color, sStyle, position}) => {
 	const colorStyle = {
 		color: 'white',
 		backgroundColor: color,
@@ -15,9 +15,15 @@ export default ({label, disabled, onClick, color, sStyle}) => {
 	}
 
 	const getStyle = () => {
-		if(disabled) return { ...sStyle, ...disabledStyle }
-		if(color) return { ...sStyle, ...colorStyle }
-		return sStyle ? { ...sStyle } : null
+		let styleObj = {}
+
+		// styleObj is modified in this order.
+		if(color) 	 styleObj = { ...colorStyle }
+		if(disabled) styleObj = { ...disabledStyle }
+		if(sStyle)   styleObj = { ...styleObj, ...sStyle}
+		if(position === 'left') styleObj.marginRight = 'auto'
+		if(position === 'right') styleObj.marginLeft = 'auto'
+		return styleObj
 	}
 
 	return(

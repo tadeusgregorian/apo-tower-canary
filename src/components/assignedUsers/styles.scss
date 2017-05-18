@@ -1,9 +1,8 @@
 
-.userWrapper{
-	&.mini{
-		margin-left: -2px;
-		padding: 0px;
-	}
+.assignedUsersMain{
+	margin-left: -2px;
+	padding: 0px;
+	flex: 0 0 auto;
 
 	.hiddenMiniUsersCount{
 		height: 22px;

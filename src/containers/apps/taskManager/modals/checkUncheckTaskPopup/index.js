@@ -20,6 +20,7 @@ export default class CheckUncheckTaskPopup extends Component {
 	}
 
 	render() {
+		console.log(this.props.checkingTask)
 		// this is a random Workaround for a bug ( after closing the Popup there is a last Render which causes bugs... MaterialUI bug )
 		if(!this.props.checkingTask) return <fb></fb>
 		const t = this.props.checkingTask
@@ -28,52 +29,47 @@ export default class CheckUncheckTaskPopup extends Component {
 		const assignedUsers = _.keys(t.assignedUsers)
 		const isChecked = t.isDone || t.isIgnored || t.isShifted
 
-		console.log(t)
-
-		const createdBy = 	t.creatorID 		&& users.find(u => u.ID===t.creatorID).name
-
-		const modalButtons = (
-			<fb>
-				<SButton
-					label={t.isIgnored ? 'Ignorierung aufheben' : 'Ignorieren'}
-					onClick={() => this.props.checkUncheck(t, !!t.isIgnored, 'ignored')}
-					disabled={!!t.isDone || !!t.isShifted}
-				/>
-				<SButton
-					label='Verschieben'
-					onClick={()=>this.refs.shiftTaskDatePicker.openDialog()}
-					disabled={isChecked}
-				/>
-				<fb className='rightSide'>
-					<SButton
-						color={'#2ECC71'}
-						label={t.isDone ? 'Nicht erledigt' : 'Erledigt'}
-						onClick={() => this.props.checkUncheck(t, !!t.isDone, 'done')}
-						disabled={!!t.isIgnored || !!t.isShifted}
-					/>
-				</fb>
-			</fb>
-		)
+		const createdBy = t.creatorID && users.find(u => u.ID===t.creatorID).name
 
 		return (
 			<SModal.Main title={t.subject} onClose={this.props.onClose}>
 				<SModal.Body>
-					<fb className='modalAssignedUsers'>
-						<AssignedUsers {...{assignedUsers, users}} usersRead={[t.isDoneBy]} colorStyle={isChecked ? 'blackAndWhite' : 'colorful'}/>
+					<fb className='cucModalAssignedUsers'>
+						<AssignedUsers {...{assignedUsers, users}} usersRed={[t.isDoneBy]} colorStyle={isChecked ? 'blackAndWhite' : 'colorful'}/>
 					</fb>
-					<fb className='modalTaskTypeInfo'>
-						<icon className='icon-insert_invitation nop'/> <bo>{taskTypeAndPattern.type} </bo> {(taskTypeAndPattern.patternFullLength || taskTypeAndPattern.pattern)}
+					<fb className="checkUncheckModalBodyContent">
+						<fb className='modalTaskTypeInfo'>
+							<icon className='icon-insert_invitation nop'/> <bo>{taskTypeAndPattern.type} </bo> {(taskTypeAndPattern.patternFullLength || taskTypeAndPattern.pattern)}
+						</fb>
+						<fb className='createdInfo'>
+							<icon className='icon-account_circle nop'/><p>Erstellt von <b>{createdBy}</b> am<b> {moment(t.creationDate).format('DD.MM.YYYY')}</b></p>
+						</fb>
+						<DoneByInfoRow task={t} users={users} />
+						{ t.originalShiftedTask && 	<ShiftedFromBox originalDate={t.originalShiftedTask.date}/> }
+						{ t.text && 								<fb className='modalTaskText'>{t.text}</fb> }
 					</fb>
-					<fb className='createdInfo'>
-						<icon className='icon-account_circle nop'/><p>Erstellt von <b>{createdBy}</b> am<b> {moment(t.creationDate).format('DD.MM.YYYY')}</b></p>
-					</fb>
-					<DoneByInfoRow task={t} users={users} />
-					{ t.originalShiftedTask && 	<ShiftedFromBox originalDate={t.originalShiftedTask.date}/> }
-					{ t.text && 								<fb className='modalTaskText'>{t.text}</fb> }
 				</SModal.Body>
-				<SModal.Footer>
-					{this.props.userMode && modalButtons}
-				</SModal.Footer>
+				{this.props.userMode &&
+					<SModal.Footer>
+						<SButton
+							label={t.isIgnored ? 'Ignorierung aufheben' : 'Ignorieren'}
+							onClick={() => this.props.checkUncheck(t, !!t.isIgnored, 'ignored')}
+							disabled={!!t.isDone || !!t.isShifted}
+						/>
+						<SButton
+							label='Verschieben'
+							onClick={()=>this.refs.shiftTaskDatePicker.openDialog()}
+							disabled={isChecked}
+						/>
+						<SButton
+							position='right'
+							color={'#2ECC71'}
+							label={t.isDone ? 'Nicht erledigt' : 'Erledigt'}
+							onClick={() => this.props.checkUncheck(t, !!t.isDone, 'done')}
+							disabled={!!t.isIgnored || !!t.isShifted}
+						/>
+					</SModal.Footer>
+				}
 				<DatePicker style={{"display": "none"}}
 					ref='shiftTaskDatePicker'
 					onChange={(e, d) => { this.props.checkUncheck(t, false, 'shifted', parseInt(moment(d).format('YYYYMMDD'), 10))}}

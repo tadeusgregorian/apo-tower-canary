@@ -6,6 +6,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   padding-bottom: 6px;
+  width: 649px;
 
   .chip{
     margin: 3px;
@@ -16,6 +17,8 @@
     cursor: pointer;
     height: 30px;
     background-color: #e4f4ff;
+    padding: 0 14px;
+    flex: 0 0 auto;
 
     &.selected{
       background-color: #60bcfd;

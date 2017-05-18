@@ -1,0 +1,8 @@
+.attachmentBarMain{
+  flex-direction: row;
+  border: 1px solid grey;
+
+  >*{
+    flex: 0 0 auto;
+  }
+}

@@ -29,12 +29,14 @@ export default class Task extends PureComponent {
 						{ t.isIgnored && <fb className="tag">ignoriert</fb>  }
 						{ t.isShifted && <fb className="tag">verschoben</fb> }
 						{ !t.isIgnored && !t.isShifted &&
-							 	<AssignedUsers
-									assignedUsers={_.keys(t.assignedUsers)}
-									users={users}
-									usersRead={[t.isDoneBy]}
-									colorStyle={ t.isDone ? 'blackAndWhite' : 'colorful'}
-								/>
+						<fb className="assignedUsersWrapper">
+						 	<AssignedUsers
+								assignedUsers={_.keys(t.assignedUsers)}
+								users={users}
+								usersRed={[t.isDoneBy]}
+								colorStyle={ t.isDone ? 'blackAndWhite' : 'colorful'}
+							/>
+						</fb>
 						}
 					</fb>
 				</fb>

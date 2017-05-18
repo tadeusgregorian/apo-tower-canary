@@ -14,8 +14,9 @@ const AssignedUsers = (props) => {
 
 	let assignedUsersSorted = props.assignedUsers.map(userID =>{
 		const assignedUser = props.users.find(user => user.ID === userID)
-		return { ...assignedUser, hasRead: props.usersRead && props.usersRead.includes(userID)}
-	}).sort((a, b) => a.hasRead < b.hasRead)
+		const hasRed = (props.usersRed && props.usersRed.includes(userID)) ? 1 : 0
+		return { ...assignedUser, hasRed }
+	}).sort((a, b) => a.hasRed - b.hasRed)
 
 	// optionally you can limit the number of shown MiniUsers.
 	// A number like ( +3 ) is appended at the end to indicate
@@ -27,12 +28,12 @@ const AssignedUsers = (props) => {
 	}
 
 	return (
-		<fb className="userWrapper mini no-grow no-shrink">
+		<fb className="assignedUsersMain">
 			{ hiddenMiniUsersCount ? <fb className={cN({"hiddenMiniUsersCount": true, "nothingToHide": !hiddenMiniUsersCount  })} key="counter"> {'...'} </fb> : null}
 			{ assignedUsersSorted.map(assignedUser => (
 				<MiniUser
 					user={assignedUser}
-					grayedOut={assignedUser.hasRead}
+					grayedOut={assignedUser.hasRed}
 					colorStyle={props.colorStyle}
 					key={assignedUser.ID} />))}
 		</fb>

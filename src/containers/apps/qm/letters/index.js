@@ -33,7 +33,7 @@ export default class QmLetters extends PureComponent {
 
 			const currentUserIsCreator = (userID===qm.creatorID)
 			const currentUserHasRed = qm.assignedUsers[userID]===2
-			const hasRead = !!(currentUserHasRed || currentUserIsCreator)
+			const hasRed = !!(currentUserHasRed || currentUserIsCreator)
 
 			return(
 				<LazyLoad placeholder={(<fb style={{ height:45, borderBottom: '1px solid lightgrey'}} className="no-grow no-shrink"></fb>)}
@@ -46,7 +46,7 @@ export default class QmLetters extends PureComponent {
 					<QmLetter
 						openReadUnreadQmModal={this.props.openReadUnreadQmModal}
 						qm={qm}
-						hasRead={hasRead}
+						hasRed={hasRed}
 						users={this.props.users}
 					/>
 				</LazyLoad>

@@ -6,8 +6,6 @@ import {smartYear} from 'helpers'
 import {smartMonth} from 'helpers'
 import moment from 'moment'
 
-const MS_IN_WEEK = 7 * 24 * 60 * 60 * 1000
-
 const getRepeatingTasks = (state) => state.taskManager.repeatingTasks
 const getSingleTasks = (state) => state.taskManager.singleTasks
 const getCurrentDay = (state) => state.ui.taskManager.currentDay
@@ -38,8 +36,6 @@ export const getTasksForDay = (repeatingTasks, singleTasks, day) => {
 			if (t.repeatEvery) {
 				const startWeekBeginning = moment(t.startDate, 'YYYYMMDD').startOf('week')
 				const weekDifference = currentWeekBeginning.diff(startWeekBeginning, 'weeks')
-				console.log(startWeekBeginning)
-				console.log(weekDifference)
 				if (weekDifference % t.repeatEvery !== 0) return false
 			}
 			return t.weekly.includes(Wochentage[weekDay])

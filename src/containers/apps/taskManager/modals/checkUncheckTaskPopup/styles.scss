@@ -1,44 +1,40 @@
-.sModalMain{
-	flex-direction: column;
 
-	bo{
-		font-weight: 500;
-		margin-right: 4px;
-	}
-
-	.modalTaskTypeInfo{
-		icon{
-			padding: 0px;
-	    margin-right: 7px;
-	    font-size: 19px;
-		}
-	}
-
-	.createdInfo{
-		font-size: 14px;
-    color: #90949c;
-    margin-top: 5px;
-
-		icon{
-			margin-right: 8px;
-	    padding: 1px;
-	    font-size: 17px;
-		}
-	}
-
-	.rightSide{
-		flex: 1 0 auto;
-		justify-content: flex-end;
-	}
-
-	.modalAssignedUsers{
+	.cucModalAssignedUsers{
 		background-color: #efefef;
-	  padding: 3px;
-	  margin-top: -12px;
-	  margin-left: -16px;
-	  margin-right: -16px;
-	  padding: 5px 16px;
-	  margin-bottom: 10px;
-	  border-bottom: 1px solid #e4e4e4;
+		padding: 3px;
+		padding: 5px 16px;
+		margin-bottom: 2px;
+		border-bottom: 1px solid #e4e4e4;
 	}
-}
+
+	.checkUncheckModalBodyContent{
+		padding: 12px 16px;
+		flex-direction: column;
+		min-height: 84px;
+
+		bo{
+			font-weight: 500;
+			margin-right: 4px;
+		}
+
+		.modalTaskTypeInfo{
+			flex: 0 0 auto;
+			icon{
+				padding: 0px;
+		    margin-right: 7px;
+		    font-size: 19px;
+			}
+		}
+
+		.createdInfo{
+			font-size: 14px;
+	    color: #90949c;
+	    margin-top: 5px;
+			flex: 0 0 auto;
+			icon{
+				margin-right: 8px;
+		    padding: 1px;
+		    font-size: 17px;
+			}
+		}
+	}
