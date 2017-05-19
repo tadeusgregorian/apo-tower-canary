@@ -39,12 +39,14 @@ class UserTopbar extends PureComponent{
                   <fb className="topbarButtonLabel">ANSAGEN</fb>
                 </fb>
               </Link>
-              <Link to={'/Apps/Adminpanel'}>
-                <fb className="topbarButton topbarAdminpanelButton">
-                  <icon className="icon icon-params no-border"></icon>
-                  <fb className="topbarButtonLabel">EINSTELLUNGEN</fb>
-                </fb>
-              </Link>
+              { user.isAdmin &&
+                <Link to={`/Apps/Adminpanel`}>
+                  <fb className="topbarButton topbarAdminpanelButton">
+                    <icon className="icon icon-params no-border"></icon>
+                    <fb className="topbarButtonLabel">EINSTELLUNGEN</fb>
+                  </fb>
+                </Link>
+              }
             </fb>
             <fb className='userInfo'>
               <fb className="userName">{user.name}</fb>

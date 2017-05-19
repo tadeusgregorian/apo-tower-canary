@@ -53,11 +53,10 @@ class Apps extends PureComponent{
 			<fb id="apps">
 				<fb className="vertical">
 					{user ? <UserTopbar /> : <PublicTopbar />}
-					{/* <Route path='/Apps/TaskManager' component={PublicTopbar} /> */}
 					<fb id="app">
-						<Route path='/Apps/TaskManager' component={TaskManager} />
-						<Route path='/Apps/QM/:userID' 	component={QmApp} />
-						<Route path='/Apps/Adminpanel' 	component={AdminPanel} />
+						<Route path='/Apps/TaskManager' 					component={TaskManager} />
+						<Route path='/Apps/QM/:userID' 						component={QmApp} />
+						<Route path='/Apps/Adminpanel' 						component={AdminPanel} />
 					</fb>
 				</fb>
 				<Dialog open={!!this.props.selectBranchDialog} modal={true}>

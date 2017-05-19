@@ -1,27 +1,32 @@
-import React from 'react';
-import { PropTypes } from 'prop-types'
-import cN from 'classnames';
-import './styles.css';
+import React, { PureComponent } from 'react'
+import { NavLink, Route } from 'react-router-dom'
+import { Redirect } from 'react-router'
+import AdminpanelUsers from './users'
+import AdminpanelGroups from './groups'
+import AdminpanelBranches from './branches'
+import './styles.css'
 
 
-export default class AdminPanel extends React.Component {
 
-	static contextTypes = { router: PropTypes.object }
-
-	goBack = () => this.context.router.push('/Apps/')
-
+export default class AdminPanel extends PureComponent {
 
 	render() {
-		let pathname = this.props.location.pathname;
+		//const {userID} = this.props.match.params
+		const baseUrl = '/Apps/Adminpanel/'
 		return (
 			<fb className="adminpanel">
 				<fb className='adminpanel-body edgebox'>
 					<div className='adminpanel-navbar'>
-						<div className={cN({'navbar-item': true, 'selected': (pathname.includes('Users'))})} onClick={() => this.context.router.push(`/Apps/Adminpanel/${this.props.params.id}/Users/`)}>Mitarbeiter</div>
-						<div className={cN({'navbar-item': true, 'selected': (pathname.includes('Branches'))})}  onClick={() => this.context.router.push(`/Apps/Adminpanel/${this.props.params.id}/Branches/`)} >Filianen</div>
-						<div className={cN({'navbar-item': true, 'selected': (pathname.includes('Groups'))})}  onClick={() => this.context.router.push(`/Apps/Adminpanel/${this.props.params.id}/Groups/`)} >Gruppen</div>
+						<NavLink activeClassName="selected" className="navbar-item" to={`${baseUrl}Mitarbeiter`}>Mitarbeiter</NavLink>
+						<NavLink activeClassName="selected" className="navbar-item" to={`${baseUrl}Gruppen`}>Gruppen</NavLink>
+						<NavLink activeClassName="selected" className="navbar-item" to={`${baseUrl}Filianen`}>Filianen</NavLink>
 					</div>
-					<div className='content'>{this.props.children}</div>
+					<div className='adminPanelContent'>
+						<Route path="/Apps/AdminPanel" exact				render={() => <Redirect to="/Apps/AdminPanel/Mitarbeiter" />} />
+						<Route path='/Apps/AdminPanel/Mitarbeiter'	component={AdminpanelUsers} />
+						<Route path='/Apps/AdminPanel/Gruppen' 			component={AdminpanelGroups} />
+						<Route path='/Apps/AdminPanel/Filianen' 		component={AdminpanelBranches} />
+					</div>
 				</fb>
 			</fb>
 		)

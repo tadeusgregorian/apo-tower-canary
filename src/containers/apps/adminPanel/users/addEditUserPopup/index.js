@@ -2,41 +2,30 @@ import cN  from 'classnames'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { addNewUser } from 'actions/index'
-import { editUser } from 'actions/index'
-import composePopup  from 'composers/popup';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import ActionLabel from 'material-ui/svg-icons/action/label';
-import MenuItem from 'material-ui/MenuItem';
-import {userColors} from 'helpers/colors';
+import { addNewUser, editUser } from 'actions/index'
+import { userColors } from 'helpers/colors';
+import SModal from 'components/sModal'
+import SButton from 'components/sButton'
 import './styles.css';
-import 'styles/popup.css';
-
-//@param user.name optional str
-//@param user.nameInitials optional str (4 characters!)
-//@param user.color optional str ('#fefefe')
-//@param editingMode optional bool -> if true User is being edited instead of created.
-//@param user.ID
 
 class AddEditUserPopup extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			name: this.props.editingMode ? this.props.user.name : '',
-			nameInitials: this.props.editingMode ? this.props.user.nameInitials : '',
-			color: this.props.editingMode ? this.props.user.color : '',
+			name: this.props.editing ? this.props.user.name : '',
+			nameInitials: this.props.editing ? this.props.user.nameInitials : '',
+			color: this.props.editing ? this.props.user.color : '',
 			userinputMissingText: '',
-			hoursPerWeek: this.props.editingMode ? this.props.user.hoursPerWeek : 40,
+			hoursPerWeek: this.props.editing ? this.props.user.hoursPerWeek : 40,
 		};
 	}
 
 	onFinish() {
-		this.props.close(this);
+		this.props.close(this)
 	}
 
-	onButtonClicked() {
-
+	onButtonClicked = () => {
 		if(this.state.name === '') {
 			this.setState({userinputMissingText: 'Bitte geben Sie einen Benutzernamen ein.'})
 			return;
@@ -56,9 +45,9 @@ class AddEditUserPopup extends Component {
 		userObj.color = this.state.color
 		userObj.hoursPerWeek = this.state.hoursPerWeek;
 
-		if(this.props.editingMode) {
+		if(this.props.editing) {
 
-			if(!this.props.user.ID) { return }  // in editingMode user.ID has to be existent!
+			if(!this.props.user.ID) { return }  // in editing user.ID has to be existent!
 			userObj.ID = this.props.user.ID; // add ID to the userObj if you want to use the editUser-Action
 			this.props.editUser(userObj, this.userWasEdited.bind(this));
 
@@ -92,11 +81,9 @@ class AddEditUserPopup extends Component {
 
 	render() {
 		return (
-			<div className="addEditUserPopup">
-				<header>
-					<h3>Neuer Benutzer</h3>
-				</header>
-				<fb className="popupContent">
+				<SModal.Main title='Neuer Benutzer' onClose={this.props.onClose}>
+					<SModal.Body>
+				<fb className="addEditUserPopup">
 					{ this.state.userinputMissingText ? <fb className="userinputMissingText">{this.state.userinputMissingText}</fb> : null}
 					<fb className="inputItemWrapper">
 						<fb className="inputDescription" >Benutzername:</fb>
@@ -123,16 +110,18 @@ class AddEditUserPopup extends Component {
 						</fb>
 					</fb>
 				</fb>
-				<footer>
-					<button className={cN({
-						'right': true,
-						'disabled': (false)
-					})} onClick={(this.onButtonClicked).bind(this)}>
-						{ this.props.editingMode ? 'speichern ' : 'Nurtzer Erstellen' }
-					</button>
-				</footer>
-			</div>
-		);
+			</SModal.Body>
+			<SModal.Footer>
+				<SButton
+					position='right'
+					label={this.props.editing ? 'speichern' : 'Nurtzer Erstellen'}
+					onClick={this.onButtonClicked}
+					disabled={false}
+					color={'#2ECC71'}
+				/>
+				</SModal.Footer>
+			</SModal.Main>
+		)
 	}
 }
 
@@ -143,4 +132,4 @@ const mapDispatchToProps = (dispatch) => {
 	}, dispatch);
 };
 
-export default composePopup(connect(null, mapDispatchToProps)(AddEditUserPopup));
+export default connect(null, mapDispatchToProps)(AddEditUserPopup)

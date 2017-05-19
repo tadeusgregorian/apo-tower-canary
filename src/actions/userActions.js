@@ -1,26 +1,28 @@
 import FBInstance from '../firebaseInstance';
-import { createGuid } from 'helpers';
+import { createShortGuid } from 'helpers';
+import { getFirebasePath } from './actionHelpers';
+import moment from 'moment'
 import _ from 'lodash';
 
 export function deleteUser(userID, callback) {
-	return dispatch => {
-		return FBInstance.database().ref('users').child(userID).remove(callback);
-	};
+		const now = moment().toISOString()
+		FBInstance.database().ref(getFirebasePath('users')).child(userID).child('deleted').set(now)
 }
 
 export function editUser(user, callback) {
 	return dispatch => {
-		return FBInstance.database().ref('users').child(user.ID).set(user, callback);
+		return FBInstance.database().ref(getFirebasePath('users')).child(user.ID).set(user, callback);
 	};
 }
 
 export function addNewUser(_user, callback) {
 	let user = {
 		..._user,
-		ID: createGuid(),
+		ID: createShortGuid(),
 		isOnVacation: false,
 	}
+
 	return dispatch => {
-		return FBInstance.database().ref('users').child(user.ID).set(user, callback);
+		return FBInstance.database().ref(getFirebasePath('users')).child(user.ID).set(user, callback);
 	};
 }

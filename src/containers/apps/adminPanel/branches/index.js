@@ -9,7 +9,7 @@ import CreateBranchPopup from './createBranchPopup';
 import Dialog from 'material-ui/Dialog';
 import '../styles.css';
 
-class EditBranches extends React.Component {
+class AdminpanelBranches extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -36,7 +36,7 @@ class EditBranches extends React.Component {
 	}
 
 	render() {
-		let selectedBranchID = this.state.selectedBranchID || this.props.branches[0] && this.props.branches[0].ID;
+		let selectedBranchID = this.state.selectedBranchID || (this.props.branches[0] && this.props.branches[0].ID)
 		return (
 			<div className="edit-groups">
 				<div className="groups-list">
@@ -71,4 +71,4 @@ const mapStateToProps = (state) => {
 	return {users: state.data.users, branches: state.data.branches};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditBranches);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminpanelBranches);

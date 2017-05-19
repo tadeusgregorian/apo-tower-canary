@@ -28,7 +28,7 @@ class EditUserElement extends React.Component {
 																'isOnVacation':this.props.user.isOnVacation})}
 								onClick={() => this.changeVacationStatus(this.props.user.ID, !this.props.user.isOnVacation)}
 					></icon>
-					<button className="editUserButton" onClick={() => { this.props.editUser(this.props.user) }}>bearbeiten</button>
+					<button className="editUserButton" onClick={() => { this.props.editUser(true, this.props.user)}}>bearbeiten</button>
 					<icon onClick={ () => { this.props.deleteUser(this.props.user) }} className="icon-bin delteUserButton"></icon>
     		</fb>
     	);

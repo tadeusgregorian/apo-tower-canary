@@ -19,7 +19,7 @@ export default class ReadUnreadQmPopup extends PureComponent {
 
 	componentDidMount() {
 		this.props.qmData.files && this.props.qmData.files.forEach(f => {
-			Storage.ref(`qm/${f.guid}`).child(f.name).getDownloadURL().then(url => {
+			Storage.ref(`${window.accountID}/qm/${f.guid}`).child(f.name).getDownloadURL().then(url => {
 				this.setState({downloadLinksForAttachments: [...this.state.downloadLinksForAttachments, {...f, url}]})
 			})
 		})
@@ -64,7 +64,12 @@ export default class ReadUnreadQmPopup extends PureComponent {
 					<fb className="rurModalBodyContent">
 						<p>{this.props.qmData.text}</p>
 						{this.props.qmData.files && this.props.qmData.files.map(f => (
-								<AttachmentBar file={f} key={f.name + f.uploadTime + f.size}/>
+								<AttachmentBar
+									file={f}
+									key={f.name + f.uploadTime + f.size}
+									tryToOpenPDF={this.tryToOpenPDF}
+									tryToDownloadFile={this.tryToDownloadFile}
+								/>
 						))}
 					</fb>
 				</SModal.Body>

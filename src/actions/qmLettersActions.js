@@ -1,5 +1,5 @@
 import FBInstance from '../firebaseInstance'
-import { createGuid } from 'helpers';
+import { createShortGuid } from 'helpers';
 import moment from 'moment'
 import { getFirebasePath } from './actionHelpers'
 
@@ -13,13 +13,14 @@ export const unreadQm = (qmID, userID) => {
 	ref.set(1)
 }
 
-export function createQm(qmData) {
+export const createQm = (qmData) => ((disp, getS) =>{
 	const qm = { ...qmData,
 		date: moment().toISOString(),
-		ID: createGuid()
+		ID: createShortGuid(),
+		creatorID: getS().core.selectedUser
 	}
-	FBInstance.database().ref(getFirebasePath('qmLetters')).child(qm.ID).set(qm);
-}
+	FBInstance.database().ref(getFirebasePath('qmLetters')).child(qm.ID).set(qm)
+})
 
 export function editQm(qm, callback) {
 	FBInstance.database().ref(getFirebasePath('qmLetters')).child(qm.ID).set(qm, callback)

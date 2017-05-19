@@ -4,14 +4,14 @@ import {bindActionCreators} from 'redux';
 import EditUserElement from './user';
 import {addNewUser} from 'actions/index';
 import {deleteUser} from 'actions/index';
-import {changeVacationStatusOfUser} from 'actions/index';
+import ConfirmPopup from 'components/confirmPopup'
+import { openConfirmPopup, closeConfirmPopup } from 'actions'
 import Dialog from 'material-ui/Dialog';
 import AddEditUserPopup from './addEditUserPopup';
-import ConfirmPopup from 'components/confirmPopup';
 import { Toast } from 'helpers';
 import './styles.css';
 
-class EditUsers extends React.Component {
+class AdminpanelUsers extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -21,7 +21,7 @@ class EditUsers extends React.Component {
 		};
 	}
 
-	deleteUser(user){
+	deleteUser = (user) => {
 		if( user.adminHash){
 			Toast.error("der Admin-User darf nicht gelöscht werden.");
 			return;
@@ -29,19 +29,17 @@ class EditUsers extends React.Component {
 		this.openDeleteUserPopup(user);
 	}
 
-	editUser(user){
+	editUser(user){ // when
 		this.setState({addEditUserPopup_open: true});
-		this.addEditUserPopup = (<AddEditUserPopup user={user} editingMode={true} close={this.closeAddEditUserPopup.bind(this)}/>) ;
+		this.addEditUserPopup = (<AddEditUserPopup user={user} editingMode={true} close={this.closeAddEditUserPopup}/>) ;
 	}
 
-	openAddEditUserPopup(){
+	openAddEditUserPopup(editing = false, user = null){
 			this.setState({addEditUserPopup_open: true});
-			this.addEditUserPopup = (<AddEditUserPopup close={this.closeAddEditUserPopup.bind(this)}/>) ;
+			this.addEditUserPopup = <AddEditUserPopup editing={editing} user={user} close={this.closeAddEditUserPopup}/>
 	}
 
-	closeAddEditUserPopup(){
-		this.setState({addEditUserPopup_open: false});
-	}
+	closeAddEditUserPopup = () => this.setState({addEditUserPopup_open: false})
 
 	openDeleteUserPopup(user) {
 		this.deleteUserPopup =
@@ -61,44 +59,25 @@ class EditUsers extends React.Component {
 		this.props.deleteUser(user.ID, this.userWasDeleted.bind(this));
 	}
 
-	closeDeleteUserPopup() {
-		this.setState({deleteUserPopup_open:false})
-	}
-
-	userWasDeleted() {
-
-	}
-
-	changeVacationStatusOfUser = (userID, isOnVacation) => {
-		this.props.changeVacationStatusOfUser(userID, isOnVacation, this.vacationStatusChanged)
-	}
-
-	vacationStatusChanged = (userIsInVacationNow) => {
-
-	}
-
 	render() {
 		return (
 			<div className="edit-users-content">
 				<fb className="newUserButtonWrapper">
-					<button className="icon-plus button newUserButton" onClick={this.openAddEditUserPopup.bind(this)}>
+					<button className="icon-plus button newUserButton" onClick={this.openAddEditUserPopup}>
 						neuen nutzer anlegen
 					</button>
 				</fb>
 				{this.props.users.map(user => (
 					<EditUserElement
-					user={user}
-					key={user.ID}
-					changeVacationStatusOfUser={this.changeVacationStatusOfUser}
-					deleteUser={this.deleteUser.bind(this)}
-					editUser={this.editUser.bind(this)}
+						user={user}
+						key={user.ID}
+						changeVacationStatusOfUser={this.changeVacationStatusOfUser}
+						deleteUser={this.deleteUser}
+						editUser={this.openAddEditQmWizard}
 					/>))
 				}
-				<Dialog className="materialDialog" open={this.state.addEditUserPopup_open} onRequestClose={this.closeAddEditUserPopup.bind(this)}>
+				<Dialog bodyClassName='sModal' open={this.state.addEditUserPopup_open} onRequestClose={this.closeAddEditUserPopup.bind(this)}>
 					{this.addEditUserPopup}
-				</Dialog>
-				<Dialog className="materialDialog" open={this.state.deleteUserPopup_open} onRequestClose={this.closeDeleteUserPopup.bind(this)}>
-					{this.deleteUserPopup}
 				</Dialog>
 			</div>
 		);
@@ -107,7 +86,6 @@ class EditUsers extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		changeVacationStatusOfUser,
 		addNewUser,
 		deleteUser
 	}, dispatch);
@@ -117,4 +95,4 @@ const mapStateToProps = (state) => {
 	return {users: state.data.users};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditUsers);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminpanelUsers);

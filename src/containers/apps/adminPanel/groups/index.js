@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetch } from 'redux';
-import { Link } from 'react-router';
 import EditGroupsContent from './group';
 import cN from 'classnames';
 import { openPopup, addNewGroup } from 'actions/index';
@@ -11,7 +9,7 @@ import Dialog from 'material-ui/Dialog';
 import '../styles.css';
 
 
-class EditGroups extends React.Component {
+class AdminpanelGroups extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -51,7 +49,7 @@ class EditGroups extends React.Component {
 
 
 	render() {
-		let selectedGroupID = this.state.selectedGroupID || this.props.groups[0] && this.props.groups[0].ID;
+		let selectedGroupID = this.state.selectedGroupID || (this.props.groups[0] && this.props.groups[0].ID)
 		return (
 			<div className="edit-groups">
 				<div className="groups-list">
@@ -92,4 +90,4 @@ const mapStateToProps = (state) => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditGroups);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminpanelGroups);

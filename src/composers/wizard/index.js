@@ -15,7 +15,7 @@ export default function composeWizard(stepComponents, defaultState) {
 			this.state = {
 				stepTitle: '-e-',
 				currentStep: 0,
-				stepsCompleteListener: null,
+				stepsCompleteListener: null, // if this is a functions, it will be called just before onStepsComplete - call
 				wiz: defaultState || {},
 				wizMemory: {},
 				...this.defaultStepState

@@ -48,16 +48,21 @@ class QmApp extends PureComponent {
 	// -------- Add and edit qm letter
 	openAddEditQmWizard = (isAdding = true, qmData = null) => {
 		this.setState({addEditQmWizardOpen: true});
-		let Wizard = composeWizard([DefineContentStep, AssignUsersStep]);
+		let Wizard = composeWizard([DefineContentStep, AssignUsersStep], qmData)
 		this.addEditQmWizard = (<Wizard
 			onClose={this.closeAddEditQmWizard}
-			onStepsComplete={isAdding ? this.saveFreshQmToDB : editQm}
+			onStepsComplete={isAdding ? this.saveFreshQmToDB : this.saveEditedQmToDB}
 		/>)
 	}
 
-	saveFreshQmToDB = (qm) => {
-		createQm({...qm, creatorID: this.props.selectedUser})
-		this.closeAddEditQmWizard()
+	saveFreshQmToDB = (freshQm) => {
+		this.props.createQm(freshQm)
+		this.setState({addEditQmWizardOpen: false})
+	}
+
+	saveEditedQmToDB = (freshQm) => {
+		editQm(freshQm)
+		this.setState({addEditQmWizardOpen: false})
 	}
 
 	openDeleteQmPopup = (qm) => {
@@ -127,6 +132,7 @@ class QmApp extends PureComponent {
 const mapDispatchToProps = (dispatch) => (
 	bindActionCreators({
 		setSelectedUser: (userID) => ({type: 'SET_SELECTED_USER', payload: userID}),
+		createQm,
 		openConfirmPopup,
 		closeConfirmPopup,
 	}, dispatch)
