@@ -8,6 +8,7 @@ export * from './databaseUpdates'
 export * from './firebaseListeners'
 export * from './databaseUpdate_qmLetters'
 export * from './iziToast'
+export * from './newDayChecker'
 
 export function createGuid() {
 	let d = new Date().getTime()

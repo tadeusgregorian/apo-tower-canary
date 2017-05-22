@@ -2,6 +2,7 @@ import cN  from 'classnames';
 import RoundCheckbox  from 'components/roundCheckbox';
 import React, { PureComponent } from 'react';
 import AssignedUsers from 'components/assignedUsers';
+import moment from 'moment'
 import './styles.css';
 import _ from 'lodash'
 
@@ -12,6 +13,7 @@ export default class Task extends PureComponent {
 		const t = this.props.data;
 		const { clickHandler, onCheckboxClick, withCheckbox, users } = this.props;
 		const prio = t.prio && !(t.isDone || t.isIgnored || t.isShifted) // there is only Prio 2 now , Prio 0 and 1 are deprecated. // needs to refactored in future to a Boolean Flag
+		const originalDate = t.originalShiftedTask && moment(t.originalShiftedTask.date, 'YYYYMMDD').format('DD.MM.YY')
 
 		return (
 			<fb className="taskItemWrapper">
@@ -28,6 +30,7 @@ export default class Task extends PureComponent {
 						</fb>
 						{ t.isIgnored && <fb className="tag">ignoriert</fb>  }
 						{ t.isShifted && <fb className="tag">verschoben</fb> }
+						{ t.originalShiftedTask && <fb className="tag">{originalDate}</fb> }
 						{ !t.isIgnored && !t.isShifted &&
 						<fb className="assignedUsersWrapper">
 						 	<AssignedUsers

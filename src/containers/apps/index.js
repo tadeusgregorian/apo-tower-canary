@@ -10,7 +10,8 @@ import {
 	registerUsersDataListener,
 	registerGroupsDataListener,
 	registerBranchesDataListener,
-	setQmLettersListener
+	setQmLettersListener,
+	synchronizeClientTime,
 } from 'actions/index'
 
 import UserTopbar 	from './topbar/userTopbar'
@@ -22,6 +23,7 @@ import AdminPanel 	from './adminPanel'
 class Apps extends PureComponent{
 
 	componentDidMount() {
+		this.props.synchronizeClientTime()
 		this.props.usersDataStatus 		=== 'NOT_REQUESTED' && this.props.registerUsersDataListener()
 		this.props.groupsDataStatus 	=== 'NOT_REQUESTED' && this.props.registerGroupsDataListener()
 		this.props.branchesDataStatus === 'NOT_REQUESTED' && this.props.registerBranchesDataListener()
@@ -39,6 +41,7 @@ class Apps extends PureComponent{
 	}
 
 	requiredDataIsLoaded = () => {
+		if (!this.props.clientTimeSynchronization)				return false
 		if (this.props.usersDataStatus 			!== 'LOADED') return false
 		if (this.props.branchesDataStatus  	!== 'LOADED') return false
 		if (this.props.groupsDataStatus 		!== 'LOADED') return false
@@ -91,7 +94,8 @@ const mapStateToProps = (state) => {
 		adminPinDialog: state.ui.app.adminPinDialog,
 		selectBranchDialog: state.ui.app.selectBranchDialog,
 
-		confirmPopup: state.ui.app.confirmPopup
+		confirmPopup: state.ui.app.confirmPopup,
+		clientTimeSynchronization: state.core.clientTimeSynchronization,
 	}
 }
 
@@ -107,6 +111,7 @@ const mapDispatchToProps = (dispatch) => {
 		openSelectbranchDialog: 	() => ({type: 'OPEN_SELECT_BRANCH_DIALOG'}),
 		closeSelectbranchDialog: 	() =>	({type: 'CLOSE_SELECT_BRANCH_DIALOG'}),
 		closeConfirmPopup:				() => ({type: 'CLOSE_CONFIRM_POPUP'}),
+		synchronizeClientTime,
 	}, dispatch)
 };
 

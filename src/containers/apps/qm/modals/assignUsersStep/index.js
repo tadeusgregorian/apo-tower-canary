@@ -28,7 +28,7 @@ class AssignUsersStep extends Component {
 
 		let selectedUsersIds = {}
 		for (let i of newGroups) {
-			let usersArray = filterUsersByGroup(this.props.users, i).filter(u => u.ID !== this.props.user.ID)
+			let usersArray = filterUsersByGroup(this.props.users, i).filter(u => u.ID !== this.props.selectedUser)
 			let usersArrayFiltered = []
 			let selectedBranches =  (this.state.selectedBranches.length > 0) ? this.state.selectedBranches : this.props.branches.map(b => b.ID)  // if non branch selected, there should be no branch filter.
 			for (let b of selectedBranches) { usersArrayFiltered.push(...filterUsersByBranch(usersArray, b)) }
@@ -52,7 +52,7 @@ class AssignUsersStep extends Component {
 
 		let selectedUsersIds = {}
 		for (let i of newBras) {
-			let usersArray = filterUsersByBranch(this.props.users, i).filter(u => u.ID !== this.props.user.ID)
+			let usersArray = filterUsersByBranch(this.props.users, i).filter(u => u.ID !== this.props.selectedUser)
 			for (let f of usersArray) { selectedUsersIds[f.ID] = 1 }
 		}
 		this.props.editOTask({assignedUsers: selectedUsersIds});
@@ -79,7 +79,7 @@ class AssignUsersStep extends Component {
 					</fb>
 					<fb className="selectUsersBox">
 						<SelectUsersBox
-							users={this.props.users}
+							users={this.props.users.filter(u => u.ID !== this.props.selectedUser)}
 							selectedUsers={this.props.OTask.assignedUsers}
 							userClicked={this.selectDeselectUser}
 						/>
@@ -91,7 +91,7 @@ class AssignUsersStep extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.core.selectedUser,
+		selectedUser: state.core.selectedUser,
 		users: state.data.users,
 		groups: state.data.groups,
 		branches: state.data.branches

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { getTypeAndPatternOfTask } from 'helpers';
 import AssignedUsers from 'components/assignedUsers'
 import SButton from 'components/sButton'
 import DatePicker from 'material-ui/DatePicker';
 import ShiftedFromBox from './shiftedFromBox'
 import DoneByInfoRow from './doneByInfoRow'
+import TaskTypeInfo from '../components/taskTypeInfo'
+import CreatedInfo from '../components/createdInfo'
 import moment from 'moment'
 import SModal from 'components/sModal'
 import _ from 'lodash'
@@ -25,11 +26,10 @@ export default class CheckUncheckTaskPopup extends Component {
 		if(!this.props.checkingTask) return <fb></fb>
 		const t = this.props.checkingTask
 		const users = this.props.users
-		const taskTypeAndPattern = getTypeAndPatternOfTask(t)
 		const assignedUsers = _.keys(t.assignedUsers)
 		const isChecked = t.isDone || t.isIgnored || t.isShifted
 
-		const createdBy = t.creatorID && users.find(u => u.ID===t.creatorID).name
+		const createdBy = users.find(u => u.ID === t.creatorID).name
 
 		return (
 			<SModal.Main title={t.subject} onClose={this.props.onClose}>
@@ -38,12 +38,8 @@ export default class CheckUncheckTaskPopup extends Component {
 						<AssignedUsers {...{assignedUsers, users}} usersRed={[t.isDoneBy]} colorStyle={isChecked ? 'blackAndWhite' : 'colorful'}/>
 					</fb>
 					<fb className="checkUncheckModalBodyContent">
-						<fb className='modalTaskTypeInfo'>
-							<icon className='icon-insert_invitation nop'/> <bo>{taskTypeAndPattern.type} </bo> {(taskTypeAndPattern.patternFullLength || taskTypeAndPattern.pattern)}
-						</fb>
-						<fb className='createdInfo'>
-							<icon className='icon-account_circle nop'/><p>Erstellt von <b>{createdBy}</b> am<b> {moment(t.creationDate).format('DD.MM.YYYY')}</b></p>
-						</fb>
+						<TaskTypeInfo task={t} />
+						<CreatedInfo createdBy={createdBy} creationDate={t.creationDate} />
 						<DoneByInfoRow task={t} users={users} />
 						{ t.originalShiftedTask && 	<ShiftedFromBox originalDate={t.originalShiftedTask.date}/> }
 						{ t.text && 								<fb className='modalTaskText'>{t.text}</fb> }

@@ -1,0 +1,22 @@
+.taskManagerEditorMain{
+	justify-content: center;
+
+	.editorContent{
+		width: 100%;
+		max-width: 990px;
+		flex-direction: column;
+
+		.taskListWrapper{
+			min-height: 500px;
+			margin-bottom: 18px;
+
+			.taskList{
+				flex-direction: column;
+				overflow-y: scroll;
+			}
+			.taskList :hover{
+				background-color: #e1e1e1 ;
+			}
+		}
+	}
+}

@@ -53,3 +53,9 @@ export const refreshTaskManagerListeners = () => {
 		setUndoneTasksListener()(dispatch, getState)
 	}
 }
+
+export const setAllSingleTasksListener = () => ((dispatch, getState) => {
+	const dbPath = getFirebasePath('singleTasks')
+	const queryRef = FBInstance.database().ref(dbPath).orderByChild("originalShiftedTask").endAt(0)
+	createFirebaseListener(dispatch, getState, 'allSingleTasks', dbPath, queryRef)
+})

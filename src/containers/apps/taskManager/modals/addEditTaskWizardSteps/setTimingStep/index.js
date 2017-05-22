@@ -61,6 +61,7 @@ class SetTimingStep extends PureComponent {
 	renderOneTimerSelector() { return (
 		<fb className='vertical'>
 				<WizardDatePicker
+					//openOnMount={true}
 					pickedDate={this.props.OTask.onetimerDate}
 					label={'Datum'}
 					firstAcceptableDate={getTodaySmart()}

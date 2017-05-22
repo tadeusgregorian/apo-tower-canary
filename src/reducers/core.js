@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { simpleReducer } from './reducerHelpers'
 
 export const selectedBranch = (state = localStorage.branch || null, action) => {
 	switch (action.type) {
@@ -14,3 +14,9 @@ export const selectedUser = (state = null, action) => {
 	default: return state
 	}
 }
+
+export const clientTimeSynchronization = simpleReducer({
+	default: 										false,
+	CLIENT_TIME_SYNCHRONIZED: 	'timeWasSynchronized',
+	CLIENT_TIME_CORRECT: 				'notNecessaryTimeCorrect',
+})

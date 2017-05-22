@@ -1,14 +1,11 @@
 import cN  from 'classnames'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { addNewUser, editUser } from 'actions/index'
 import { userColors } from 'helpers/colors';
 import SModal from 'components/sModal'
 import SButton from 'components/sButton'
 import './styles.css';
 
-class AddEditUserPopup extends Component {
+export default class AddEditUserPopup extends Component {
 	constructor(props) {
 		super(props);
 
@@ -17,12 +14,7 @@ class AddEditUserPopup extends Component {
 			nameInitials: this.props.editing ? this.props.user.nameInitials : '',
 			color: this.props.editing ? this.props.user.color : '',
 			userinputMissingText: '',
-			hoursPerWeek: this.props.editing ? this.props.user.hoursPerWeek : 40,
 		};
-	}
-
-	onFinish() {
-		this.props.close(this)
 	}
 
 	onButtonClicked = () => {
@@ -43,45 +35,31 @@ class AddEditUserPopup extends Component {
 		userObj.name = this.state.name
 		userObj.nameInitials = this.state.nameInitials
 		userObj.color = this.state.color
-		userObj.hoursPerWeek = this.state.hoursPerWeek;
 
 		if(this.props.editing) {
-
 			if(!this.props.user.ID) { return }  // in editing user.ID has to be existent!
 			userObj.ID = this.props.user.ID; // add ID to the userObj if you want to use the editUser-Action
-			this.props.editUser(userObj, this.userWasEdited.bind(this));
+			this.props.editUser(userObj)
 
 		} else {
-			this.props.addNewUser(userObj, this.userWasAdded.bind(this));
+			this.props.addNewUser({ ...userObj, ID:  'u' + (this.props.usersCount + 1) })
 		}
-	}
-
-	userWasAdded() {
-		this.onFinish();
-	}
-
-	userWasEdited() {
-		this.onFinish();
+		this.props.close()
 	}
 
 	onNameInputChanged(input) {
-		this.setState({name: input.target.value});
+		this.setState({name: input.target.value})
 	}
 	onInitialsInputChanged(input) {
-		this.setState({nameInitials: input.target.value});
-	}
-	onHoursPerWeekChanged(input) {
-		const hours = parseInt((input.target.value || 0), 10)
-		if(isNaN(hours) || hours < 0 || hours > 80) return;
-		this.setState({hoursPerWeek: hours});
+		this.setState({nameInitials: input.target.value})
 	}
 	onColorTouchTaped(color) {
-		this.setState({color});
+		this.setState({color})
 	}
 
 	render() {
 		return (
-				<SModal.Main title='Neuer Benutzer' onClose={this.props.onClose}>
+				<SModal.Main title='Neuer Benutzer' onClose={this.props.close}>
 					<SModal.Body>
 				<fb className="addEditUserPopup">
 					{ this.state.userinputMissingText ? <fb className="userinputMissingText">{this.state.userinputMissingText}</fb> : null}
@@ -92,10 +70,6 @@ class AddEditUserPopup extends Component {
 					<fb className="inputItemWrapper">
 						<fb className="inputDescription">Namenskürzel:</fb>
 						<input className="initialsInputField" type="text" placeholder="4 Stellig" value={this.state.nameInitials} onChange={this.onInitialsInputChanged.bind(this)} maxLength="4" />
-					</fb>
-					<fb className="inputItemWrapper">
-						<fb className="inputDescription">Wochenstunden:</fb>
-						<input className="hoursPerWeekInputField" type="text" value={this.state.hoursPerWeek} onChange={this.onHoursPerWeekChanged.bind(this)} maxLength="2" />
 					</fb>
 					<fb className="inputItemWrapper">
 						<fb className="inputDescription">Farbe wählen:</fb>
@@ -124,12 +98,3 @@ class AddEditUserPopup extends Component {
 		)
 	}
 }
-
-const mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({
-		addNewUser,
-		editUser
-	}, dispatch);
-};
-
-export default connect(null, mapDispatchToProps)(AddEditUserPopup)

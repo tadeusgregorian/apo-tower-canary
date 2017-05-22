@@ -81,7 +81,7 @@ export const getTypeAndPatternOfTask = (task) => {
 				r.type =  "Multi-Datum"
 				r.patternFullLength = task.irregularDates && task.irregularDates.map( date =>  moment(date).format("DD.MMM YYYY")).join(" ,  ")
 				if( task.irregularDates.length >= 3 ){
-					r.pattern = task.irregularDates && task.irregularDates.at([0,1,2]).map( date =>  moment(date).format("DD.MMM YYYY")).join(" ,  ") +" , ..."
+					r.pattern = task.irregularDates && task.irregularDates.slice(0, 3).map( date =>  moment(date).format("DD.MMM YYYY")).join(" ,  ") +" , ..."
 				}else{
 					r.pattern = r.patternFullLength;
 				}

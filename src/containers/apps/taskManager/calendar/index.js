@@ -48,11 +48,10 @@ class Calendar extends PureComponent{
 	openAddEditTaskWizard = () => {
 		this.props.openAddTaskWizard()
 		let Wizard = composeWizard([ChooseTypeStep, SetTimingStep, DefineContentStep, AssignUsersStep])
-		this.addEditTaskWizard =
-			<Wizard
-				onStepsComplete={this.saveOperatingTaskToDB}
-				onClose={this.props.closeTaskWizard}
-			/>
+		this.addEditTaskWizard = <Wizard
+			onStepsComplete={this.saveOperatingTaskToDB}
+			onClose={this.props.closeTaskWizard}
+		/>
 	}
 
 	checkUncheckTask = (taskObj, isUnchecking, checkType, shiftedTo = false) => {

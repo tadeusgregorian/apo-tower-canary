@@ -1,0 +1,17 @@
+.headerRow{
+  font-size: 13px;
+  height: 24px;
+  align-items: center;
+  padding: 10px 26px 10px 20px;
+  border-bottom: 1px solid lightgrey;
+  color: #3f3f3f;
+  background-color: #d3d3d3;
+  font-weight: bold;
+
+  .creator{
+    font-size:13px;
+  }
+  .taskInfo{
+    font-size:13px;
+  }
+}

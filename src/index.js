@@ -12,9 +12,9 @@ const rootEl = document.getElementById("root");
 const store = configureStore()
 
 moment.locale('de')
-injectTapEventPlugin()
-window.DateTimeFormat = global.Intl.DateTimeFormat;
-initIziToast()
+injectTapEventPlugin() // needed my material-ui
+window.DateTimeFormat = global.Intl.DateTimeFormat; // this is for material-ui datePicker
+initIziToast() // just setting the default style for iziToast
 
 let render = () => {
     const Main = require("./main").default;
