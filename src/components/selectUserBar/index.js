@@ -14,11 +14,16 @@ class SelectUserBar extends Component {
 			this.props.setSelectedUser(user.ID)
 	}
 
+	getUsers = () => {
+		const activeUsers = this.props.users.filter( u => !u.deleted)
+		return activeUsers.filter(u => u.branches && u.branches[this.props.selectedBranch])
+	}
+
 	render() {
 		return(
 			<fb id="selectUserBar">
 				<fb className="bigUserButtonsContainer">
-					{_.values(this.props.users).filter(u => u.branches && u.branches[this.props.selectedBranch]).map(u => (
+					{this.getUsers().map(u => (
 						<BigUserButton
 							key={u.ID}
 							user={u}

@@ -1,6 +1,7 @@
 import { simpleReducer } from './reducerHelpers'
 import { combineReducers } from 'redux'
 
+//const defualtAuthState = (process.env.NODE_ENV === 'development') ? 'loggedIn' : null
 
 const authState = simpleReducer({
 	default: 								null,

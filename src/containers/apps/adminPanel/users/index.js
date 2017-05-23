@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import EditUserElement from './user';
-import {addNewUser, editUser, deleteUser} from 'actions/index';
+import {addNewUser, editUser, deleteUser, reactivateUser} from 'actions/index';
 import ConfirmPopup from 'components/confirmPopup'
 import { openConfirmPopup, closeConfirmPopup } from 'actions'
 import Dialog from 'material-ui/Dialog';
@@ -23,6 +23,19 @@ class AdminpanelUsers extends React.Component {
 			this.openDeleteUserPopup(user)
 	}
 
+	openReactivateUserPopup = (user) => {
+		const confPop = <ConfirmPopup
+			title={'Mitarbeiter wieder aktivieren'}
+			text={<p>Soll <strong>{user.name}</strong> wirklich reaktiviert werden?</p>}
+			onAccept={() => reactivateUser(user.ID)}
+			onClose={this.props.closeConfirmPopup}
+			acceptBtnLabel='Reaktivieren'
+			declineBtnLabel='Abbrechen'
+			acceptBtnRed={true}
+		/>
+		this.props.openConfirmPopup(confPop)
+	}
+
 	openAddEditUserPopup = (editing = false, user = null) => {
 			this.setState({addEditUserPopup_open: true});
 			this.addEditUserPopup = <AddEditUserPopup
@@ -30,6 +43,9 @@ class AdminpanelUsers extends React.Component {
 				user={user}
 				close={this.closeAddEditUserPopup}
 				usersCount={this.props.users.length}
+				branches={this.props.branches}
+				groups={this.props.groups}
+				selectedBranch={this.props.selectedBranch}
 				editUser={editUser}
 				addNewUser={addNewUser}
 			/>
@@ -64,6 +80,7 @@ class AdminpanelUsers extends React.Component {
 						key={user.ID}
 						changeVacationStatusOfUser={this.changeVacationStatusOfUser}
 						deleteUser={this.tryToDeleteUser}
+						reactivateUser={this.openReactivateUserPopup}
 						editUser={this.openAddEditUserPopup}
 					/>))
 				}
@@ -84,8 +101,11 @@ const mapDispatchToProps = (dispatch) => {
 	}, dispatch);
 };
 
-const mapStateToProps = (state) => {
-	return {users: state.data.users};
-};
+const mapStateToProps = (state) => ({
+	users: state.data.users,
+	groups: state.data.groups,
+	branches: state.data.branches,
+	selectedBranch: state.core.selectedBranch
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminpanelUsers);

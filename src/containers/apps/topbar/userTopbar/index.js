@@ -3,6 +3,7 @@ import SubBar from './subBar'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router-dom'
+import { getUnreadQmLettersCount } from 'selectors/unreadQmLettersSelector'
 import './styles.css'
 
 class UserTopbar extends PureComponent{
@@ -17,6 +18,7 @@ class UserTopbar extends PureComponent{
   render(){
     const { removeSelectedUser, users, selectedUser } = this.props
     const user = users.find(u => u.ID === selectedUser)
+    const unredQms = this.props.unreadQmLettersGrid[selectedUser]
     return(
       <fb className="userTopbarWrapper">
         <fb className='userTopbar' style={{backgroundColor: user.color}}>
@@ -37,6 +39,7 @@ class UserTopbar extends PureComponent{
                 <fb className="topbarButton topbarQmsButton">
                   <icon className="icon icon-mail no-border"></icon>
                   <fb className="topbarButtonLabel">QM BRIEFE</fb>
+                  { !!unredQms && <fb className="unredQmsBubble">{unredQms}</fb> }
                 </fb>
               </Link>
               { user.isAdmin &&
@@ -62,12 +65,12 @@ class UserTopbar extends PureComponent{
 
 const mapStateToProps = (state) => ({
 	selectedUser: state.core.selectedUser,
-  users: state.data.users
+  users: state.data.users,
+  unreadQmLettersGrid: getUnreadQmLettersCount(state)
 })
 
 const mapDispatchToProps = (dispatch) => ({
 		removeSelectedUser: () => dispatch({type: 'REMOVE_SELECTED_USER'})
-
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserTopbar))

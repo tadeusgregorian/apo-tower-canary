@@ -4,6 +4,8 @@ import _ from 'lodash';
 import './styles.css'
 
 export default ({chips, selectedChips, chipClicked}) => {
+  // chips are in this format: [{ID: xyz, name: xyzName}, {ID: zzy, name: zzyName}]
+  // selectedChips format: [xyz, zzy]
 
   return(
     <fb className="chipBarMain">

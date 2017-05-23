@@ -19,6 +19,13 @@ const Main = (props) => {
 	const loggedOut = !props.authState || props.authState === 'loggedOut'
 	const isAuthenticating = props.authState === 'isAuthenticating'
 
+
+	if(process.env.NODE_ENV === 'development'){
+			if (!loggedIn) return(<fb>loggingIn... devEnvironment</fb>)
+	    if (loggedIn) return <Route path='/Apps' component={Apps} />
+ }
+
+
 	return (
 		<div id='main'>
 			{isAuthenticating ? <fb>AUTHENTICATING...</fb> :

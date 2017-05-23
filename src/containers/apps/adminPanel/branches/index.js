@@ -1,74 +1,76 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { addNewBranch, editBranch, deleteBranch } from 'actions'
+import { openConfirmPopup, closeConfirmPopup } from 'actions'
 import {bindActionCreators} from 'redux';
-import EditBranchesContent from './branch';
-import cN from 'classnames';
-import {openPopup} from 'actions/index';
-import {addNewBranch} from 'actions/index';
-import CreateBranchPopup from './createBranchPopup';
+import ConfirmPopup from 'components/confirmPopup'
+import AddEditBranchPopup from './addEditBranchPopup';
 import Dialog from 'material-ui/Dialog';
-import '../styles.css';
+import './styles.css';
+
 
 class AdminpanelBranches extends React.Component {
 	constructor(props) {
-		super(props);
+		super(props)
 
-		this.state = {
-			selectedBranchID: null,
-			createBranchPopupOpen: false
-		}
-		this.createBranchPopup = null;
+		this.state = { addEditBranchPopupOpen: false }
 	}
 
-	branchElementClicked = (e) => this.setState({selectedBranchID: e.target.id})
-	closeAddMemberPopup  = () => this.setState({createBranchPopupOpen: false})
-
-	openCreateBranchPopup() {
-		this.setState({createBranchPopupOpen: true});
-		this.createBranchPopup = (<CreateBranchPopup close={this.closeCreateBranchPopup.bind(this)}/>);
+	openAddEditBranchPopup = (editing = false, branch = null) => {
+		this.addEditBranchPopup = <AddEditBranchPopup
+			onClose={() => this.setState({addEditBranchPopupOpen: false})}
+			addNewBranch={addNewBranch}
+			editBranch={editBranch}
+			branch={branch}
+			editing={editing}/>
+		this.setState({addEditBranchPopupOpen: true});
 	}
 
-	closeCreateBranchPopup = () => this.setState({createBranchPopupOpen: false})
-
-	setSelectedBranch() {
-		let firstBranchID = this.props.branches[0] ? this.props.branches[0].ID : null
-		this.setState({selectedBranchID: firstBranchID})
+	openDeleteBranchPopup = (branch) => {
+		const confPop = <ConfirmPopup
+			title={'Filiale löschen'}
+			text={<p>Soll Die Filiale <strong>{branch.name}</strong> wirklich gelöscht werden?</p>}
+			onAccept={() => deleteBranch(branch.ID, this.props.users)}
+			onClose={this.props.closeConfirmPopup}
+			acceptBtnLabel='Löschen'
+			declineBtnLabel='Abbrechen'
+			acceptBtnRed={true}
+		/>
+		this.props.openConfirmPopup(confPop)
 	}
+
 
 	render() {
-		let selectedBranchID = this.state.selectedBranchID || (this.props.branches[0] && this.props.branches[0].ID)
 		return (
-			<div className="edit-groups">
-				<div className="groups-list">
-					<div className="group-list-element list-head">Filialen</div>
-					{this.props.branches.map((branch) => <div key={branch.ID} id={branch.ID} className={cN({
-						'groups-list-element': true,
-						'selected': (branch.ID === selectedBranchID)
-					})} onClick={this.branchElementClicked.bind(this)}>{branch.name}
-					</div>)}
-					<div className="new-group-element">
-						<button className="button icon-folder-plus" onClick={this.openCreateBranchPopup.bind(this)}>Filiale Erstellen</button>
-					</div>
-				</div>
-				{< EditBranchesContent setSelectedBranch={ this.setSelectedBranch.bind(this) }
-				branch={ this.props.branches.find(g => g.ID === selectedBranchID) } />}
-				<Dialog className="materialDialog" open={this.state.createBranchPopupOpen} onRequestClose={this.closeAddMemberPopup.bind(this)}>
-					{this.createBranchPopup}
+			<fb className="edit-branches">
+				<fb className="new-branch-button-wrapper">
+					<button className="button icon-folder-plus" onClick={() => this.openAddEditBranchPopup()}>Filiale Hinzufügen</button>
+				</fb>
+				{ this.props.branches.map(branch =>
+					<fb key={branch.ID} className='branches-list-element'>
+						<icon className="branchIcon icon-navigate_next" />
+						<fb className="branchName">{branch.name}</fb>
+						<button className="button editBranchButton" onClick={() => this.openAddEditBranchPopup(true, branch)}>bearbeiten</button>
+						<icon className="icon icon-bin deleteIcon" onClick={() => this.openDeleteBranchPopup(branch)}/>
+					</fb>
+				)}
+				<Dialog
+					bodyClassName="sModal"
+					open={!!this.state.addEditBranchPopupOpen}
+					onRequestClose={() => this.setState({addEditBranchPopupOpen: false})}>
+					{this.addEditBranchPopup}
 				</Dialog>
-			</div>
+			</fb>
 		);
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		openPopup,
-		addNewBranch
+		openConfirmPopup,
+		closeConfirmPopup,
 	}, dispatch);
 };
 
-const mapStateToProps = (state) => {
-	return {users: state.data.users, branches: state.data.branches};
-};
-
+const mapStateToProps = (state) => ({ branches: state.data.branches, users: state.data.users })
 export default connect(mapStateToProps, mapDispatchToProps)(AdminpanelBranches);

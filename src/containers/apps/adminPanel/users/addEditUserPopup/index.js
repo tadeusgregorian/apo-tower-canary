@@ -3,16 +3,23 @@ import React, { Component } from 'react'
 import { userColors } from 'helpers/colors';
 import SModal from 'components/sModal'
 import SButton from 'components/sButton'
+import ChipBar from 'components/chipBar'
+import _ from 'lodash'
 import './styles.css';
 
 export default class AddEditUserPopup extends Component {
 	constructor(props) {
 		super(props);
 
+		const editing = this.props.editing
+		const user = this.props.user
+
 		this.state = {
-			name: this.props.editing ? this.props.user.name : '',
-			nameInitials: this.props.editing ? this.props.user.nameInitials : '',
-			color: this.props.editing ? this.props.user.color : '',
+			name: 					editing ? user.name : '',
+			nameInitials: 	editing ? user.nameInitials : '',
+			color: 					editing ? user.color : '',
+			branches: 			editing ? _.keys(user.branches) : [],
+			assignedGroups: editing ? _.keys(user.assignedGroups) : [],
 			userinputMissingText: '',
 		};
 	}
@@ -30,11 +37,21 @@ export default class AddEditUserPopup extends Component {
 			this.setState({userinputMissingText: 'Bitte wählen Sie eine Farbe aus.'})
 			return;
 		}
+		if(!this.state.branches.length) {
+			this.setState({userinputMissingText: 'Bitte wählen Sie mindestens eine Filiale aus.'})
+			return;
+		}
+		if(!this.state.assignedGroups.length) {
+			this.setState({userinputMissingText: 'Bitte wählen Sie mindestens eine Position/Gruppe.'})
+			return;
+		}
 
-		let userObj = { ...this.props.user }
-		userObj.name = this.state.name
-		userObj.nameInitials = this.state.nameInitials
-		userObj.color = this.state.color
+		let userObj 						= { ...this.props.user }
+		userObj.name 						= this.state.name
+		userObj.nameInitials 		= this.state.nameInitials
+		userObj.color 					= this.state.color
+		userObj.assignedGroups  = this.state.assignedGroups.reduce((acc, val) => ({ ...acc, [val]: 1}), {})
+		userObj.branches 				= this.state.branches.reduce((acc, val) => ({ ...acc, [val]: 1}), {})
 
 		if(this.props.editing) {
 			if(!this.props.user.ID) { return }  // in editing user.ID has to be existent!
@@ -55,6 +72,12 @@ export default class AddEditUserPopup extends Component {
 	}
 	onColorTouchTaped(color) {
 		this.setState({color})
+	}
+
+	chipClicked = (bID, target) => {
+		const currentBs = this.state[target]
+		const newBs = _.includes(currentBs, bID) ? _.without(currentBs, bID) : [ ...currentBs, bID ]
+		this.setState({[target]: newBs})
 	}
 
 	render() {
@@ -81,6 +104,24 @@ export default class AddEditUserPopup extends Component {
 										onClick={ () => this.onColorTouchTaped(colorString)} >
 										{ (this.state.color === colorString) ? <icon className="icon icon-checkmark" /> : null}
 								</fb>)})}
+						</fb>
+					</fb>
+					<fb className="inputItemWrapper">
+						<fb className="inputDescription">arbeitet in:</fb>
+						<fb className="branchesWrapper">
+							<ChipBar
+								chips={this.props.branches}
+								selectedChips={this.state.branches}
+								chipClicked={(bID) => this.chipClicked(bID, 'branches')}/>
+						</fb>
+					</fb>
+					<fb className="inputItemWrapper">
+						<fb className="inputDescription">arbeitet als:</fb>
+						<fb className="branchesWrapper">
+							<ChipBar
+								chips={this.props.groups}
+								selectedChips={this.state.assignedGroups}
+								chipClicked={(gID) => this.chipClicked(gID, 'assignedGroups')}/>
 						</fb>
 					</fb>
 				</fb>

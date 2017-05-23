@@ -1,4 +1,4 @@
-.edit-branches{
+.edit-groups{
   padding: 12px;
   width: 100%;
   flex-direction: column;
@@ -6,25 +6,25 @@
   display: -ms-flexbox;
   display: flex;
 
-  .new-branch-button-wrapper{
+  .new-group-button-wrapper{
     font-size: 16px;
     border-bottom: 1px solid rgba(211, 211, 211, 0.68);
     padding: 2px 20px 13px 0px;
   }
 
-  .branches-list-element{
+  .groups-list-element{
     font-size: 16px;
     border-bottom: 1px solid rgba(211, 211, 211, 0.68);
     padding: 5px 20px 5px 9px;
     height: 50px;
     align-items: center;
 
-    .branchIcon{
+    .groupIcon{
       font-size: 14px;
       color: grey;
     }
 
-    .editBranchButton{
+    .editGroupButton{
       margin: 0 20px 0 0;
     }
 
@@ -33,7 +33,7 @@
     }
   }
 
-  .branches-list-element:last-of-type{
+  .groups-list-element:last-of-type{
     border: none;
   }
 }

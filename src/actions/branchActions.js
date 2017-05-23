@@ -1,35 +1,17 @@
 import FBInstance from '../firebaseInstance';
-import { createGuid } from 'helpers';
+import { getFirebasePath } from './actionHelpers'
+import { createShortGuid } from 'helpers';
 import _ from 'lodash';
 
-export function deleteBranch(branchID, callback) {
-	return dispatch => {
-		return FBInstance.database().ref('branches').child(branchID).remove().then(function () {
-			callback();
-		}).catch(function (error) {});
-	}
+export function deleteBranch(branchID) {
+	FBInstance.database().ref(getFirebasePath('branches')).child(branchID).remove()
 }
 
-export function addNewBranch(branchName, callback) {
-	let branch = {
-		ID: createGuid(),
-		name: branchName
-	};
-	return dispatch => {
-		return FBInstance.database().ref('branches').child(branch.ID).set(branch, callback);
-	};
+export function addNewBranch(branchName) {
+	let branch = { ID: createShortGuid(), name: branchName }
+	FBInstance.database().ref(getFirebasePath('branches')).child(branch.ID).set(branch)
 }
 
-export function addUserToBranch(userID, branches, callback) {
-	return dispatch => {
-		return FBInstance.database().ref('users').child(userID).child('branches').set(branches, callback);
-	};
-}
-
-export function removeUserFromBranch(branchID, userID, callback) {
-	return dispatch => {
-		return FBInstance.database().ref('users').child(userID).child('branches').child(branchID).remove().then(function () {
-			callback();
-		}).catch(function (error) {});
-	};
+export function editBranch(branchObj) {
+	FBInstance.database().ref(getFirebasePath('branches')).child(branchObj.ID).set(branchObj)
 }

@@ -1,93 +1,76 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import EditGroupsContent from './group';
-import cN from 'classnames';
-import { openPopup, addNewGroup } from 'actions/index';
-import CreateGroupPopup from './createGroupPopup';
+import { addNewGroup, editGroup, deleteGroup } from 'actions'
+import { openConfirmPopup, closeConfirmPopup } from 'actions'
+import {bindActionCreators} from 'redux';
+import ConfirmPopup from 'components/confirmPopup'
+import AddEditGroupPopup from './addEditGroupPopup';
 import Dialog from 'material-ui/Dialog';
-import '../styles.css';
+import './styles.css';
 
 
 class AdminpanelGroups extends React.Component {
 	constructor(props) {
-		super(props);
+		super(props)
 
-		this.state = {
-			selectedGroupID: null,
-			createGroupPopupOpen: false
-		};
-
-		this.createGroupPopup = null;
+		this.state = { createGroupPopupOpen: false }
 	}
 
-	groupElementClicked(e) {
-		this.setState({selectedGroupID: e.target.id});
+	openAddEditGroupPopup = (editing = false, group = null) => {
+		this.createGroupPopup = <AddEditGroupPopup
+			onClose={() => this.setState({createGroupPopupOpen: false})}
+			addNewGroup={addNewGroup}
+			editGroup={editGroup}
+			group={group}
+			editing={editing}/>
+		this.setState({createGroupPopupOpen: true});
 	}
 
-	closeAddMemberPopup(){
-		this.setState({createGroupPopupOpen: false});
-	}
-
-	openCreateGroupPopup() {
-			this.setState({createGroupPopupOpen: true});
-			this.createGroupPopup = (<CreateGroupPopup close={this.closeCreateGroupPopup.bind(this)}/>) ;
-	}
-
-	closeCreateGroupPopup(){
-		this.setState({createGroupPopupOpen: false});
-	}
-
-	groupWasCreated() {
-
-	}
-
-	setSelectedGroup() {
-		let firstGroupID = this.props.groups[0] ? this.props.groups[0].ID : null;
-		this.setState({selectedGroupID: firstGroupID});
+	openDeleteGroupPopup = (group) => {
+		const confPop = <ConfirmPopup
+			title={'Gruppe löschen'}
+			text={<p>Soll Die Gruppe <strong>{group.name}</strong> wirklich gelöscht werden?</p>}
+			onAccept={() => deleteGroup(group.ID, this.props.users)}
+			onClose={this.props.closeConfirmPopup}
+			acceptBtnLabel='Löschen'
+			declineBtnLabel='Abbrechen'
+			acceptBtnRed={true}
+		/>
+		this.props.openConfirmPopup(confPop)
 	}
 
 
 	render() {
-		let selectedGroupID = this.state.selectedGroupID || (this.props.groups[0] && this.props.groups[0].ID)
 		return (
-			<div className="edit-groups">
-				<div className="groups-list">
-					{ this.props.groups.map((group) =>
-						<div
-							key={group.ID}
-							id={group.ID}
-							className={cN({'groups-list-element': true, 'selected': (group.ID === selectedGroupID)})}
-							onClick={this.groupElementClicked.bind(this)}>{group.name}
-						</div>
-					)}
-					<div className="new-group-element">
-						<button className="button icon-folder-plus" onClick={ this.openCreateGroupPopup.bind(this) } >Gruppe Erstellen</button>
-					</div>
-				</div>
-				{ <EditGroupsContent setSelectedGroup={this.setSelectedGroup.bind(this)} group={this.props.groups.find(g => g.ID===selectedGroupID)} /> }
-				<Dialog className="materialDialog" open={this.state.createGroupPopupOpen} onRequestClose={this.closeAddMemberPopup.bind(this)}>
+			<fb className="edit-groups">
+				<fb className="new-group-button-wrapper">
+					<button className="button icon-folder-plus" onClick={() => this.openAddEditGroupPopup()}>Gruppe Hinzufügen</button>
+				</fb>
+				{ this.props.groups.map(group =>
+					<fb key={group.ID} className='groups-list-element'>
+						<icon className="groupIcon icon-navigate_next" />
+						<fb className="groupName">{group.name}</fb>
+						<button className="button editGroupButton" onClick={() => this.openAddEditGroupPopup(true, group)}>bearbeiten</button>
+						<icon className="icon icon-bin deleteIcon" onClick={() => this.openDeleteGroupPopup(group)}/>
+					</fb>
+				)}
+				<Dialog
+					bodyClassName="sModal"
+					open={!!this.state.createGroupPopupOpen}
+					onRequestClose={() => this.setState({createGroupPopupOpen: false})}>
 					{this.createGroupPopup}
 				</Dialog>
-			</div>
+			</fb>
 		);
 	}
 }
 
-
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		openPopup,
-		addNewGroup
+		openConfirmPopup,
+		closeConfirmPopup,
 	}, dispatch);
 };
 
-const mapStateToProps = (state) => {
-	return {
-		users: state.data.users,
-		groups: state.data.groups
-	};
-};
-
-
+const mapStateToProps = (state) => ({ groups: state.data.groups, users: state.data.users })
 export default connect(mapStateToProps, mapDispatchToProps)(AdminpanelGroups);
