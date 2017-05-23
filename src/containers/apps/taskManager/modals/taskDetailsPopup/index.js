@@ -43,7 +43,7 @@ export default ({users, task, editable, editTask, deleteTask, onClose}) =>  {
 						/>
 						<SButton
 							color={'#e74c3c'}
-							label='LÖSCHEN'
+							label={task.onetimerDate ? 'LÖSCHEN' : 'BEENDEN'}
 							onClick={delteBtnClicked}
 							disabled={!editable}
 						/>

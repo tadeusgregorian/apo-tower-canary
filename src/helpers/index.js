@@ -134,6 +134,13 @@ export const shallowEqual = (a, b) => {
 	return true
 }
 
+export const whatsDifferent = (a, b) => {
+	let diff = []
+	for(let key in b) { if(a[key] !== b[key]) diff.push(key)}
+	for(let key in a) { if(a[key] !== b[key]) diff.push(key)}
+	return _.uniq(diff)
+}
+
 export const doubleDigit = (num) => {
 	return (String(num).length===1) ? '0'+num : ''+num
 }

@@ -36,7 +36,7 @@ class UserTopbar extends PureComponent{
               <Link to={`/Apps/QM/${user.ID}`}>
                 <fb className="topbarButton topbarQmsButton">
                   <icon className="icon icon-mail no-border"></icon>
-                  <fb className="topbarButtonLabel">ANSAGEN</fb>
+                  <fb className="topbarButtonLabel">QM BRIEFE</fb>
                 </fb>
               </Link>
               { user.isAdmin &&

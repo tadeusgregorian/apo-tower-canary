@@ -30,7 +30,7 @@ export default class ReadUnreadQmPopup extends PureComponent {
 		const qmID 		= this.props.qmData.ID
 		const userID 	= this.props.userID
 		playTaskCheckSound()
-		this.props.close()
+		this.props.onClose()
 		this.props.hasRed ? unreadQm(qmID, userID) : readQm(qmID, userID)
 	}
 

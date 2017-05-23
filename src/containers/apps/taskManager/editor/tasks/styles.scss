@@ -1,0 +1,7 @@
+.taskList{
+  flex-direction: column;
+  overflow-y: scroll;
+}
+.taskList :hover{
+  background-color: #e1e1e1 ;
+}

@@ -28,7 +28,8 @@ export const getTasksForDay = (repeatingTasks, singleTasks, day) => {
 		if (t.endDate 	&& t.endDate   < day) return false
 		if (t.startDate && t.startDate > day) return false
 
-		if (t.onetimerDate && t.onetimerDate===day) return true
+
+		if (t.onetimerDate) return t.onetimerDate === day
 		if (t.irregularDates) return t.irregularDates.find(date => date===day)
 		if (t.type===TaskType.daily) return ((!dayIsSaturday && !dayIsSunday) || (dayIsSaturday && t.includeSaturday) || (dayIsSunday && t.includeSunday))
 

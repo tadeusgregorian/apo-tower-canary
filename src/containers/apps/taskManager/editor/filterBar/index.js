@@ -1,16 +1,11 @@
 import React, {PureComponent} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import _ from 'lodash';
-import moment from 'moment'
-import cN from 'classnames'
 
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import TextField from 'material-ui/TextField'
 import Checkbox from 'material-ui/Checkbox'
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
-
 import './styles.css'
 
 export default class FilterBar extends PureComponent {

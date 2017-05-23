@@ -17,7 +17,12 @@ const writeUndoneTasksToDB = (undoneTasksInRange) => {
 const getUndoneTasksInRange = (range, repeatingTasks, singleTasks, checkedMini) => {
 	const tasksGrid = range.map(day => {
 		const tasks = getTasksForDay(repeatingTasks, singleTasks, day)
-		return tasks.map(t => ({ID: day+t.ID, taskID: t.ID, taskDate: day, assignedUsers: t.assignedUsers}))
+		return tasks.map(t => ({
+			...t,
+			ID: day+t.ID,
+			taskID: t.ID,
+			taskDate: day,
+		}))
 	})
 
 	const tasksFlat =  tasksGrid.reduce((acc, curr) => acc.concat(curr))
@@ -39,6 +44,7 @@ export const updateUndoneTasks = (lastUpdate) => {
 				const singleTasks 		= [..._.values(tSnap.val())]
 				const checkedMini 		= cSnap.val()
 
+				//console.log(lastUpdate)
 				const range = getSmartDayRange(lastUpdate, yesterday)
 				const undoneTasksInRange = getUndoneTasksInRange(range, repeatingTasks, singleTasks, checkedMini)
 				writeUndoneTasksToDB(undoneTasksInRange)

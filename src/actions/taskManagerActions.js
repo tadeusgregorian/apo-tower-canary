@@ -7,10 +7,9 @@ const today = parseInt(moment().format('YYYYMMDD'), 10)
 const getCategory = (task) => {return (task.onetimerDate ? 'singleTasks' : 'repeatingTasks')}
 
 
-export function checkTask(task, checkType, shiftedTo = null) {
+export function checkTask(task, checkType, taskDate, shiftedTo = null) {
 	return(dispatch, getState) => {
 		// note: cant get task from store, because when checking task from checkbox, there is no taskObj in redux-store.
-		const taskDate = getState().ui.taskManager.currentDay
 		const userID = getState().core.selectedUser
 
 		const checkID = taskDate + task.ID
@@ -28,15 +27,18 @@ export function checkTask(task, checkType, shiftedTo = null) {
 		}
 
 		//Update undoneTasks if task is in past
+		if(taskDate < today){
+			console.log(taskDate)
+			console.log(task.ID)
+		}
 		if(taskDate < today) updates[getFirebasePath('undoneTasks') + taskDate + task.ID] = null
 
 		FBInstance.database().ref().update(updates)
 	}
 }
 
-export function uncheckTask(task) {
+export function uncheckTask(task, taskDate) {
 	return(dispatch, getState) => {
-		const taskDate = getState().ui.taskManager.currentDay
 
 		const checkID = taskDate + task.ID
 		let updates = {}
@@ -44,10 +46,11 @@ export function uncheckTask(task) {
 		updates[getFirebasePath('checkedMini')+taskDate+'/'+task.ID] = null
 		if(taskDate < today) {
 			updates[getFirebasePath('undoneTasks') + taskDate + task.ID] = {
+				...task,
 				ID: taskDate+task.ID,
-				taskDate: taskDate,
 				taskID: task.ID,
-				assignedUsers: task.assignedUsers }
+				taskDate: taskDate,
+			}
 		}
 		FBInstance.database().ref().update(updates)
 	}

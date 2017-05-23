@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import _ from 'lodash';
-import moment from 'moment'
 
 import { openConfirmPopup, closeConfirmPopup } from 'actions'
 import { createTask, editAndCreateTask, deleteTask, endRepeatingTask } from 'actions';
@@ -14,23 +13,22 @@ import AssignUsersStep 		from '../modals/addEditTaskWizardSteps/assignUsersStep'
 import DefineContentStep 	from '../modals/addEditTaskWizardSteps/defineContentStep'
 import SetTimingStep 			from '../modals/addEditTaskWizardSteps/setTimingStep'
 
-import EditCreatedTask 	from './task'
+import Tasks						from './tasks'
 import FilterBar 				from './filterBar'
 import ListHead  				from './listHead'
 
-import { stringIncludes, getTodaySmart, getYesterdaySmart, createShortGuid } from 'helpers'
-import LazyLoad, {forceCheck} from 'react-lazyload'
+import { getTodaySmart, getYesterdaySmart, createShortGuid } from 'helpers'
 
 import ConfirmPopup from 'components/confirmPopup'
 import TaskDetailsPopup from '../modals/taskDetailsPopup'
-
 import { deleteTaskText } from 'constants/modalTexts'
+
+import ReactTooltip from 'react-tooltip'
 import './styles.css'
 
 class Editor extends PureComponent {
 	constructor(props) {
 		super(props)
-		this.today = getTodaySmart()
 
 		this.state = {
 			taskDetailsPopupOpen: false,
@@ -41,8 +39,6 @@ class Editor extends PureComponent {
 			selectedCategory: 'repeating'
 		}
 	}
-
-	componentDidUpdate = () => forceCheck()
 
 	openTaskDetailsPopup = (task, isInPast) => {
 		const editable = (!isInPast) && task.creatorID === this.props.selectedUser
@@ -106,38 +102,6 @@ class Editor extends PureComponent {
 		this.props.closeTaskWizard()
 	}
 
-	taskIsInPast = (t) => ((t.endDate && t.endDate < this.today) || (t.onetimerDate && t.onetimerDate < this.today))
-
-	filteredSortedTasks() {
-		const {filterCreator, filterAssignedUser, taskSearchString, hidePastTask} = this.state
-		const tasks = this.state.selectedCategory==='repeating' ? this.props.repeatingTasks : this.props.allSingleTasks
-		let filtTs = tasks.filter(t => !t.isDuplicate && !t.originalShiftedTask)
-
-		if (hidePastTask)																					filtTs = filtTs.filter(t => !this.taskIsInPast(t))
-		if (filterCreator && filterCreator !== "none") 						filtTs = filtTs.filter(t => t.creatorID===filterCreator)
-		if (filterAssignedUser && filterAssignedUser !== "none") 	filtTs = filtTs.filter(t => t.assignedUsers && t.assignedUsers[filterAssignedUser])
-		if (this.state.taskSearchString) 													filtTs = filtTs.filter(t => stringIncludes(t.subject+' '+t.text, taskSearchString))
-
-		return _.sortBy(filtTs, (t) => moment(t.creationDate).format('YYYYMMDD'))
-	}
-
-	renderTasks = () => {
-		if (this.state.selectedCategory==='single' && this.props.allSingleTasksDataStatus !== 'LOADED') return (<fb>loading...</fb>)
-
-		return this.filteredSortedTasks().map(t => (
-				<LazyLoad height={44} overflow={true} offset={30} once={true} debounce={80} key={t.ID} placeholder={(<fb style={{height:'44px', borderTop:'1px solid #d3d3d3', paddingTop:'14px', paddingLeft:'14px', color:'#d3d3d3'}}>loading...</fb>)} >
-					<EditCreatedTask
-						today={this.today}
-						users={this.props.users}
-						user={this.props.selectedUser}
-						task={t}
-						isInPast={this.taskIsInPast(t)}
-						openTaskDetailsPopup={this.openTaskDetailsPopup} />
-				</LazyLoad>
-			)
-		)
-	}
-
 	renderSearchFilterBar = () => (
 			<FilterBar
 				users={this.props.users}
@@ -164,13 +128,17 @@ class Editor extends PureComponent {
 						{this.renderSearchFilterBar()}
 						<fb className="vertical taskListWrapper">
 							<ListHead />
-							<fb className="taskList">
-								{this.renderTasks()}
-							</fb>
+							<Tasks
+								openTaskDetailsPopup={this.openTaskDetailsPopup}
+								today={ getTodaySmart() }
+								tasks={this.state.selectedCategory === 'repeating' ? this.props.repeatingTasks : this.props.allSingleTasks}
+								{...this.props}
+								{...this.state}
+							/>
 						</fb>
 						<Dialog
 							bodyClassName='sModal'
-							open={this.props.taskWizard==='edit'}
+							open={this.props.taskWizard === 'edit'}
 							onRequestClose={this.props.closeTaskWizard}>
 							{this.addEditTaskWizard}
 						</Dialog>
@@ -181,6 +149,7 @@ class Editor extends PureComponent {
 							{this.taskDetailsPopup}
 						</Dialog>
 					</fb>
+					<ReactTooltip id='fullUserName' type='dark' delayShow={100} className="highestZIndex"/>
 				</fb>
 		)
 	}
@@ -199,9 +168,6 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
 	return {
 		taskWizard: state.ui.taskManager.taskWizard,
-		operatingTask: state.ui.taskManager.operatingTask,
-		deleteTaskPopup: state.ui.taskManager.deleteTaskPopup,
-		taskDetailsPopup: state.ui.taskManager.taskDetailsPopup,
 		repeatingTasks: state.taskManager.repeatingTasks,
 		allSingleTasks: state.taskManager.allSingleTasks,
 		allSingleTasksDataStatus: state.taskManager.allSingleTasksDataStatus,

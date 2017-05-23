@@ -41,11 +41,20 @@ const deleteTaskPopup = (state = null, action) => {
 	}
 }
 
+const undoneTasksModal = (state = null, action) => {
+	switch (action.type) {
+	case 'OPEN_UNDONDE_TASKS_MODAL' 	: return action.payload
+	case 'CLOSE_UNDONDE_TASKS_MODAL'  : return null
+	default: return state
+	}
+}
+
 
 export default combineReducers({
 	currentDay,
 	checkingTask,
 	taskWizard,
 	taskDetailsPopup,
-	deleteTaskPopup
+	deleteTaskPopup,
+	undoneTasksModal
 })

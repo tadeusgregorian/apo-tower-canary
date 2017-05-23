@@ -6,10 +6,11 @@ import _ from 'lodash';
 import moment from 'moment'
 import Day from './day';
 import DayHead from './dayHead'
-import {checkTask, uncheckTask, createTask} from 'actions';
-import Dialog from 'material-ui/Dialog';
+import {checkTask, uncheckTask, createTask} from 'actions'
+import Dialog from 'material-ui/Dialog'
 import CheckUncheckTaskPopup from '../modals/checkUncheckTaskPopup'
-import DaysTransitionGroup from './daysTransitionGroup';
+import UndoneTasksModal from '../modals/undoneTasksModal'
+import DaysTransitionGroup from './daysTransitionGroup'
 
 import composeWizard 			from 'composers/wizard'
 import AssignUsersStep 		from '../modals/addEditTaskWizardSteps/assignUsersStep'
@@ -18,11 +19,14 @@ import DefineContentStep 	from '../modals/addEditTaskWizardSteps/defineContentSt
 import SetTimingStep 			from '../modals/addEditTaskWizardSteps/setTimingStep'
 
 import DatePicker from 'material-ui/DatePicker';
-import { addDays, subtractDays } 			from 'helpers'
+import { addDays, subtractDays } from 'helpers'
 import { setSingleTasksListener } 		from 'actions'
 import { extendTasksWithChecked } 		from 'selectors/extendTasksWithChecked'
 import { taskDataLoaded }							from 'selectors/taskDataLoaded'
 import { getLastDateWithUndoneTask }	from 'selectors/lastDateWithUndoneTask'
+import { undoneTasksOfSelectedUser }	from 'selectors/undoneTasksOfSelectedUser'
+
+import ReactTooltip from 'react-tooltip'
 import './styles.css';
 
 
@@ -40,9 +44,15 @@ class Calendar extends PureComponent{
 		dayChanged && this.props.setSingleTasksListener()
 	}
 
-	numberOfUndoneTasks = () => {
-		if(!this.props.selectedUser) return this.props.undoneTasks.length
-		return this.props.undoneTasks.filter(t => t.assignedUsers[this.props.selectedUser]).length
+	openUndoneTasksModal = () => {
+		const comp = <UndoneTasksModal
+			onClose={this.props.closeUndoneTasksModal}
+			//undoneTasks={this.props.undoneTasks}
+			openCheckUncheckTaskPopup={this.props.setCheckingTask}
+			jumpToDate={this.jumpToDate}
+			users={this.props.users}
+		/>
+		this.props.openUndoneTasksModal(comp)
 	}
 
 	openAddEditTaskWizard = () => {
@@ -54,9 +64,9 @@ class Calendar extends PureComponent{
 		/>
 	}
 
-	checkUncheckTask = (taskObj, isUnchecking, checkType, shiftedTo = false) => {
-		if(!isUnchecking)  	this.props.checkTask(taskObj, checkType, shiftedTo)
-		if(isUnchecking) 		this.props.uncheckTask(taskObj)
+	checkUncheckTask = (taskObj, isUnchecking, checkType, taskDate = this.props.currentDay, shiftedTo = false) => {
+		if(!isUnchecking)  	this.props.checkTask(taskObj, checkType, taskDate, shiftedTo)
+		if(isUnchecking) 		this.props.uncheckTask(taskObj, taskDate)
 		this.props.closeCheckingTask()
 	}
 
@@ -110,7 +120,8 @@ class Calendar extends PureComponent{
 						openDatePicker={() => this.refs.jumpToDatePicker.openDialog()}
 						userMode={userMode}
 						lastDateWithUndoneTask={this.props.lastDateWithUndoneTask}
-						numberOfUndoneTasks={this.numberOfUndoneTasks()}
+						numberOfUndoneTasks={this.props.undoneTasks.length}
+						openUndoneTasksModal={this.openUndoneTasksModal}
 						loadingPastTasks={true} // COME BACK HERE
 					/>
 					<DaysTransitionGroup movingDirection={this.state.movingDayBackward}>
@@ -126,6 +137,13 @@ class Calendar extends PureComponent{
 					autoOk={true}
 					DateTimeFormat={window.DateTimeFormat}
 					locale="de-DE"/>
+				<Dialog
+					actionsContainerStyle={{zIndex: '200'}}
+					bodyStyle={{zIndex: '200'}}
+					bodyClassName='sModal'
+					open={!!this.props.undoneTasksModal}
+					onRequestClose={this.props.closeUndoneTasksModal}
+					children={this.props.undoneTasksModal} />
 				<Dialog bodyClassName='sModal' open={!!this.props.checkingTask} onRequestClose={this.props.closeCheckingTask}>
 					<CheckUncheckTaskPopup
 						checkUncheck={this.checkUncheckTask}
@@ -141,6 +159,7 @@ class Calendar extends PureComponent{
 					open={this.props.taskWizard === 'add'}
 					onRequestClose={this.props.closeTaskWizard}
 					children={this.addEditTaskWizard} />
+				<ReactTooltip id='fullUserName' type='dark' delayShow={100} className='highestZIndex'/>
 			</content>
 		);
 	}
@@ -152,11 +171,13 @@ const mapDispatchToProps = (dispatch) => {
 		setSingleTasksListener,
 		checkTask,
 		uncheckTask,
-		openAddTaskWizard: 	() => ({type: 'OPEN_ADD_TASK_WIZARD'}),
-		closeTaskWizard: 		() => ({type: 'CLOSE_TASK_WIZARD'}),
-		setCheckingTask: 		(task) => ({type: 'SET_CHECKING_TASK', payload: task}),
-		closeCheckingTask: 	() => ({type: 'CLOSE_CHECKING_TASK'}),
-		setCurrentDay: 			(smartDate) => ({type: 'TASKS_SET_CURRENT_DAY', payload: smartDate})
+		openUndoneTasksModal: 	(modal) => ({type: 'OPEN_UNDONDE_TASKS_MODAL', payload: modal}),
+		closeUndoneTasksModal: 	() => ({type: 'CLOSE_UNDONDE_TASKS_MODAL'}),
+		openAddTaskWizard: 			() => ({type: 'OPEN_ADD_TASK_WIZARD'}),
+		closeTaskWizard: 				() => ({type: 'CLOSE_TASK_WIZARD'}),
+		setCheckingTask: 				(task) => ({type: 'SET_CHECKING_TASK', payload: task}),
+		closeCheckingTask: 			() => ({type: 'CLOSE_CHECKING_TASK'}),
+		setCurrentDay: 					(smartDate) => ({type: 'TASKS_SET_CURRENT_DAY', payload: smartDate})
 	}, dispatch);
 }
 
@@ -167,13 +188,15 @@ const mapStateToProps = (state) => {
 		selectedBranch: state.core.selectedBranch,
 		currentDay: state.ui.taskManager.currentDay,
 		checkingTask: state.ui.taskManager.checkingTask,
+		repeatingTasks: state.taskManager.repeatingTasks,
 		tasks: extendTasksWithChecked(state),
 		taskDataLoaded: taskDataLoaded(state),
 		lastDateWithUndoneTask: getLastDateWithUndoneTask(state),
 		operatingTask: state.ui.taskManager.operatingTask,
 		taskWizard: state.ui.taskManager.taskWizard,
 		selectedUser: state.core.selectedUser,
-		undoneTasks: state.taskManager.undoneTasks
+		undoneTasks: undoneTasksOfSelectedUser(state),
+		undoneTasksModal: state.ui.taskManager.undoneTasksModal
 	}
 }
 

@@ -1,0 +1,79 @@
+.undoneTasksWrapper{
+  flex-direction: column;
+  min-height: 200px;
+  padding: 22px;
+  margin-bottom: 12px;
+
+  .undoneTaskRow{
+    flex: 1 0 auto;
+
+    .jumpBackButton{
+      height: 40px;
+      width: 28px;
+      margin: 3px 0px;
+      margin-right: 3px;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 4px;
+      icon{
+        padding: 0px;
+        font-size: 20px;
+        color: grey
+      }
+    }
+
+    .jumpBackButton:hover{
+      background-color: #ececec;
+    }
+
+    .undoneTask{
+      position: relative;
+      height: 40px;
+      cursor: pointer;
+      //justify-content: space-between;
+      position: relative;
+      margin: 3px;
+      border-radius: 2px;
+      border: 1px solid lightgrey;
+      padding: 2px 4px 2px 22px;
+      flex: 1 0 auto;
+      font-size: 14px;
+      //font-size: 15px;
+
+      .taskDate{
+        font-size: 14px;
+        flex: 0 0 auto;
+        justify-content: center;
+        align-items: center;
+        margin-right: 14px;
+      }
+
+      .taskSubject{
+        flex: 1 0 auto;
+        align-items: center;
+        font-weight: 400;
+      }
+    }
+
+    .undoneTask.prio{
+      border-color: #F76D57
+    }
+
+    .undoneTask.prio::before{
+      background-color: #F76D57
+    }
+
+    .undoneTask::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      width: 6px;
+      bottom: 2px;
+      border-top-left-radius: 2px;
+      border-bottom-left-radius: 2px;
+    }
+  }
+}

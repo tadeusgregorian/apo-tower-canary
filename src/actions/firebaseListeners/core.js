@@ -20,12 +20,13 @@ export const synchronizeClientTime = () => (dispatch) => {
 	FBInstance.database().ref(".info/serverTimeOffset").on('value', snap => {
 	  const offset = snap.val()
 		const correctTime = +new Date() + offset
-		startNewDayChecker()
 
 		if (Math.abs(offset) < (1000 * 60 * 10)){
 			dispatch({type: 'CLIENT_TIME_CORRECT'})
+			startNewDayChecker()
 		} else {
 			moment.now = () => correctTime
+			startNewDayChecker()
 			dispatch({type: 'TASKS_SET_CURRENT_DAY', payload: parseInt(moment().format('YYYYMMDD'), 10) })
 			dispatch({type: 'CLIENT_TIME_SYNCHRONIZED'})
 		}

@@ -6,6 +6,8 @@ import TaskTransitionGroup from './taskTransitionGroup';
 import './styles.css';
 import DayFooter from './dayFooter'
 import Task from './task';
+//import ReactTooltip from 'react-tooltip'
+
 
 
 export default class Day extends PureComponent {

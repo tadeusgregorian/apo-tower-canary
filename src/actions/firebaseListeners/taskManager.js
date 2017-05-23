@@ -5,13 +5,14 @@ import { updateUndoneTasks } from '../undoneTasksUpdater'
 import moment from 'moment'
 
 const today = parseInt(moment().format('YYYYMMDD'), 10)
-const yesterday =  parseInt(moment().subtract(1, 'day').format('YYYYMMDD'), 10)
+//const yesterday =  parseInt(moment().subtract(1, 'day').format('YYYYMMDD'), 10)
+const aWhileAgo = 20170520//parseInt(moment().subtract(10, 'day').format('YYYYMMDD'), 10)
 
 export const setRepeatingTasksListener = () => {
 	return (dispatch, getState) => {
 		createFirebaseListener(dispatch, getState, 'repeatingTasks', getFirebasePath('repeatingTasks'))
 		.then(res => createFirebaseListener(dispatch, getState, 'lastUTUpdate', getFirebasePath('lastUTUpdate'), null, true))
-		.then(lastUpdate => lastUpdate !== today && updateUndoneTasks(lastUpdate || yesterday)(dispatch, getState))
+		.then(lastUpdate => lastUpdate !== today && updateUndoneTasks(lastUpdate || aWhileAgo)(dispatch, getState))
 	}
 }
 

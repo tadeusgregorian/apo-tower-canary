@@ -319,3 +319,7 @@ tadeButtonSmall{
 	height: 32px;
 	flex: 0 0 auto;
 }
+
+.highestZIndex{
+	z-index: 10000000000!important;
+}

@@ -1,9 +1,9 @@
 import React from 'react';
 import './styles.css';
 
-const OpenTasksFromPastBlock = ({jumpToDate, numberOfUndoneTasks, lastDateWithUndoneTask}) => {
+const OpenTasksFromPastBlock = ({openUndoneTasksModal, numberOfUndoneTasks}) => {
 
-	const onClick = () => numberOfUndoneTasks && jumpToDate(lastDateWithUndoneTask)
+	const onClick = () => numberOfUndoneTasks && openUndoneTasksModal()
 	const style = { color: numberOfUndoneTasks ? '#ff5438' : '#2ecc71' }
 
 	return(

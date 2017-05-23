@@ -12,7 +12,7 @@ export default class DayHead extends PureComponent {
 
 	render() {
 		const dayMoment = moment(this.props.currentDay, 'YYYYMMDD')
-		const { isFuture, userMode, jumpToDate, numberOfUndoneTasks, lastDateWithUndoneTask} = this.props
+		const { isFuture, userMode, numberOfUndoneTasks, openUndoneTasksModal} = this.props
 
 		return (
 			<fb className="head">
@@ -22,9 +22,11 @@ export default class DayHead extends PureComponent {
 					{ isFuture ?
 						<fb className="futurePastIndicator">ZUKUNFT</fb> :
 						<UndoneTasksButton
-							jumpToDate={jumpToDate}
+							//jumpToDate={jumpToDate}
 							numberOfUndoneTasks={numberOfUndoneTasks}
-							lastDateWithUndoneTask={lastDateWithUndoneTask}/>
+							openUndoneTasksModal={openUndoneTasksModal}
+							//lastDateWithUndoneTask={lastDateWithUndoneTask}
+						/>
 					}
 
 					{	userMode &&

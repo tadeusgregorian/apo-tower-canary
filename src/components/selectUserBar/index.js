@@ -3,6 +3,7 @@ import './styles.css';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import BigUserButton from 'components/bigUserButton';
+import { getUnreadQmLettersCount } from 'selectors/unreadQmLettersSelector'
 import _ from 'lodash';
 
 class SelectUserBar extends Component {
@@ -17,9 +18,14 @@ class SelectUserBar extends Component {
 		return(
 			<fb id="selectUserBar">
 				<fb className="bigUserButtonsContainer">
-					{_.values(this.props.users).filter(u => u.branches && u.branches[this.props.selectedBranch]).map(u => {
-						return <BigUserButton user={u} key={u.ID} clickHandler={() => this.tryToSelectUser(u)}/>
-					})}
+					{_.values(this.props.users).filter(u => u.branches && u.branches[this.props.selectedBranch]).map(u => (
+						<BigUserButton
+							key={u.ID}
+							user={u}
+							clickHandler={() => this.tryToSelectUser(u)}
+							unreadQmsCount={this.props.unredQmsGrid[u.ID]}
+						/>
+					))}
 				</fb>
 			</fb>
 		)
@@ -39,6 +45,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
 	return {
 		users: state.data.users,
+		unredQmsGrid: getUnreadQmLettersCount(state)
 	}
 }
 

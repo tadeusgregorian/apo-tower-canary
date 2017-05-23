@@ -13,6 +13,7 @@ import ReadUnreadQmPopup from './modals/readUnreadQmPopup/index.js';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 import ConfirmPopup from 'components/confirmPopup'
+import ReactTooltip from 'react-tooltip'
 import './styles.css'
 
 
@@ -123,6 +124,7 @@ class QmApp extends PureComponent {
 						onRequestClose={this.closeAddEditQmWizard}>
 						{this.addEditQmWizard}
 					</Dialog>
+					<ReactTooltip id='fullUserName' type='dark' delayShow={100} className="highestZIndex"/>
 				</fb>
 			</fb>
 		)

@@ -1,16 +1,8 @@
 import React, {PureComponent} from 'react'
-import {connect} from 'react-redux';
 import cN from 'classnames';
 import AssignedUsers from 'components/assignedUsers';
-import MiniUser from 'components/miniUser';
 import _ from 'lodash';
-import {getUserById, getTypeAndPatternOfTask} from 'helpers/index';
-import RaisedButton from 'material-ui/RaisedButton';
-import {TaskType} from 'constants'
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import { getTypeAndPatternOfTask} from 'helpers/index';
 import moment from 'moment'
 import './styles.css';
 

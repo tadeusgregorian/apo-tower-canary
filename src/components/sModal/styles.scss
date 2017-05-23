@@ -1,5 +1,6 @@
 .sModalMain{
  flex-direction: column;
+ cursor: default;
 }
 
 .sModalMain > * {
@@ -41,10 +42,10 @@
 }
 
 .sModalBody{
-	//min-height: 100px;
 	flex-direction: column;
-	//padding: 12px 16px;
 	font-size: 17px;
+  overflow-y: scroll;
+  max-height: 560px;
 }
 
 .sModalFooter{

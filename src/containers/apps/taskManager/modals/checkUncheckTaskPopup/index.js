@@ -25,7 +25,12 @@ export default class CheckUncheckTaskPopup extends Component {
 		// this is a random Workaround for a bug ( after closing the Popup there is a last Render which causes bugs... MaterialUI bug )
 		if(!this.props.checkingTask) return <fb></fb>
 		const t = this.props.checkingTask
-		const users = this.props.users
+		const { users } = this.props
+
+		// undoneTasks (coming from firebase: tasks/undoneTasksk/results ) have a prop taskDate
+		// if it exists we take it, otherwise task was clicked from calendar/day component.
+		// in this case the currentDay is the taskDate
+		const taskDate = t.taskDate || this.props.currentDay
 		const assignedUsers = _.keys(t.assignedUsers)
 		const isChecked = t.isDone || t.isIgnored || t.isShifted
 
@@ -49,7 +54,7 @@ export default class CheckUncheckTaskPopup extends Component {
 					<SModal.Footer>
 						<SButton
 							label={t.isIgnored ? 'Ignorierung aufheben' : 'Ignorieren'}
-							onClick={() => this.props.checkUncheck(t, !!t.isIgnored, 'ignored')}
+							onClick={() => this.props.checkUncheck(t, !!t.isIgnored, 'ignored', taskDate)}
 							disabled={!!t.isDone || !!t.isShifted}
 						/>
 						<SButton
@@ -61,14 +66,14 @@ export default class CheckUncheckTaskPopup extends Component {
 							position='right'
 							color={'#2ECC71'}
 							label={t.isDone ? 'Nicht erledigt' : 'Erledigt'}
-							onClick={() => this.props.checkUncheck(t, !!t.isDone, 'done')}
+							onClick={() => this.props.checkUncheck(t, !!t.isDone, 'done', taskDate)}
 							disabled={!!t.isIgnored || !!t.isShifted}
 						/>
 					</SModal.Footer>
 				}
 				<DatePicker style={{"display": "none"}}
 					ref='shiftTaskDatePicker'
-					onChange={(e, d) => { this.props.checkUncheck(t, false, 'shifted', parseInt(moment(d).format('YYYYMMDD'), 10))}}
+					onChange={(e, d) => { this.props.checkUncheck(t, false, 'shifted', taskDate, parseInt(moment(d).format('YYYYMMDD'), 10))}}
 					floatingLabelText="fakeText_Shift"
 					cancelLabel="Abbrechen"
 					okLabel="Verschieben"

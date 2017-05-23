@@ -18,7 +18,7 @@
     "react-redux": "^5.0.1",
     "react-router-dom": "^4.1.1",
     "react-tap-event-plugin": "^2.0.1",
-    "react-tooltip": "^3.2.7",
+    "react-tooltip": "^3.3.0",
     "redux": "^3.5.2",
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.1.0",

@@ -1,6 +1,7 @@
 import React from 'react';
 import cN from 'classnames';
-import MiniUser from 'components/miniUser';
+import MiniUser from 'components/miniUser'
+//import ReactTooltip from 'react-tooltip'
 import './styles.css';
 
 // @param obj 		assignedUsers - {userID:userID,userID:userID,...}
