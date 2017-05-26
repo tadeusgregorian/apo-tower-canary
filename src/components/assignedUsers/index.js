@@ -10,12 +10,12 @@ import './styles.css';
 // @param str 		colorStyle optional! here you can provide colorStyles for MiniUser for ex. 'colorful' , 'blackAndWhite'
 // @param obj 		isDoneBy optional! - a obj of the user.ID {userID:userID} who has done the task
 
-const AssignedUsers = (props) => {
-	const maxDisplayedMiniUsers = props.maxDisplayedMiniUsers || 100
+const AssignedUsers = ({maxDisplayedMiniUsers, assignedUsers, users, usersRed, colorStyle, withTooltips}) => {
+	const maxMiniUsers = maxDisplayedMiniUsers || 100
 
-	let assignedUsersSorted = props.assignedUsers.map(userID =>{
-		const assignedUser = props.users.find(user => user.ID === userID)
-		const hasRed = (props.usersRed && props.usersRed.includes(userID)) ? 1 : 0
+	let assignedUsersSorted = assignedUsers.map(userID =>{
+		const assignedUser = users.find(user => user.ID === userID)
+		const hasRed = (usersRed && usersRed.includes(userID)) ? 1 : 0
 		return { ...assignedUser, hasRed }
 	}).sort((a, b) => a.hasRed - b.hasRed)
 
@@ -23,9 +23,9 @@ const AssignedUsers = (props) => {
 	// A number like ( +3 ) is appended at the end to indicate
 	// how many are not displayd.
 	let hiddenMiniUsersCount = 0
-	if (assignedUsersSorted.length > maxDisplayedMiniUsers) {
-		hiddenMiniUsersCount = assignedUsersSorted.length -  maxDisplayedMiniUsers;
-		assignedUsersSorted = assignedUsersSorted.slice(0, maxDisplayedMiniUsers);
+	if (assignedUsersSorted.length > maxMiniUsers) {
+		hiddenMiniUsersCount = assignedUsersSorted.length -  maxMiniUsers;
+		assignedUsersSorted = assignedUsersSorted.slice(0, maxMiniUsers);
 	}
 
 	return (
@@ -33,9 +33,10 @@ const AssignedUsers = (props) => {
 			{ hiddenMiniUsersCount ? <fb className={cN({"hiddenMiniUsersCount": true, "nothingToHide": !hiddenMiniUsersCount  })} key="counter"> {'...'} </fb> : null}
 			{ assignedUsersSorted.map(assignedUser => (
 				<MiniUser
+					withTooltips={withTooltips}
 					user={assignedUser}
 					grayedOut={assignedUser.hasRed}
-					colorStyle={props.colorStyle}
+					colorStyle={colorStyle}
 					key={assignedUser.ID} />))}
 		</fb>
 	)

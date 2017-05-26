@@ -1,8 +1,8 @@
 .undoneTasksWrapper{
   flex-direction: column;
-  min-height: 200px;
   padding: 22px;
-  margin-bottom: 12px;
+  overflow-y: scroll;
+  flex-wrap: wrap;
 
   .undoneTaskRow{
     flex: 1 0 auto;

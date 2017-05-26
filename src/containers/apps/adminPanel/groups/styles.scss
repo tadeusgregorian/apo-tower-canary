@@ -30,6 +30,11 @@
 
     .deleteIcon{
       cursor: pointer;
+
+      &.disabled{
+        color: lightgrey;
+        cursor: default;
+      }
     }
   }
 

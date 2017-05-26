@@ -92,7 +92,7 @@ class AssignUsersStep extends Component {
 const mapStateToProps = (state) => {
 	return {
 		selectedUser: state.core.selectedUser,
-		users: state.data.users,
+		users: state.data.users.filter(u => !u.deleted),
 		groups: state.data.groups,
 		branches: state.data.branches
 	}

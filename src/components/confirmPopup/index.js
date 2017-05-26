@@ -19,7 +19,7 @@ export default ({acceptBtnLabel, declineBtnLabel, onClose, onAccept, title, text
 			</SModal.Body>
 			<SModal.Footer>
 				 {!noDecline && <SButton label={declineBtnLabel} onClick={onClose}/>}
-					<SButton position='right' color={acceptBtnColor} label={acceptBtnLabel} onClick={closeAndAccpet}/>
+					<SButton right color={acceptBtnColor} label={acceptBtnLabel} onClick={closeAndAccpet}/>
 			</SModal.Footer>
 		</SModal.Main>
 	)

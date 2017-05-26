@@ -2,8 +2,9 @@
 .assignedUsersMain{
 	margin-left: -2px;
 	padding: 0px;
-	flex: 0 0 auto;
 	align-items: center;
+	flex-wrap: wrap;
+  flex-grow: 0;
 
 	.hiddenMiniUsersCount{
 		height: 22px;

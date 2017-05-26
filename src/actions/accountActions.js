@@ -7,3 +7,7 @@ export const requestAdminPinEmail = (userID, email) => {
 	updates[getFirebasePath('users') + userID + '/adminPinStatus'] = 'requested'
 	FBInstance.database().ref().update(updates)
 }
+
+export const saveAdminPinToDB = (adminUserID, pinHash) => {
+	FBInstance.database().ref(getFirebasePath('users')).child(adminUserID+'/adminHash').set(pinHash)
+}

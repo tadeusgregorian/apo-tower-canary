@@ -33,6 +33,7 @@ export default class CheckUncheckTaskPopup extends Component {
 		const taskDate = t.taskDate || this.props.currentDay
 		const assignedUsers = _.keys(t.assignedUsers)
 		const isChecked = t.isDone || t.isIgnored || t.isShifted
+		const colorStyle = isChecked ? 'blackAndWhite' : 'colorful'
 
 		const createdBy = users.find(u => u.ID === t.creatorID).name
 
@@ -40,7 +41,7 @@ export default class CheckUncheckTaskPopup extends Component {
 			<SModal.Main title={t.subject} onClose={this.props.onClose}>
 				<SModal.Body>
 					<fb className='cucModalAssignedUsers'>
-						<AssignedUsers {...{assignedUsers, users}} usersRed={[t.isDoneBy]} colorStyle={isChecked ? 'blackAndWhite' : 'colorful'}/>
+						<AssignedUsers {...{assignedUsers, users}} usersRed={[t.isDoneBy]} colorStyle={colorStyle} withTooltips/>
 					</fb>
 					<fb className="checkUncheckModalBodyContent">
 						<TaskTypeInfo task={t} />
@@ -63,7 +64,7 @@ export default class CheckUncheckTaskPopup extends Component {
 							disabled={isChecked}
 						/>
 						<SButton
-							position='right'
+							right
 							color={'#2ECC71'}
 							label={t.isDone ? 'Nicht erledigt' : 'Erledigt'}
 							onClick={() => this.props.checkUncheck(t, !!t.isDone, 'done', taskDate)}

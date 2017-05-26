@@ -6,6 +6,7 @@ import {bindActionCreators} from 'redux';
 import ConfirmPopup from 'components/confirmPopup'
 import AddEditBranchPopup from './addEditBranchPopup';
 import Dialog from 'material-ui/Dialog';
+import cN from 'classnames'
 import './styles.css';
 
 
@@ -19,7 +20,7 @@ class AdminpanelBranches extends React.Component {
 	openAddEditBranchPopup = (editing = false, branch = null) => {
 		this.addEditBranchPopup = <AddEditBranchPopup
 			onClose={() => this.setState({addEditBranchPopupOpen: false})}
-			addNewBranch={addNewBranch}
+			addNewBranch={(branchName) => addNewBranch(branchName, this.props.selectedUser)}
 			editBranch={editBranch}
 			branch={branch}
 			editing={editing}/>
@@ -51,7 +52,9 @@ class AdminpanelBranches extends React.Component {
 						<icon className="branchIcon icon-navigate_next" />
 						<fb className="branchName">{branch.name}</fb>
 						<button className="button editBranchButton" onClick={() => this.openAddEditBranchPopup(true, branch)}>bearbeiten</button>
-						<icon className="icon icon-bin deleteIcon" onClick={() => this.openDeleteBranchPopup(branch)}/>
+						<icon
+							className={cN({'icon-bin': true, deleteIcon: true, disabled: branch.notDeletable })}
+							onClick={() => !branch.notDeletable && this.openDeleteBranchPopup(branch)}/>
 					</fb>
 				)}
 				<Dialog
@@ -72,5 +75,10 @@ const mapDispatchToProps = (dispatch) => {
 	}, dispatch);
 };
 
-const mapStateToProps = (state) => ({ branches: state.data.branches, users: state.data.users })
+const mapStateToProps = (state) => ({
+	branches: state.data.branches,
+	users: state.data.users,
+	selectedUser: state.core.selectedUser
+})
+
 export default connect(mapStateToProps, mapDispatchToProps)(AdminpanelBranches);

@@ -4,28 +4,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import EnterPinForm from './enterPinForm'
 import CreatePinForm from './createPinForm'
-import {requestAdminPinEmail} from 'actions'
+import { saveAdminPinToDB } from 'actions/accountActions'
 import SModal from 'components/sModal'
-import sha1 from 'sha1';
 import './styles.css';
 import { Toast } from 'helpers'
 
 class EnterAdminPinPopup extends Component {
-	constructor(props) {
-		super(props)
-		this.state = { pin: '' }
-	}
-
-	checkPin = () => {
-		const encryptedPin = sha1(this.state.pin)
-		encryptedPin === this.props.adminUser.adminHash ? this.letUserEnter() : this.letUserTryAgain()
-	}
-
-	onInpChange = (inp) => {
-		console.log(inp)
-		if(inp.length === 4 && sha1(inp) === this.props.adminUser.adminHash) this.letUserEnter()
-		this.setState({pin: inp})
-	}
 
 	letUserEnter = () => {
 		this.props.closeAdminPinDialog()
@@ -34,31 +18,26 @@ class EnterAdminPinPopup extends Component {
 		Toast.success("Willkommen " + this.props.adminUser.name)
 	}
 
-	letUserTryAgain = () => {
-		this.setState({pin: ''})
-		Toast.error("Admin Pin falsch. Bitte erneut eingeben")
-	}
-
-	sendEmail = (email) => {
-		console.log('sending email:')
-		console.log(email)
-		console.log(this.props.adminUser.ID)
-		requestAdminPinEmail(this.props.adminUser.ID, email)
+	writePinToDB = (pinHash) => {
+		saveAdminPinToDB(this.props.adminUser.ID, pinHash)
+		Toast.success('Admin-PIN wurde erstellt!')
+		this.props.closeAdminPinDialog()
 	}
 
 	getModalTitle = () => {
 		const adminPinExists = !!this.props.adminUser.adminHash
-		return (adminPinExists ? 'Admin Passwort eingeben' : 'Sie betreten einen Admin Bereich')
+		return (adminPinExists ? 'Admin-PIN eingeben' : 'Sie betreten einen Admin Bereich')
 	}
 
 	render() {
-		const adminPinExists = !!this.props.adminUser.adminHash
+		const {adminHash} = this.props.adminUser
+		const adminPinExists = !!adminHash
 		return (
 			<SModal.Main title={this.getModalTitle()} onClose={this.props.closeAdminPinDialog}>
 				<SModal.Body>
 					{ adminPinExists ?
-						<EnterPinForm onInpChange={this.onInpChange} value={this.state.pin} onEnter={this.checkPin}/> :
-						<CreatePinForm sendEmail={this.sendEmail} enterWithoutPin={this.letUserEnter}/>
+						<EnterPinForm letUserEnter={this.letUserEnter} adminHash={adminHash}/> :
+						<CreatePinForm writePinToDB={this.writePinToDB}/>
 					}
 				</SModal.Body>
 			</SModal.Main>
@@ -76,7 +55,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
 	return {
-		adminUser: state.ui.app.adminPinDialog,
+		adminUser: state.data.users.find(u => u.isAdmin),
 	}
 }
 

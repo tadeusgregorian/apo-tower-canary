@@ -12,7 +12,10 @@ export default class EditCreatedTask extends PureComponent {
 	render() {
 		const {isInPast, task} = this.props
 		const creator = this.props.users.find(u => task.creatorID===u.ID)
-		const taskTypeAndPattern = getTypeAndPatternOfTask(task);
+		const taskTypeAndPattern = getTypeAndPatternOfTask(task)
+		const dateOfInterest = task.onetimerDate || ( task.originalStartDate || task.startDate )
+		console.log(task)
+		console.log(dateOfInterest)
 
 		return (
 			<fb className={cN({"taskRow": true, "ghostRow": isInPast })} onClick={()=>this.props.openTaskDetailsPopup(task, isInPast)}>
@@ -30,7 +33,7 @@ export default class EditCreatedTask extends PureComponent {
 					/>
 				</fb>
 				<fb className="taskType">{taskTypeAndPattern.type}</fb>
-				<fb className="creationDate">{ moment(task.creationDate).format('DD/MM/YY') }</fb>
+				<fb className="dateOfInterest">{ moment(dateOfInterest, 'YYYYMMDD').format('DD/MM/YY') }</fb>
 			</fb>
 		)
 	}

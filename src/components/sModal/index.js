@@ -4,7 +4,7 @@ import './styles.css'
 const SModalMain = ({title, children, onClose}) => (
 	<fb className='sModalMain'>
 		<fb className='sModalHead'>
-			<fb className='sModalTitle'>{title}</fb>
+			<fb className='sModalTitle'><span className="titleSpan">{title}</span></fb>
 			<fb className='sModalX' onClick={onClose}><icon className='icon-close'/></fb>
 			</fb>
 		{children}

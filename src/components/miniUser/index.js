@@ -42,18 +42,23 @@ export default class MiniUser extends PureComponent {
 		// if is grayed out , this overrides the style
 		if (this.props.grayedOut) style = this.grayedOutStyle
 
-		return(
-		<fb
-			key={this.props.user.ID}
-			className='miniUserMain'
-			style={ style }
-			data-for='fullUserName'
-			ref='foo'
-			data-tip={this.props.user.name}
-			onMouseOver={() => ReactTooltip.show(findDOMNode(this.refs.foo))}
-			onMouseOut={() => ReactTooltip.hide()}
-		>
-			{this.props.user.nameInitials}
-		</fb>
-	)}
+		if(this.props.withTooltips) { return (
+			<fb
+				key={this.props.user.ID}
+				className='miniUserMain'
+				style={ style }
+				data-for='fullUserName'
+				ref='foo'
+				data-tip={this.props.user.name}
+				onMouseOver={() => ReactTooltip.show(findDOMNode(this.refs.foo))}
+				onMouseOut={() => ReactTooltip.hide()}
+				> {this.props.user.nameInitials} </fb>
+		)} else { return (
+			<fb
+				key={this.props.user.ID}
+				className='miniUserMain'
+				style={ style }
+				> {this.props.user.nameInitials} </fb>
+		)}
+	}
 }

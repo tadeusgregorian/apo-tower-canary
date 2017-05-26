@@ -1,8 +1,8 @@
 
-.qmLettersMainWrapper {
-	padding: 0px 6px
-
-	content{
-		padding-top: 0px;
-	}
+.qmLetters{
+	padding: 0px 6px;
+	padding-top: 0px;
+	position: relative;
+	overflow-y: scroll;
+	flex-direction: column;
 }

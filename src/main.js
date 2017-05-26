@@ -21,8 +21,8 @@ const Main = (props) => {
 
 
 	if(process.env.NODE_ENV === 'development'){
-			if (!loggedIn) return(<fb>loggingIn... devEnvironment</fb>)
-	    if (loggedIn) return <Route path='/Apps' component={Apps} />
+			//if (!loggedIn) return(<fb>loggingIn... devEnvironment</fb>)
+	    //if (loggedIn) return <Route path='/Apps' component={Apps} />
  }
 
 

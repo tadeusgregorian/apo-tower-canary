@@ -20,7 +20,7 @@ export default class DayHead extends PureComponent {
 					<fb className="date">{(dayMoment.format('dddd DD')+'. '+dayMoment.format('MMM').toUpperCase().substr(0, 3))}</fb>
 
 					{ isFuture ?
-						<fb className="futurePastIndicator">ZUKUNFT</fb> :
+						<fb className="futurePastIndicator"></fb> :
 						<UndoneTasksButton
 							//jumpToDate={jumpToDate}
 							numberOfUndoneTasks={numberOfUndoneTasks}

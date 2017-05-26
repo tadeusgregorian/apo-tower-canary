@@ -1,49 +1,73 @@
 import React, { Component } from 'react';
 import InputMinimal from 'components/inputMinimal'
 import SButton from 'components/sButton'
-import emailIcon from './emailIcon.png'
+import lockIcon from './lockIcon.png'
+import sha1 from 'sha1';
 import './styles.css';
 
-export default class EnterPinForm extends Component {
+export default class EnterPinTwice extends Component {
 	constructor(props){
 		super(props)
 
 		this.state = {
-			email: ''
+			pin1: '',
+			pin2: '',
+			infoMessage: ''
 		}
+	}
+
+	onInputChanged = (inp, pinField) => {
+		if(inp.length > 4) return
+		this.setState({[pinField]: inp})
+	}
+
+	pinButtonClicked = () => {
+		let infoMessage = ''
+		const { pin1, pin2 } = this.state
+		if(pin1 !== pin2) infoMessage = 'PINs sind nicht identisch'
+		if(pin1.length < 4 || pin2.length < 4) infoMessage = 'Eingabe nicht vollständig'
+		infoMessage ? this.setState({infoMessage}) : this.props.writePinToDB(sha1(pin1))
 	}
 
 	render() {
 		return (
-					<fb className='noPinSetWrapper'>
-						<fb className="explenationText">
-							<b>Es wird empfohlen diesen mit einem Pin zu schützen.</b>
-							Geben sie dazu bitte eine Email-adresse an, auf der nur Sie als
-							Admin zugriff haben.
+			<fb className='noPinSetWrapper'>
+				<fb className="explenationText">
+					<b>Dieser Bereich muss mit einem PIN geschützt werden.</b>
+					Bitte wählen Sie einen vierstelligen Admin-PIN.
+				</fb>
+				<fb className="formWrapper">
+					{ this.state.infoMessage &&
+						<fb className="infoMessage">
+							<icon className="icon-warning"/>
+							{this.state.infoMessage}
 						</fb>
-						<InputMinimal
-							onInputChange={(inp) => this.setState({email: inp})}
-							imgUrl={emailIcon}
-							defaultText='email'
-							value={this.state.email}
-							autoFocus={true}
+					}
+					<InputMinimal
+						onInputChange={(inp) => this.onInputChanged(inp, 'pin1')}
+						imgUrl={lockIcon}
+						defaultText='PIN'
+						value={this.state.pin1}
+						password
+						autoFocus
+					/>
+					<InputMinimal
+						onInputChange={(inp) => this.onInputChanged(inp, 'pin2')}
+						imgUrl={lockIcon}
+						defaultText='PIN wiederholen'
+						value={this.state.pin2}
+						password
+					/>
+					<fb className='pinEnteredButtonWrapper'>
+						<SButton
+							color={'#2ECC71'}
+							label='PIN speichern'
+							onClick={this.pinButtonClicked}
+							sStyle={{height: '38px', width: '100%'}}
 						/>
-						<fb className='emailEnteredButtonWrapper'>
-							<SButton
-								color={'#2ECC71'}
-								label='Email erhalten'
-								onClick={() => this.props.sendEmail(this.state.email)}
-								sStyle={{height: '38px', width: '100%'}}
-							/>
-						</fb>
-						<fb className='enterWithoutPinButtonWrapper'>
-							<SButton
-								label='Ohne Pin eintreten'
-								onClick={this.props.enterWithoutPin}
-								sStyle={{height: '38px', width: '100%'}}
-							/>
-						</fb>
 					</fb>
+				</fb>
+			</fb>
 		)
 	}
 }

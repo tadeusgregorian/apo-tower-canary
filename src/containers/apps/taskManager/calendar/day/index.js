@@ -6,6 +6,7 @@ import TaskTransitionGroup from './taskTransitionGroup';
 import './styles.css';
 import DayFooter from './dayFooter'
 import Task from './task';
+import DummyTasks from './dummyTasks'
 //import ReactTooltip from 'react-tooltip'
 
 
@@ -18,13 +19,26 @@ export default class Day extends PureComponent {
 			showDoneTasks: false,
 			showEveryonesTasks: false,
 		}
+		this.blockAnimation = false
+	}
+
+	componentWillUpdate(nextProps, nextState){
+		if(this.props.selectedUser !== nextProps.selectedUser) this.blockAnimation = true
+		if(this.state !== nextState) this.blockAnimation = true
+	}
+
+	componentDidUpdate(prevProps, prevState){
+		if(this.props.selectedUser !== prevProps.selectedUser) this.blockAnimation = false
+		if(this.state !== prevState) this.blockAnimation = false
 	}
 
 	render() {
-		const {tasks, selectedUser} = this.props;
-		const {showDoneTasks, showEveryonesTasks} = this.state;
-		if(!tasks) return null;
-		if(!this.props.tasksLoaded) return(<fb>LOADING...</fb>)
+		//console.log('rendering here tade');
+		//console.log(this.blockAnimation)
+		const {tasks, users, selectedUser, day, checkUncheckTask, openCheckUncheckTaskPopup, tasksLoaded} = this.props;
+		const {showDoneTasks, showEveryonesTasks} = this.state
+		if(!tasks) return null
+		if(!tasksLoaded) return(<DummyTasks />)
 
 		const filteredTasks = tasks.filter(t => !selectedUser || showEveryonesTasks || t.assignedUsers[selectedUser])
 		const checkedTasksCount = filteredTasks.filter(t => t.isDone || t.isIgnored).length
@@ -36,16 +50,16 @@ export default class Day extends PureComponent {
 		])
 		return (
 			<fb className={cN({tasksDay: true, fullWidthDay: true, inUserMode: selectedUser})}>
-				<fb ref="tasksWrapper" className={`tasksWrapper`}>
-					<TaskTransitionGroup>
+				<fb className={`tasksWrapper`}>
+					<TaskTransitionGroup blockAnimation={this.blockAnimation}>
 						{ visibleTasks.length ?  visibleTasks.map(t => <Task
 										data={t}
-										key={t.ID}
+										key={t.ID + t.isDone} // adding isDone, so transitionGroup animates Enter and Leave when checking
 										withCheckbox={!!selectedUser}
-										dateString={this.props.day}
-										onCheckboxClick={() => this.props.checkUncheckTask(t, t.isDone, 'done')}
-										users={this.props.users}
-										clickHandler={() => this.props.openCheckUncheckTaskPopup(t)}/>)
+										dateString={day}
+										onCheckboxClick={() => checkUncheckTask(t, t.isDone, 'done')}
+										users={users}
+										clickHandler={() => openCheckUncheckTaskPopup(t)}/>)
 						: <fb className="noTasksBlock">Keine Aufgaben mehr!</fb>}
 					</TaskTransitionGroup>
 					<DayFooter

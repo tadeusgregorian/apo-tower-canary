@@ -18,10 +18,15 @@ export default class AddEditUserPopup extends Component {
 			name: 					editing ? user.name : '',
 			nameInitials: 	editing ? user.nameInitials : '',
 			color: 					editing ? user.color : '',
-			branches: 			editing ? _.keys(user.branches) : [],
-			assignedGroups: editing ? _.keys(user.assignedGroups) : [],
+			branches: 			editing ? _.keys(user.branches) : this.getDefaultBranch(),
+			assignedGroups: editing ? _.keys(user.assignedGroups) : ['101'], // we need this dummy '1' here, so user.groups doesnt get get deleted on firebase
 			userinputMissingText: '',
 		};
+	}
+
+	getDefaultBranch = () => {
+		// if only one branch exists, return that one, else empty
+		return this.props.branches.length === 1 ? [this.props.branches[0].ID] : ['101']
 	}
 
 	onButtonClicked = () => {
@@ -37,12 +42,9 @@ export default class AddEditUserPopup extends Component {
 			this.setState({userinputMissingText: 'Bitte wählen Sie eine Farbe aus.'})
 			return;
 		}
-		if(!this.state.branches.length) {
+		//attention: props.branches - are all existing branches obj: {name: xyz, ID: 2929} AND state.branches are user branches arr: [id01, id02]
+		if(!this.props.branches.find(b =>  _.includes(this.state.branches, b.ID))){
 			this.setState({userinputMissingText: 'Bitte wählen Sie mindestens eine Filiale aus.'})
-			return;
-		}
-		if(!this.state.assignedGroups.length) {
-			this.setState({userinputMissingText: 'Bitte wählen Sie mindestens eine Position/Gruppe.'})
 			return;
 		}
 
@@ -81,6 +83,7 @@ export default class AddEditUserPopup extends Component {
 	}
 
 	render() {
+		console.log(this.state)
 		return (
 				<SModal.Main title='Neuer Benutzer' onClose={this.props.close}>
 					<SModal.Body>
@@ -88,7 +91,7 @@ export default class AddEditUserPopup extends Component {
 					{ this.state.userinputMissingText ? <fb className="userinputMissingText">{this.state.userinputMissingText}</fb> : null}
 					<fb className="inputItemWrapper">
 						<fb className="inputDescription" >Benutzername:</fb>
-						<input className="nameInputField" type="text" value={this.state.name} onChange={this.onNameInputChanged.bind(this)}/>
+						<input className="nameInputField" type="text" value={this.state.name} autoFocus onChange={this.onNameInputChanged.bind(this)}/>
 					</fb>
 					<fb className="inputItemWrapper">
 						<fb className="inputDescription">Namenskürzel:</fb>
@@ -106,15 +109,17 @@ export default class AddEditUserPopup extends Component {
 								</fb>)})}
 						</fb>
 					</fb>
-					<fb className="inputItemWrapper">
-						<fb className="inputDescription">arbeitet in:</fb>
-						<fb className="branchesWrapper">
-							<ChipBar
-								chips={this.props.branches}
-								selectedChips={this.state.branches}
-								chipClicked={(bID) => this.chipClicked(bID, 'branches')}/>
+					{	this.props.branches.length > 1 &&
+						<fb className="inputItemWrapper">
+							<fb className="inputDescription">arbeitet in:</fb>
+							<fb className="branchesWrapper">
+								<ChipBar
+									chips={this.props.branches}
+									selectedChips={this.state.branches}
+									chipClicked={(bID) => this.chipClicked(bID, 'branches')}/>
+							</fb>
 						</fb>
-					</fb>
+					}
 					<fb className="inputItemWrapper">
 						<fb className="inputDescription">arbeitet als:</fb>
 						<fb className="branchesWrapper">
@@ -128,7 +133,7 @@ export default class AddEditUserPopup extends Component {
 			</SModal.Body>
 			<SModal.Footer>
 				<SButton
-					position='right'
+					right
 					label={this.props.editing ? 'speichern' : 'Nurtzer Erstellen'}
 					onClick={this.onButtonClicked}
 					disabled={false}

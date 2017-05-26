@@ -18,7 +18,7 @@ export default class DefineContentStep extends PureComponent {
 						<TextField
 							autoFocus
 							value={OTask.subject || ''}
-							onChange={(e) => editOTask({subject: e.target.value})}
+							onChange={(e) => e.target.value.length < 72 && editOTask({subject: e.target.value})}
 							floatingLabelText="Betreff"
 							fullWidth={true}
 						/>

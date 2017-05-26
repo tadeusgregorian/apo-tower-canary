@@ -31,7 +31,6 @@ export function getUserById(users, userID) {
 }
 
 export const filterTasksForUser = (tasks, user) => {
-	// console.log("not exiting")
 	return tasks.filter(t => !user || (!!_.values(t.assignedUsers).filter(auID => auID===user.ID).length))
 }
 
@@ -79,9 +78,9 @@ export const getTypeAndPatternOfTask = (task) => {
 			}
 			case TaskType.irregular: {
 				r.type =  "Multi-Datum"
-				r.patternFullLength = task.irregularDates && task.irregularDates.map( date =>  moment(date).format("DD.MMM YYYY")).join(" ,  ")
+				r.patternFullLength = task.irregularDates && task.irregularDates.map( date =>  moment(date).format("DD/MM/YY")).join(" / ")
 				if( task.irregularDates.length >= 3 ){
-					r.pattern = task.irregularDates && task.irregularDates.slice(0, 3).map( date =>  moment(date).format("DD.MMM YYYY")).join(" ,  ") +" , ..."
+					r.pattern = task.irregularDates && task.irregularDates.slice(0, 3).map( date =>  moment(date).format("DD/MM/YY")).join(" ,  ") +" , ..."
 				}else{
 					r.pattern = r.patternFullLength;
 				}

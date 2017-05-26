@@ -1,0 +1,22 @@
+.dummyTasks{
+  height: 200px;
+  padding: 12px 40px 0;
+  padding-bottom: 6px;
+  margin: 0;
+  flex: 1 0 auto;
+  max-width: none;
+  min-width: none;
+  flex-direction: column;
+
+  .dummyTask {
+    flex: 0 0 40px;
+    height: 40px;
+    overflow: hidden;
+    margin: 6px 20px 6px 4px;
+    border-radius: 2px;
+    background: grey;
+    justify-content: center;
+    align-items: center;
+    color: grey;
+  }
+}

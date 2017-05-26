@@ -1,7 +1,7 @@
 import React from 'react'
 import './styles.css'
 
-export default ({label, disabled, onClick, color, sStyle, position}) => {
+export default ({label, disabled, onClick, color, sStyle, right, left}) => {
 	const colorStyle = {
 		color: 'white',
 		backgroundColor: color,
@@ -21,8 +21,8 @@ export default ({label, disabled, onClick, color, sStyle, position}) => {
 		if(color) 	 styleObj = { ...colorStyle }
 		if(disabled) styleObj = { ...disabledStyle }
 		if(sStyle)   styleObj = { ...styleObj, ...sStyle}
-		if(position === 'left') styleObj.marginRight = 'auto'
-		if(position === 'right') styleObj.marginLeft = 'auto'
+		if(left) styleObj.marginRight = 'auto'
+		if(right) styleObj.marginLeft = 'auto'
 		return styleObj
 	}
 

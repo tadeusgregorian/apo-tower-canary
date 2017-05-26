@@ -59,7 +59,7 @@ class AssignUsersStep extends PureComponent {
 
 const mapStateToProps = (state) => {
 	return {
-		users: state.data.users.filter(u => u.branches && u.branches[state.core.selectedBranch]), // we filter here already, because we just deal with this branch here.
+		users: state.data.users.filter(u => u.branches[state.core.selectedBranch]).filter(u => !u.deleted), // we filter here already, because we just deal with this branch here.
 		groups: state.data.groups
 	}
 }

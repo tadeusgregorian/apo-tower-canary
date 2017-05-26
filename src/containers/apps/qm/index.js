@@ -10,8 +10,8 @@ import { openConfirmPopup, closeConfirmPopup } from 'actions'
 import _ from 'lodash';
 import Dialog from 'material-ui/Dialog';
 import ReadUnreadQmPopup from './modals/readUnreadQmPopup/index.js';
-import TextField from 'material-ui/TextField';
-import Checkbox from 'material-ui/Checkbox';
+import TextField from 'material-ui/TextField'
+import SCheckbox from 'components/sCheckbox'
 import ConfirmPopup from 'components/confirmPopup'
 import ReactTooltip from 'react-tooltip'
 import './styles.css'
@@ -24,6 +24,7 @@ class QmApp extends PureComponent {
 			readUnreadQmDialogOpen: false,
 			addEditQmWizardOpen: false,
 			showOnlyUnreadQms: false,
+			adminWantsToSeeAll: false,
 			filter: ""
 		}
 	}
@@ -44,9 +45,8 @@ class QmApp extends PureComponent {
 			openDeleteQmPopup={this.openDeleteQmPopup}
 		/>)
 		this.setState({readUnreadQmDialogOpen: true})
-	};
+	}
 
-	// -------- Add and edit qm letter
 	openAddEditQmWizard = (isAdding = true, qmData = null) => {
 		this.setState({addEditQmWizardOpen: true});
 		let Wizard = composeWizard([DefineContentStep, AssignUsersStep], qmData)
@@ -84,29 +84,50 @@ class QmApp extends PureComponent {
 		this.setState({filter: e.target.value})
 	}
 
+	adminEyeCheckboxClicked = () => {
+		// cant have both, logically
+		this.setState({ adminWantsToSeeAll: !this.state.adminWantsToSeeAll, showOnlyUnreadQms: false })
+	}
+
+	unreadCheckboxClicked = () => {
+		// cant have both, logically
+		this.setState({ showOnlyUnreadQms: !this.state.showOnlyUnreadQms, adminWantsToSeeAll: false })
+	}
+
+	userIsAdmin = () => !!this.props.users.find(u => u.ID === this.props.selectedUser).isAdmin
+
 	render() {
+		console.log('rendering all ?')
 		return (
 			<fb className='qmAppWrapper'>
 				<fb className="vertical qmAppMain">
-					<header className="horizontal">
-						<fb>
+					<header className="qmHead">
+						<fb className="searchWrapper">
 							<icon className="icon-search no-border"></icon>
 							<TextField floatingLabelText="Suche" floatingLabelStyle={{color: 'grey'}} value={this.state.filter} onChange={this.onSearchFieldChanged}/>
 						</fb>
-						<fb className="filterUnreadCheckbox">
-							<Checkbox
-								label="Nur ungelesene anzeigen"
-								style={{fontSize: "14px"}}
-								checked={this.state.showOnlyUnreadQms}
-								onCheck={()=>{ this.setState({showOnlyUnreadQms: !this.state.showOnlyUnreadQms})}}
+						<fb className="unreadCheckbox">
+							<SCheckbox
+								label='nur ungelesene'
+								isChecked={this.state.showOnlyUnreadQms}
+								onCheck={this.unreadCheckboxClicked}
 							/>
 						</fb>
+						{ this.userIsAdmin() &&
+							<fb className="adminEyeCheckbox">
+							<SCheckbox
+								label='Adminmodus'
+								isChecked={this.state.adminWantsToSeeAll}
+								onCheck={this.adminEyeCheckboxClicked}
+							/>
+						</fb>}
 						<fb className='addQmButton' onClick={this.openAddEditQmWizard}>
 							<fb className='addQmButtonIconWrapper'><icon className='icon icon-plus'/></fb>
 							<fb className='addQmButtonText'>QM ERSTELLEN</fb>
 						</fb>
 					</header>
 					<QmLetters
+						adminWantsToSeeAll={this.state.adminWantsToSeeAll}
 						showOnlyUnreadQms={this.state.showOnlyUnreadQms}
 						userID={this.props.selectedUser}
 						qmLetters={this.props.qmLetters}

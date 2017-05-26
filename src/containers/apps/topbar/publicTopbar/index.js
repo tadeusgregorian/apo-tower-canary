@@ -44,10 +44,11 @@ class PublicTopbar extends PureComponent{
               targetOrigin={{horizontal: 'right', vertical: 'bottom'}}
               onRequestClose={() => this.setState({popoverOpen: false})}>
               <Menu>
+                {this.props.branches.length > 1 &&
                 <MenuItem primaryText="Filliale wechseln" onClick={() => {
                   this.props.openSelectbranchDialog()
                   this.setState({popoverOpen: false})
-                }}/>
+                }}/>}
                 <MenuItem primaryText="Abmelden" onClick={() => this.props.logoutFromFirebase()}/>
               </Menu>
             </Popover>

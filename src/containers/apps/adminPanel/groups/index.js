@@ -6,6 +6,7 @@ import {bindActionCreators} from 'redux';
 import ConfirmPopup from 'components/confirmPopup'
 import AddEditGroupPopup from './addEditGroupPopup';
 import Dialog from 'material-ui/Dialog';
+import cN from 'classnames'
 import './styles.css';
 
 
@@ -51,7 +52,9 @@ class AdminpanelGroups extends React.Component {
 						<icon className="groupIcon icon-navigate_next" />
 						<fb className="groupName">{group.name}</fb>
 						<button className="button editGroupButton" onClick={() => this.openAddEditGroupPopup(true, group)}>bearbeiten</button>
-						<icon className="icon icon-bin deleteIcon" onClick={() => this.openDeleteGroupPopup(group)}/>
+						<icon
+							className={cN({'icon-bin': true, deleteIcon: true, disabled: group.notDeletable })}
+							onClick={() => !group.notDeletable && this.openDeleteGroupPopup(group)}/>
 					</fb>
 				)}
 				<Dialog

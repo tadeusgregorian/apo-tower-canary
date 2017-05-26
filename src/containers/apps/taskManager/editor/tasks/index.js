@@ -3,8 +3,8 @@ import _ from 'lodash';
 import moment from 'moment'
 import { stringIncludes } from 'helpers'
 import LazyLoad, {forceCheck} from 'react-lazyload'
-
 import Task from './task'
+import './styles.css'
 
 
 export default class Tasks extends PureComponent{
@@ -25,7 +25,11 @@ export default class Tasks extends PureComponent{
     if (filterAssignedUser && filterAssignedUser !== "none") 	filtTs = filtTs.filter(t => t.assignedUsers && t.assignedUsers[filterAssignedUser])
     if (this.props.taskSearchString) 													filtTs = filtTs.filter(t => stringIncludes(t.subject+' '+t.text, taskSearchString))
 
-    return _.sortBy(filtTs, (t) => moment(t.creationDate).format('YYYYMMDD')).reverse()
+    return _.sortBy(filtTs, (t) => (
+      this.props.selectedCategory === 'single' ?
+        moment(t.onetimerDate).format('YYYYMMDD') :
+        moment(t.creationDate).format('YYYYMMDD')
+    )).reverse()
   }
 
   render(){
@@ -33,9 +37,9 @@ export default class Tasks extends PureComponent{
 
     if (this.props.selectedCategory==='single' && this.props.allSingleTasksDataStatus !== 'LOADED') return (<fb>loading...</fb>)
     return(
-      <fb className="taskList">
+      <div className="taskList">
       {this.filteredSortedTasks().map(t => (
-          <LazyLoad height={44} overflow={true} offset={30} once={true} debounce={80} key={t.ID} placeholder={(<fb style={{height:'44px', borderTop:'1px solid #d3d3d3', paddingTop:'14px', paddingLeft:'14px', color:'#d3d3d3'}}>loading...</fb>)} >
+          <LazyLoad height={44} overflow offset={100} once key={t.ID} >
             <Task
               today={this.props.today}
               users={this.props.users}
@@ -45,7 +49,7 @@ export default class Tasks extends PureComponent{
               openTaskDetailsPopup={this.props.openTaskDetailsPopup} />
           </LazyLoad>
       ))}
-  		</fb>
+    </div>
     )
   }
 }

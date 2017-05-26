@@ -36,7 +36,7 @@ class Editor extends PureComponent {
 			filterAssignedUser: this.props.selectedUser,
 			taskSearchString: '',
 			hidePastTask: true,
-			selectedCategory: 'repeating'
+			selectedCategory: 'repeating' // can be: 'single' or 'repeating'
 		}
 	}
 
@@ -127,7 +127,7 @@ class Editor extends PureComponent {
 					<fb className="editorContent">
 						{this.renderSearchFilterBar()}
 						<fb className="vertical taskListWrapper">
-							<ListHead />
+							<ListHead selectedCategory={this.state.selectedCategory}/>
 							<Tasks
 								openTaskDetailsPopup={this.openTaskDetailsPopup}
 								today={ getTodaySmart() }

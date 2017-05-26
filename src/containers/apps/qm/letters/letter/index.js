@@ -9,6 +9,7 @@ import moment from 'moment'
 export default class QmLetter extends PureComponent {
 
 	render() {
+		console.log('rende')
 		let {qm, users, hasRed} = this.props
 		let creator = users.find(u => u.ID && u.ID===qm.creatorID)
 		const usersRed = _.keys(qm.assignedUsers).filter(uID => qm.assignedUsers[uID]===2)

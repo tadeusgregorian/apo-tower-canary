@@ -122,14 +122,14 @@ class SetTimingStep extends PureComponent {
 					<Checkbox
 						onClick={() => this.props.editOTask({includeSaturday: this.props.OTask.includeSaturday ? null : true})} // we prefere null because it creates no Firebase-entry
 						checked={!!this.props.OTask.includeSaturday}
-						label="Inklusive Samstag"
+						label="Inklusive Samstags"
 					/>
 				</fb>
 				<fb className="margin-top">
 					<Checkbox
 						onClick={() => this.props.editOTask({includeSunday: this.props.OTask.includeSunday ? null : true})} // we prefere null because it creates no Firebase-entry
 						checked={!!this.props.OTask.includeSunday}
-						label="Inklusive Sonntag"
+						label="Inklusive Sonntags"
 					/>
 				</fb>
 				<fb className="margin-top">{ this.renderWizardDatePicker('startDate') }</fb>

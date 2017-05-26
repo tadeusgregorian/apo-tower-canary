@@ -19,6 +19,13 @@
     font-weight: 400;
 		color: #636363;
 		letter-spacing: 0.6px;
+    min-width: 0px;
+
+    .titleSpan{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 	}
 
 	.sModalX{
@@ -44,7 +51,6 @@
 .sModalBody{
 	flex-direction: column;
 	font-size: 17px;
-  overflow-y: scroll;
   max-height: 560px;
 }
 

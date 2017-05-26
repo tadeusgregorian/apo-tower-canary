@@ -2,43 +2,50 @@ import _ from 'lodash'
 import moment from 'moment'
 
 export * from './dataHelper'
-export * from './GT_styles'
-export * from './sounds'
 export * from './databaseUpdates'
-export * from './firebaseListeners'
 export * from './databaseUpdate_qmLetters'
 export * from './iziToast'
 export * from './newDayChecker'
 
 export function createGuid() {
-	let d = new Date().getTime()
-	if (window.performance && typeof window.performance.now === 'function') {
-		d += performance.now()
-	}
-	let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-		let r = (d + Math.random() * 16) % 16 | 0;
-		d = Math.floor(d / 16);
-		return (c==='x' ? r : (r & (0x3 | 0x8))).toString(16);
-	});
-	return uuid;
-}
-
-export const createShortGuid = () => {
+	const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+	const x1 = possible.charAt(Math.floor(Math.random() * possible.length))
+	const x2 = possible.charAt(Math.floor(Math.random() * possible.length))
+	const unix = moment().format('X')
 	let d = new Date().getTime()
 	if (window.performance && typeof window.performance.now === 'function') {
 		d += performance.now()
 	}
 	let uuid = 'xxxxxxxxyxxx'.replace(/[xy]/g, function (c) {
-		let r = (d + Math.random() * 16) % 16 | 0;
-		d = Math.floor(d / 16);
-		return (c==='x' ? r : (r & (0x3 | 0x8))).toString(16);
+		let r = (d + Math.random() * 16) % 16 | 0
+		// eslint-disable-next-line
+		return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16)
 	});
-	return uuid;
+	return unix + uuid + x1 + x2;
+}
+
+export const createShortGuid = () => {
+	const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+	const x1 = possible.charAt(Math.floor(Math.random() * possible.length))
+	const x2 = possible.charAt(Math.floor(Math.random() * possible.length))
+	const unix = moment().format('X')
+	let d = new Date().getTime()
+	if (window.performance && typeof window.performance.now === 'function') {
+		d += performance.now()
+	}
+	let uuid = 'xxxxxxxxyxxx'.replace(/[xy]/g, function (c) {
+		let r = (d + Math.random() * 16) % 16 | 0
+		// eslint-disable-next-line
+		return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16)
+	});
+	return unix + uuid + x1 + x2;
 }
 
 export const shortenGuid = (longGuid) => {
 	return (longGuid.substr(0, 8)+longGuid.substr(9, 4))
 }
+
+export const isNumber = (inp) =>  { return !isNaN(parseFloat(inp)) }
 
 export const formatHourAndMinute = (hour, minute) => {
 	let hourString = hour.toString();
@@ -53,22 +60,6 @@ export const formatHourAndMinute = (hour, minute) => {
 		? '0' + minuteString
 		: minuteString;
 	return hourString + ':' + minuteString;
-}
-
-export const wizardStepStatePropertyGenerator = (props, propertyName, defaultValue, forceBool = false) => {
-	if (forceBool) {
-		return !!props.subState[propertyName] || (props.initData && (!!props.initData[propertyName] || defaultValue))
-	} else {
-		return props.subState[propertyName] || (props.initData && (props.initData[propertyName] || defaultValue))
-	}
-}
-
-export const wizardStepStateGenerator = (props, properties) => {
-	const propertyNames = properties.map(p => p.name);
-	const propertyValues = properties.map(p => wizardStepStatePropertyGenerator(props, p.name, (typeof p.defaultValue==="undefined"
-		? false
-		: p.defaultValue), p.forceBool || false));
-	return _.zipObject(propertyNames, propertyValues);
 }
 
 export const downloadFile = (fileURL, fileName) => {
@@ -105,7 +96,6 @@ export const downloadFile = (fileURL, fileName) => {
 			window.open(fileURL,  '_self');
 		}
 	}
-
 
 		// for IE < 11
 		else if (!!window.ActiveXObject && document.execCommand) {
