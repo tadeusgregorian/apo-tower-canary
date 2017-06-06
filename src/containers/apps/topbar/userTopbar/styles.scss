@@ -114,10 +114,23 @@
 	}
 
 	.userInfo {
-		justify-content: flex-end;
+    justify-content: flex-end;
+    height: 34px;
+    flex: 0 0 auto;
+    padding-left: 15px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.12);
+		cursor: pointer;
+
+		&:hover{
+			background: rgba(0, 0, 0, 0.20);
+		}
+
 		>*{
+			display: flex;
+			flex: 0 0 auto;
+			flex-direction: row;
 			height: 100%;
-			justify-content: flex-end;
 		}
 
 		.userName{

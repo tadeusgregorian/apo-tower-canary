@@ -7,11 +7,14 @@ import moment from 'moment'
 import './styles.css';
 
 
-export default class EditCreatedTask extends PureComponent {
+export default class Task extends PureComponent {
 
 	render() {
 		const {isInPast, task} = this.props
-		const creator = this.props.users.find(u => task.creatorID===u.ID)
+		console.log(task)
+		const creator = this.props.users.find(u => task.creatorID === u.ID)
+		console.log(this.props.users)
+		console.log(creator)
 		const taskTypeAndPattern = getTypeAndPatternOfTask(task)
 		const dateOfInterest = task.onetimerDate || ( task.originalStartDate || task.startDate )
 		console.log(task)

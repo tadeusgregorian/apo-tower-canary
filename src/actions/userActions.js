@@ -19,3 +19,7 @@ export function editUser(user) {
 export function addNewUser(user) {
 	FBInstance.database().ref(getFirebasePath('users')).child(user.ID).set(user)
 }
+
+export function setUserVacation(userID, vacationStart) {
+	FBInstance.database().ref(getFirebasePath('users')).child(userID).child('onVacation').set(vacationStart)
+}

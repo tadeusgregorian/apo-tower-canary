@@ -31,7 +31,7 @@ export function getUserById(users, userID) {
 }
 
 export const filterTasksForUser = (tasks, user) => {
-	return tasks.filter(t => !user || (!!_.values(t.assignedUsers).filter(auID => auID===user.ID).length))
+	return tasks.filter(t => !user || (!!_.values(t.assignedUsers).filter(auID => auID === user.ID).length))
 }
 
 export const getTypeAndPatternOfTask = (task) => {

@@ -52,8 +52,10 @@ class UserTopbar extends PureComponent{
               }
             </fb>
             <fb className='userInfo'>
-              <fb className="userName">{user.name}</fb>
-              <fb className="userIcon"><icon className="icon-account_circle"/></fb>
+              <Link to={`/Apps/Profil`}>
+                <fb className="userName">{user.name}</fb>
+                <fb className="userIcon"><icon className="icon-account_circle"/></fb>
+              </Link>
             </fb>
           </fb>
         </fb>

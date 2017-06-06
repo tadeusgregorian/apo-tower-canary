@@ -19,6 +19,7 @@ import PublicTopbar from './topbar/publicTopbar'
 import TaskManager 	from './taskManager'
 import QmApp 				from './qm'
 import AdminPanel 	from './adminPanel'
+import UserProfile 	from './userProfile'
 
 class Apps extends PureComponent{
 
@@ -60,6 +61,7 @@ class Apps extends PureComponent{
 						<Route path='/Apps/TaskManager' 					component={TaskManager} />
 						<Route path='/Apps/QM/:userID' 						component={QmApp} />
 						<Route path='/Apps/Adminpanel' 						component={AdminPanel} />
+						<Route path='/Apps/Profil' 								component={UserProfile} />
 					</fb>
 				</fb>
 				<Dialog open={!!this.props.selectBranchDialog} modal={true}>
