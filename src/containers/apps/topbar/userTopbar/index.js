@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router-dom'
 import { getUnreadQmLettersCount } from 'selectors/unreadQmLettersSelector'
+import { getTodaySmart } from 'helpers'
 import './styles.css'
 
 class UserTopbar extends PureComponent{
@@ -11,8 +12,9 @@ class UserTopbar extends PureComponent{
   pathIncludes = (path) => (this.props.location.pathname.includes(path))
 
   taskManagerSubRoutes = [
-    { label: 'Kalender', path: '/Apps/TaskManager/Kalender'},
-    { label: 'Editor', path: '/Apps/TaskManager/Editor'},
+    { label: 'Kalender',    path: '/Apps/TaskManager/Kalender'},
+    { label: 'Editor',      path: '/Apps/TaskManager/Editor'},
+    { label: 'Vertretung',  path: '/Apps/TaskManager/Vertretung'}
   ]
 
   render(){
@@ -54,7 +56,10 @@ class UserTopbar extends PureComponent{
             <fb className='userInfo'>
               <Link to={`/Apps/Profil`}>
                 <fb className="userName">{user.name}</fb>
-                <fb className="userIcon"><icon className="icon-account_circle"/></fb>
+                { user.onVacation <= getTodaySmart() ?
+                  <fb className="userIcon"><icon className="icon-aircraft"/></fb> :
+                  <fb className="userIcon"><icon className="icon-account_circle"/></fb>
+                }
               </Link>
             </fb>
           </fb>

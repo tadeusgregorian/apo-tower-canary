@@ -1,12 +1,13 @@
-import React from 'react';
+import React from 'react'
 import { Route, Redirect, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { setAuthStateListener } from 'actions'
 
-import 'normalize.css/normalize.css';
-import 'skeleton.css/skeleton.css';
-import "./styles/main.css";
+import 'normalize.css/normalize.css' // needed for material-ui i think
+import 'react-select/dist/react-select.css'
+import 'skeleton.css/skeleton.css'
+import "./styles/main.css"
 
 import Login 	from './containers/login'
 import Apps 	from './containers/apps'

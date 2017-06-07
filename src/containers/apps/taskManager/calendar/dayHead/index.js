@@ -8,7 +8,6 @@ import DateNavigator from './dateNavigator'
 
 
 export default class DayHead extends PureComponent {
-/* eslint-disable no-unused-vars */
 
 	render() {
 		const dayMoment = moment(this.props.currentDay, 'YYYYMMDD')
@@ -22,10 +21,8 @@ export default class DayHead extends PureComponent {
 					{ isFuture ?
 						<fb className="futurePastIndicator"></fb> :
 						<UndoneTasksButton
-							//jumpToDate={jumpToDate}
 							numberOfUndoneTasks={numberOfUndoneTasks}
 							openUndoneTasksModal={openUndoneTasksModal}
-							//lastDateWithUndoneTask={lastDateWithUndoneTask}
 						/>
 					}
 

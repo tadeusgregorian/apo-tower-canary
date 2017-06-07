@@ -1,12 +1,14 @@
 import React from 'react';
+import cn from 'classnames'
 import './styles.css';
 
 
-const BigUserButton = ({user, clickHandler, unreadQmsCount}) => {
+const BigUserButton = ({initials, color, clickHandler, unreadQmsCount, onVacation}) => {
 	return (
-		<fb className="bigUserButton" onClick={clickHandler} style={{backgroundColor:user.color}}>
-			{ !!unreadQmsCount && <fb className="qmNotifications">{unreadQmsCount}</fb> }
-			<fb className='initials'>{user.nameInitials}</fb>
+		<fb className={cn({bigUserButton: true, onVacation})} onClick={clickHandler} style={{backgroundColor: onVacation ? 'auto' : color}}>
+			{ !!unreadQmsCount && !onVacation && <fb className="qmNotifications">{unreadQmsCount}</fb> }
+			{ onVacation && <fb className="airplane icon icon-aircraft"></fb> }
+			<fb className='initials'>{initials}</fb>
 		</fb>
 	)
 }

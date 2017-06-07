@@ -62,7 +62,6 @@ export function createTask(taskObj) {
 	ref.child(task.ID).set(task)
 }
 
-
 export const editAndCreateTask = (oldTask, newTask) => {
 	let updates = {}
 	updates[getFirebasePath('repeatingTasks') + oldTask.ID+'/endDate'] = oldTask.endDate
@@ -79,4 +78,16 @@ export const endRepeatingTask = (task, endDate) => {
 	let updates = {}
 	updates[getFirebasePath('repeatingTasks') + task.ID + '/endDate'] = endDate
 	FBInstance.database().ref().update(updates)
+}
+
+export const addReplacement = (taskID, replacedUserID , replacerID) => {
+	const ref = FBInstance.database().ref(getFirebasePath('repeatingTasks')).child(taskID + '/assignedUsers/' + replacedUserID)
+	ref.set(replacerID)
+}
+
+export const removeReplacement = (taskID, replacedUserID) => {
+	// if there is no replacement it looks like: .assignedUsers.replacedUserID: 1
+	// if there is a  replacement it looks like: .assignedUsers.replacedUserID: replacerUserID
+	const ref = FBInstance.database().ref(getFirebasePath('repeatingTasks')).child(taskID + '/assignedUsers/' + replacedUserID)
+	ref.set(1)
 }

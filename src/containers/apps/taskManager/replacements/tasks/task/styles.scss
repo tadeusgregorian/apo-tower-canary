@@ -1,0 +1,88 @@
+.replacementTaskRow {
+	flex: 0 0 auto;
+	height: 44px;
+	padding: 0px;
+	cursor: pointer;
+
+	&:not(:first-child) {
+		border-top: 1px solid lightgrey;
+	}
+
+	.myReplacementCell{
+		align-items: center;
+
+		.replacementSelect{
+			width: 200px;
+		}
+	}
+
+	.taskInfo {
+		font-size: 16px;
+		align-items: center;
+		flex: 1 1 500px;
+		overflow: hidden;
+		white-space: nowrap;
+		min-width: 0;
+		padding-left: 34px;
+		cursor: pointer;
+
+		&:hover{
+			background: lightgrey;
+		}
+
+		.taskTitle{
+			flex: 0 1 auto;
+			padding-left: 10px;
+		}
+	}
+
+	.assignedUsers{
+		justify-content: flex-end;
+	}
+
+	.taskType {
+		flex: 0 0 110px;
+		justify-content: flex-end;
+		align-items: center;
+	}
+
+	.userElement{
+		align-items: center;
+		height: 100%;
+
+		.userName{
+			border-radius: 2px;
+			justify-content: flex-start;
+			align-items: center;
+
+			.greyedOut{
+				color: lightgrey;
+			}
+
+			.icon{
+				flex: 0 0 auto;
+				margin-right: 6px;
+			}
+		}
+
+		.iconsWrapper{
+			justify-content: flex-end;
+			flex: 1 0 auto;
+			padding-right: 4px;
+
+			>*{
+		    flex: 0 0 auto;
+		    height: 36px;
+		    width: 36px;
+		    justify-content: center;
+		    border: 1px solid lightgrey;
+		    margin-left: -1px;
+				color: #888888;
+			}
+
+			.removeIcon{
+				font-size: 12px;
+			}
+		}
+	}
+}

@@ -8,7 +8,7 @@ import _ from 'lodash'
 import './styles.css';
 
 
-export default ({users, task, editable, editTask, deleteTask, onClose}) =>  {
+export default ({users, task, editable, editTask, deleteTask, onClose, withoutFooter}) =>  {
 
 		const assignedUsers = _.keys(task.assignedUsers)
 		const createdBy = users.find(u => u.ID === task.creatorID).name
@@ -35,6 +35,7 @@ export default ({users, task, editable, editTask, deleteTask, onClose}) =>  {
 						{ task.text && <fb className='modalTaskText'>{task.text}</fb> }
 					</fb>
 				</SModal.Body>
+				{!withoutFooter &&
 					<SModal.Footer>
 						<SButton
 							label='BEARBEITEN'
@@ -48,6 +49,7 @@ export default ({users, task, editable, editTask, deleteTask, onClose}) =>  {
 							disabled={!editable}
 						/>
 					</SModal.Footer>
+				}
 			</SModal.Main>
 		)
 	}

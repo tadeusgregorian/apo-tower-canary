@@ -23,7 +23,6 @@ import { addDays, subtractDays } from 'helpers'
 import { setSingleTasksListener } 		from 'actions'
 import { extendTasksWithChecked } 		from 'selectors/extendTasksWithChecked'
 import { taskDataLoaded }							from 'selectors/taskDataLoaded'
-import { getLastDateWithUndoneTask }	from 'selectors/lastDateWithUndoneTask'
 import { undoneTasksOfSelectedUser }	from 'selectors/undoneTasksOfSelectedUser'
 
 import ReactTooltip from 'react-tooltip'
@@ -119,7 +118,6 @@ class Calendar extends PureComponent{
 						jumpToDate={this.jumpToDate}
 						openDatePicker={() => this.refs.jumpToDatePicker.openDialog()}
 						userMode={userMode}
-						lastDateWithUndoneTask={this.props.lastDateWithUndoneTask}
 						numberOfUndoneTasks={this.props.undoneTasks.length}
 						openUndoneTasksModal={this.openUndoneTasksModal}
 						loadingPastTasks={true} // COME BACK HERE
@@ -127,7 +125,6 @@ class Calendar extends PureComponent{
 					<DaysTransitionGroup movingDirection={this.state.movingDayBackward}>
 						{this.state.removeDay ? [] : this.renderDay(this.props.currentDay)}
 					</DaysTransitionGroup>
-
 				</fb>
 				<DatePicker style={{"display": "none"}}
 					ref='jumpToDatePicker'
@@ -191,7 +188,6 @@ const mapStateToProps = (state) => {
 		repeatingTasks: state.taskManager.repeatingTasks,
 		tasks: extendTasksWithChecked(state),
 		taskDataLoaded: taskDataLoaded(state),
-		lastDateWithUndoneTask: getLastDateWithUndoneTask(state),
 		operatingTask: state.ui.taskManager.operatingTask,
 		taskWizard: state.ui.taskManager.taskWizard,
 		selectedUser: state.core.selectedUser,

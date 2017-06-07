@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import './styles.css';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import { getTodaySmart } from 'helpers'
 import BigUserButton from 'components/bigUserButton';
 import { getUnreadQmLettersCount } from 'selectors/unreadQmLettersSelector'
 import _ from 'lodash';
 
-class SelectUserBar extends Component {
+class SelectUserTopBar extends Component {
 
 	tryToSelectUser = (user) => {
 		user.isAdmin ?
@@ -21,12 +22,14 @@ class SelectUserBar extends Component {
 
 	render() {
 		return(
-			<fb id="selectUserBar">
+			<fb id="selectUserTopBar">
 				<fb className="bigUserButtonsContainer">
 					{this.getUsers().map(u => (
 						<BigUserButton
 							key={u.ID}
-							user={u}
+							initials={u.nameInitials}
+							color={u.color}
+							onVacation={u.onVacation <= getTodaySmart()}
 							clickHandler={() => this.tryToSelectUser(u)}
 							unreadQmsCount={this.props.unredQmsGrid[u.ID]}
 						/>
@@ -54,4 +57,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectUserBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectUserTopBar);

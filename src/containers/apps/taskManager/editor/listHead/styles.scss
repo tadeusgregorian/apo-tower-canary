@@ -8,6 +8,11 @@
   background-color: #e4e4e4;
   font-weight: bold;
   border-radius: 4px 4px 0 0;
+  flex: 0 0 auto;
+
+  >*{
+    flex: 0 0 auto;
+  }
 
   .creator{
     font-size:13px;

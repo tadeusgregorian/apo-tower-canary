@@ -15,29 +15,37 @@ class Vacation extends PureComponent{
   render(){
     const userID        = this.props.selectedUser
     const today         = moment().format('YYYYMMDD')
-    const tomorrow      = moment().add(1, 'days').format('YYYYMMDD')
     const vacDate       = this.props.users.find(u => u.ID === userID).onVacation
-    const vacDateInPast = vacDate < today
+    const onVacNow      = vacDate && vacDate <= today
+    const vacDateInPast = vacDate && vacDate < today
+
+    const vacIcon = onVacNow ? 'icon-aircraft' : 'icon-perm_contact_calendar'
 
     return(
       <fb className="vacationMain">
-        <fb className="headline">
-          <fb className="text">{`Ich bin abwesend ${vacDateInPast ? 'seit' : 'ab'}`}</fb>
-          <fb className="vacactionDate">{vacDate && this.formatDate(vacDate)}</fb>
+        <fb className="presentInfo">
+          <fb className={`icon ${vacIcon}`}></fb>
+          <fb>{`Du bist ${onVacNow ? 'zurzeit abwesend' : 'anwesend'}.`}</fb>
+          {onVacNow && <SButton label='Abwesenheit beenden'  onClick={() => setUserVacation(userID, null)}/>}
+        </fb>
+        <fb className="vacationInfo">
+          {vacDate ?
+            <fb className="vacationExistsRow">
+              <fb className="icon icon-navigate_next iconMinimalRight"></fb>
+              <fb className="text">{vacDateInPast ? 'Abwesend seit dem' : 'Abwesenheit beginnt am'}</fb>
+              <fb className="vacactionDate">{vacDate && this.formatDate(vacDate)}</fb>
+              {!onVacNow && <fb className="icon icon-pencil"  onClick={() => this.refs.vacationDP.openDialog()}></fb>}
+              {!onVacNow && <fb className="icon icon-cross"   onClick={() => setUserVacation(userID, null)}></fb>}
+            </fb> :
+            <fb className="vacationEmptyRow">
+              <SButton label='+ Abwesenheit eintragen' onClick={() => this.refs.vacationDP.openDialog()}/>
+            </fb>
+          }
         </fb>
 
-        <fb className="vacationStartButtons">
-          <SButton label='HEUTE'  onClick={() => setUserVacation(userID, today)}/>
-          <SButton label='MORGEN' onClick={() => setUserVacation(userID, tomorrow)}/>
-          <SButton label='DATUM WÄHLEN' onClick={() => this.refs.vacationDP.openDialog()}/>
-        </fb>
-
-        <fb className="vacationEndButton">
-          {/* <SButton label='HEUTE'  onClick={() => setUserVacation(userID, null)}/> */}
-        </fb>
         <DatePicker style={{"display": "none"}}
           ref='vacationDP'
-          onChange={(e, d) => setUserVacation(userID, moment(d).format('YYYYMMDD'))}
+          onChange={(e, d) => setUserVacation(userID, parseInt(moment(d).format('YYYYMMDD'),10))}
           floatingLabelText="asd"
           cancelLabel="Abbrechen"
           DateTimeFormat={window.DateTimeFormat}

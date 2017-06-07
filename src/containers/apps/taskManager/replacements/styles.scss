@@ -1,0 +1,46 @@
+.replacementsMain{
+	justify-content: center;
+
+	.replacementsContent{
+		width: 100%;
+		max-width: 700px;
+		flex-direction: column;
+
+		.replacementInfoText{
+			flex: 0 0 auto;
+			height: 50px;
+			padding: 0px 4px;
+			align-items: center;
+		}
+
+		.taskListWrapper{
+			flex-direction: column;
+			min-height: 500px;
+			margin-bottom: 18px;
+
+			.myReplacementCell{
+				width: 280px;
+				flex: 0 0 auto;
+				border-left: 1px solid lightgrey;
+				padding-left: 12px;
+			}
+
+			.taskInfoCell{
+				flex: 1 1 auto;
+				padding-left: 6px;
+			}
+
+			.assignedUsersCell{
+				flex: 1 1 auto;
+				justify-content: flex-end;
+			}
+
+			.taskTypeCell{
+				margin-right: 20px;
+				flex: 0 0 auto;
+				width: 110px;
+				justify-content: flex-end;
+			}
+		}
+	}
+}

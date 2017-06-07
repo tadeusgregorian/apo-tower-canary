@@ -1,22 +1,87 @@
 .vacationMain{
   flex-direction: column;
   padding: 20px;
+  padding-top: 4px;
+  padding-left: 12px;
+  padding-right: 10px;
 
-  .headline{
-    font-size: 20px;
-    border-bottom: 1px solid #eaeaea;
-    margin-bottom: 6px;
-    padding-bottom: 4px;
+  .presentInfo{
+    font-size: 18px;
+    border-bottom: 1px solid #e6e6e6;
+    height: 54px;
+    align-items: center;
 
-    >*{
+    .icon{
       flex: 0 0 auto;
+      margin-right: 10px;
+      height: 38px;
+      color: white;
+      width: 40px;
+      justify-content: center;
+      font-size: 27px;
+      padding-top: 2px;
+      border-radius: 2px;
     }
 
-    .vacactionDate{
-      margin-left: 6px;
-      font-weight: 500;
+    .icon-aircraft{
+      background: #ff5690;
+    }
+
+    .icon-perm_contact_calendar{
+      background: #3eb16f;
     }
   }
+
+  .vacationInfo{
+    height: 54px;
+    align-items: center;
+    font-size: 17px;
+
+    .vacationExistsRow{
+      .text{
+        flex: 0 0 auto;
+        align-items: center;
+      }
+      .vacactionDate{
+        margin-left: 6px;
+        font-weight: 500;
+        align-items: center;
+      }
+
+      .icon{
+        flex: 0 0 auto;
+      }
+
+      .icon-pencil, .icon-cross{
+        cursor: pointer;
+        margin-left: 4px;
+        font-size: 18px;
+
+        height: 40px;
+        width: 42px;
+        border: 1px solid #dedfe0;
+        justify-content: center;
+        color: #64686d;
+        border-radius: 2px;
+        background: #f5f6f7;
+      }
+
+      .icon-cross{
+        font-size: 15px;
+      }
+
+      .iconMinimalRight{
+        margin-right: 4px;
+        margin-left: 4px;
+      }
+    }
+
+    .vacationEmptyRow{
+      margin-top: 10px;
+    }
+
+  }
+
   .vacationStartButtons{
     padding-top: 4px;
     > * {

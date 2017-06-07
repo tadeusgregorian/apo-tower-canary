@@ -4,7 +4,7 @@ import './styles.css';
 const OpenTasksFromPastBlock = ({openUndoneTasksModal, numberOfUndoneTasks}) => {
 
 	const onClick = () => numberOfUndoneTasks && openUndoneTasksModal()
-	const style = { color: numberOfUndoneTasks ? '#ff5438' : '#2ecc71' }
+	const style = { color: numberOfUndoneTasks ? '#ff5438' : '#3eb16f' }
 
 	return(
 		<fb className="openTasksFromPastBlock" onClick={onClick}>

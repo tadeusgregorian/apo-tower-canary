@@ -1,4 +1,5 @@
 .taskRow {
+	flex: 0 0 auto;
 	height: 44px;
 	padding: 10px 4px 10px 6px;
 	cursor: pointer;
@@ -10,17 +11,11 @@
 	&:not(:first-child) {
 		border-top: 1px solid lightgrey;
 	}
-	flex: 0 0 auto;
-
-	> fb {
-		margin: 0 4px;
-	}
 
 	.creator {
 		align-items: center;
 		flex: 0 0 auto;
 		font-size: 16px;
-		margin-right: 4px;
 		width: 60px;
 	}
 
@@ -31,7 +26,6 @@
 		overflow: hidden;
 		white-space: nowrap;
 		min-width: 0;
-		margin-left: 24px;
 
 		.taskTitle{
 			flex: 0 1 auto;
@@ -55,16 +49,6 @@
 
 		.hasEndedTag{
 			width: 64px;
-		}
-	}
-
-	.arrowIconWrapper {
-		flex: 0 1 34px;
-
-		icon {
-			border: none;
-			color: #a2a2a2;
-			font-size: 14px;
 		}
 	}
 
