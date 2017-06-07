@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { tasksForDaySelector } from 'selectors/tasksDaySelector'
+import { tasksWithReplacements } from 'selectors/tasksWithReplacements'
 
 const getChecked = (state) => state.taskManager.checked
 
@@ -19,4 +19,4 @@ const getExtendedTasks = (tasks, checked) => {
 	return extendedTasks
 }
 
-export const extendTasksWithChecked = createSelector([tasksForDaySelector, getChecked], getExtendedTasks)
+export const extendTasksWithChecked = createSelector([tasksWithReplacements, getChecked], getExtendedTasks)

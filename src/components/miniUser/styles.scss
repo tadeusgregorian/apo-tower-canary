@@ -14,6 +14,26 @@
 	font-family: 'RBNo2Light' !important;
 	flex: 0 0 auto;
 
+	&.isReplacer{
+		width: 54px;
+
+		.vacationV{
+			font-size: 18px;
+	    border-radius: 1px;
+	    margin-right: 4px;
+	    justify-content: center;
+	    width: 14px;
+	    flex: 0 0 auto;
+	    align-items: center;
+	    height: 17px;
+	    margin-top: 2px;
+		}
+	}
+
+	.initials{
+		justify-content: center;
+	}
+
 	// &.isReplacement{
 	// 	width: 44px !important;
 	// 	flex-direction: row;

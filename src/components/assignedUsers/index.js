@@ -10,13 +10,14 @@ import './styles.css';
 // @param str 		colorStyle optional! here you can provide colorStyles for MiniUser for ex. 'colorful' , 'blackAndWhite'
 // @param obj 		isDoneBy optional! - a obj of the user.ID {userID:userID} who has done the task
 
-const AssignedUsers = ({maxDisplayedMiniUsers, assignedUsers, users, usersRed, colorStyle, withTooltips, style}) => {
+const AssignedUsers = ({maxDisplayedMiniUsers, assignedUsers, users, usersRed, colorStyle, withTooltips, style, replacers}) => {
 	const maxMiniUsers = maxDisplayedMiniUsers || 100
 
 	let assignedUsersSorted = assignedUsers.map(userID =>{
 		const assignedUser = users.find(user => user.ID === userID)
 		const hasRed = (usersRed && usersRed.includes(userID)) ? 1 : 0
-		return { ...assignedUser, hasRed }
+		const isReplacer = replacers && replacers.includes(userID)
+		return { ...assignedUser, hasRed, isReplacer }
 	}).sort((a, b) => a.hasRed - b.hasRed)
 
 	// optionally you can limit the number of shown MiniUsers.
@@ -31,13 +32,14 @@ const AssignedUsers = ({maxDisplayedMiniUsers, assignedUsers, users, usersRed, c
 	return (
 		<fb className="assignedUsersMain" style={style}>
 			{ hiddenMiniUsersCount ? <fb className={cN({"hiddenMiniUsersCount": true, "nothingToHide": !hiddenMiniUsersCount  })} key="counter"> {'...'} </fb> : null}
-			{ assignedUsersSorted.map(assignedUser => (
+			{ assignedUsersSorted.map(u => (
 				<MiniUser
 					withTooltips={withTooltips}
-					user={assignedUser}
-					grayedOut={assignedUser.hasRed}
+					user={u}
+					isReplacer={u.isReplacer}
+					grayedOut={u.hasRed}
 					colorStyle={colorStyle}
-					key={assignedUser.ID} />))}
+					key={u.ID} />))}
 		</fb>
 	)
 }

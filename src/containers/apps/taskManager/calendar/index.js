@@ -46,7 +46,6 @@ class Calendar extends PureComponent{
 	openUndoneTasksModal = () => {
 		const comp = <UndoneTasksModal
 			onClose={this.props.closeUndoneTasksModal}
-			//undoneTasks={this.props.undoneTasks}
 			openCheckUncheckTaskPopup={this.props.setCheckingTask}
 			jumpToDate={this.jumpToDate}
 			users={this.props.users}

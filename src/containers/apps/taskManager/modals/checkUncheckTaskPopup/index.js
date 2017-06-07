@@ -31,7 +31,7 @@ export default class CheckUncheckTaskPopup extends Component {
 		// if it exists we take it, otherwise task was clicked from calendar/day component.
 		// in this case the currentDay is the taskDate
 		const taskDate = t.taskDate || this.props.currentDay
-		const assignedUsers = _.keys(t.assignedUsers)
+		const assignedUsers = _.keys(t.assignedUsers).filter(uID => t.assignedUsers[uID] !== 'replacer')
 		const isChecked = t.isDone || t.isIgnored || t.isShifted
 		const colorStyle = isChecked ? 'blackAndWhite' : 'colorful'
 

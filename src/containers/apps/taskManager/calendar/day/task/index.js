@@ -15,6 +15,9 @@ export default class Task extends PureComponent {
 		const prio = t.prio && !(t.isDone || t.isIgnored || t.isShifted) // there is only Prio 2 now , Prio 0 and 1 are deprecated. // needs to refactored in future to a Boolean Flag
 		const originalDate = t.originalShiftedTask && moment(t.originalShiftedTask.date, 'YYYYMMDD').format('DD.MM.YY')
 
+		const assignedUsersNoReplaced = _.keys(t.assignedUsers).filter(uID => t.assignedUsers[uID] !== 'replaced')
+		const replacers = _.keys(t.assignedUsers).filter(uID => t.assignedUsers[uID] === 'replacer')
+
 		return (
 			<fb className="taskItemWrapper">
 				{withCheckbox &&
@@ -34,7 +37,8 @@ export default class Task extends PureComponent {
 						{ !t.isIgnored && !t.isShifted &&
 						<fb className="assignedUsersWrapper">
 						 	<AssignedUsers
-								assignedUsers={_.keys(t.assignedUsers)}
+								assignedUsers={assignedUsersNoReplaced}
+								replacers={replacers}
 								users={users}
 								usersRed={[t.isDoneBy]}
 								colorStyle={ t.isDone ? 'blackAndWhite' : 'colorful'}

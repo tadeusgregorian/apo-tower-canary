@@ -28,7 +28,7 @@ export default class Task extends PureComponent {
 						maxDisplayedMiniUsers={4}
 						colorStyle={ isInPast ? 'blackAndWhite' : null }
 						users={this.props.users}
-						style={{width: '192px'}}
+						style={{maxWidth: '192px'}}
 					/>
 				</fb>
 				<fb className="taskType taskTypeCell">{taskTypeAndPattern.type}</fb>
