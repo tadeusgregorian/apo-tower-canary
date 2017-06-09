@@ -1,6 +1,4 @@
 import React, {PureComponent} from 'react'
-import {findDOMNode} from 'react-dom'
-import ReactTooltip from 'react-tooltip'
 import cn from 'classnames'
 import './styles.css'
 
@@ -43,26 +41,13 @@ export default class MiniUser extends PureComponent {
 		// if is grayed out , this overrides the style
 		if (this.props.grayedOut) style = this.grayedOutStyle
 
-		const {isReplacer, user} = this.props
+		const {isReplacer, user, tooltipRight} = this.props
 
-		if(this.props.withTooltips) { return (
-			<fb
-				key={user.ID}
-				className={cn({miniUserMain: true, isReplacer })}
-				style={ style } data-for='fullUserName'
-				ref='foo'
-				data-tip={this.props.user.name}
-				onMouseOver={() => ReactTooltip.show(findDOMNode(this.refs.foo))}
-				onMouseOut={() => ReactTooltip.hide()}
-				>
-				<fb className="initials">{user.nameInitials}</fb>
-				{ isReplacer && <fb className="vacationV icon icon-autorenew" style={{color: 'white'}}></fb> }
-			</fb>
-		)} else { return (
-			<fb key={user.ID} className={cn({miniUserMain: true, isReplacer })} style={ style }>
+		return (
+			<fb key={user.ID} className={cn({miniUserMain: true, isReplacer })} style={ style } data-balloon={user.name} data-balloon-pos={tooltipRight ? 'right' : 'left'}>
 				<fb className="initials">{user.nameInitials}</fb>
 				{isReplacer && <fb className="vacationV icon icon-autorenew" style={{color: 'white'}} ></fb>}
 			</fb>
-		)}
+		)
 	}
 }

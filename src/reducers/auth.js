@@ -16,11 +16,6 @@ const accountID = simpleReducer({
 	USER_LOGGED_OUT: 				null
 })
 
-const authMessage = simpleReducer({
-	SET_AUTH_MESSAGE: 				'PAYLOAD',
-	USER_LOGGED_IN: 					null
-})
-
 const adminIsLoggedIn = simpleReducer({
 	default:							false,
 	ADMIN_LOGGED_IN:			true,
@@ -31,6 +26,5 @@ const adminIsLoggedIn = simpleReducer({
 export default combineReducers({
 	authState,
 	accountID,
-	authMessage,
 	adminIsLoggedIn
 })

@@ -41,7 +41,7 @@ export default class CheckUncheckTaskPopup extends Component {
 			<SModal.Main title={t.subject} onClose={this.props.onClose}>
 				<SModal.Body>
 					<fb className='cucModalAssignedUsers'>
-						<AssignedUsers {...{assignedUsers, users}} usersRed={[t.isDoneBy]} colorStyle={colorStyle} withTooltips/>
+						<AssignedUsers {...{assignedUsers, users}} usersRed={[t.isDoneBy]} colorStyle={colorStyle} tooltipRight/>
 					</fb>
 					<fb className="checkUncheckModalBodyContent">
 						<TaskTypeInfo task={t} />

@@ -4,8 +4,8 @@ import 'izitoast/dist/css/iziToast.min.css'
 export const initIziToast = () => {
   iziToast.settings({
       position: 'topRight',
-      timeout: 4000,
-      transitionIn: 'flipInX',
+      timeout: 44000,
+      transitionIn: 'fadeInDown',
       transitionOut: 'fadeOut',
       progressBar: false,
       animateInside: false,

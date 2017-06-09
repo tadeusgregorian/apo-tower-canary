@@ -27,7 +27,7 @@ export default ({users, task, editable, editTask, deleteTask, onClose, withoutFo
 			<SModal.Main title={task.subject} onClose={onClose}>
 				<SModal.Body>
 					<fb className='cucModalAssignedUsers'>
-						<AssignedUsers {...{assignedUsers, users}} colorStyle='colorful' withTooltips/>
+						<AssignedUsers {...{assignedUsers, users}} colorStyle='colorful' tooltipRight/>
 					</fb>
 					<fb className="checkUncheckModalBodyContent">
 						<TaskTypeInfo task={task} />

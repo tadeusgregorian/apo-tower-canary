@@ -25,7 +25,6 @@ import { extendTasksWithChecked } 		from 'selectors/extendTasksWithChecked'
 import { taskDataLoaded }							from 'selectors/taskDataLoaded'
 import { undoneTasksOfSelectedUser }	from 'selectors/undoneTasksOfSelectedUser'
 
-import ReactTooltip from 'react-tooltip'
 import './styles.css';
 
 
@@ -155,7 +154,6 @@ class Calendar extends PureComponent{
 					open={this.props.taskWizard === 'add'}
 					onRequestClose={this.props.closeTaskWizard}
 					children={this.addEditTaskWizard} />
-				<ReactTooltip id='fullUserName' type='dark' delayShow={100} className='highestZIndex'/>
 			</content>
 		);
 	}

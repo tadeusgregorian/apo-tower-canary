@@ -25,8 +25,9 @@ export default class AddEditUserPopup extends Component {
 	}
 
 	getDefaultBranch = () => {
-		// if only one branch exists, return that one, else empty
-		return this.props.branches.length === 1 ? [this.props.branches[0].ID] : ['101']
+		//attention: props.branches are branches of the account in this form: [{name: xyz, ID: 2929}] AND state.branches are user branches arr: [id01, id02]
+		// if only one branch exists, return that one, else empty ( think if the case, that thers only one branch in this account - the branch option is hidden in that case)
+		return this.props.branches.length === 1 ? [this.props.branches[0].ID] : []
 	}
 
 	onButtonClicked = () => {
@@ -42,8 +43,8 @@ export default class AddEditUserPopup extends Component {
 			this.setState({userinputMissingText: 'Bitte wählen Sie eine Farbe aus.'})
 			return;
 		}
-		//attention: props.branches - are all existing branches obj: {name: xyz, ID: 2929} AND state.branches are user branches arr: [id01, id02]
-		if(!this.props.branches.find(b =>  _.includes(this.state.branches, b.ID))){
+
+		if(!this.state.branches.length){
 			this.setState({userinputMissingText: 'Bitte wählen Sie mindestens eine Filiale aus.'})
 			return;
 		}
@@ -61,9 +62,18 @@ export default class AddEditUserPopup extends Component {
 			this.props.editUser(userObj)
 
 		} else {
-			this.props.addNewUser({ ...userObj, ID:  'u' + (this.props.usersCount + 1) })
+			this.props.addNewUser({ ...userObj, ID:  this.getIncrementalUserID() })
 		}
 		this.props.close()
+	}
+
+	getIncrementalUserID = () => {
+		// the schema is u001, u012, ...
+		const userNumber = this.props.usersCount + 1
+		if(userNumber < 10) 	return ('u00' + userNumber)
+		if(userNumber < 100) 	return ('u0' + userNumber)
+		if(userNumber < 1000) return ('u' + userNumber)
+		throw new Error('never to be reached: This means there are more than 1000 users?')
 	}
 
 	onNameInputChanged(input) {

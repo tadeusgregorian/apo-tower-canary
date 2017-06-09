@@ -1,13 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import EditUserElement from './user';
+import UserElement from './user';
 import {addNewUser, editUser, deleteUser, reactivateUser} from 'actions/index';
 import ConfirmPopup from 'components/confirmPopup'
 import { openConfirmPopup, closeConfirmPopup } from 'actions'
 import Dialog from 'material-ui/Dialog';
 import AddEditUserPopup from './addEditUserPopup';
-import { Toast } from 'helpers';
+import { Toast, getTodaySmart } from 'helpers';
+import { setUserVacation } from 'actions'
 import './styles.css';
 
 class AdminpanelUsers extends React.Component {
@@ -66,6 +67,17 @@ class AdminpanelUsers extends React.Component {
 		this.props.openConfirmPopup(confPop)
 	}
 
+	sendUserToVacation = (userID) => {
+		setUserVacation(userID, getTodaySmart())
+		const userName = this.props.users.find(u => u.ID === userID).name
+		Toast.success(`${userName} ist ab jetzt abwesend.`)
+	}
+	putUserBackToWork = (userID) => {
+		setUserVacation(userID, null)
+		const userName = this.props.users.find(u => u.ID === userID).name
+		Toast.success(`${userName} ist wieder da.`)
+	}
+
 	render() {
 		return (
 			<div className="edit-users-content">
@@ -75,10 +87,12 @@ class AdminpanelUsers extends React.Component {
 					</button>
 				</fb>
 				{this.props.users.map(user => (
-					<EditUserElement
+					<UserElement
 						user={user}
 						key={user.ID}
-						changeVacationStatusOfUser={this.changeVacationStatusOfUser}
+						isOnVacation={user.onVacation <= getTodaySmart()}
+						sendUserToVacation={this.sendUserToVacation}
+						putUserBackToWork={this.putUserBackToWork}
 						deleteUser={this.tryToDeleteUser}
 						reactivateUser={this.openReactivateUserPopup}
 						editUser={this.openAddEditUserPopup}

@@ -1,20 +1,21 @@
+import FBInstance from '../firebaseInstance';
 import { firebaseAuth } from '../firebaseInstance'
-
+import { replaceDotsWithCommas } from 'helpers'
 
 export function signInWithEmailAndPassword (email, pw) {
-	return dispatch => firebaseAuth().signInWithEmailAndPassword(email, pw)
+	return firebaseAuth().signInWithEmailAndPassword(email, pw)
 }
 
 export function logoutFromFirebase () {
-  return dispatch => firebaseAuth().signOut()
+  return firebaseAuth().signOut()
 }
 
-// for later
-export function createUser (email, pw) {
-	return dispatch => firebaseAuth().createUserWithEmailAndPassword(email, pw)
+export function checkIfEmailExists (email) {
+	const emailWithCommas = replaceDotsWithCommas(email) // we have emails saved with Commas in Firebase ( Dots are not allowed in Firebase )
+	const accountEmailsRef = FBInstance.database().ref('accountEmails/' + emailWithCommas)
+	return accountEmailsRef.once('value').then(snap => snap.exists())
 }
 
-// for later on
-export function resetPassword (email) {
-  return dispatch => firebaseAuth().sendPasswordResetEmail(email)
+export function sendPasswordResetEmail (email) {
+  firebaseAuth().sendPasswordResetEmail(email)
 }

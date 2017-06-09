@@ -13,6 +13,7 @@ export default class AddEditBranchPopup extends PureComponent {
 	}
 
 	onButtonClicked = () => {
+		if(this.state.branchName.length < 2) return
 		this.props.editing ?
 			this.props.editBranch({ ...this.props.branch, name: this.state.branchName}) :
 			this.props.addNewBranch(this.state.branchName)
@@ -36,10 +37,11 @@ export default class AddEditBranchPopup extends PureComponent {
 							className="branchNameInput"
 							placeholder="Name der Filiale"
 							onChange={this.onInputChanged}
+							onKeyDown={(e) => e.keyCode === 13 && this.onButtonClicked()}
 							autoFocus />
 						<SButton
 							label='BESTÄTIGEN'
-							disabled={!this.state.branchName}
+							disabled={this.state.branchName.length < 2}
 							onClick={this.onButtonClicked}
 							color={'#2ecc71'}
 						/>

@@ -10,4 +10,11 @@
 	padding: 12px 16px;
 	flex-direction: column;
 	min-height: 84px;
+
+	.modalTaskText{
+		background-color: #efefef;
+		padding: 2px 7px;
+		border-radius: 1px;
+		margin-top: 10px;
+	}
 }

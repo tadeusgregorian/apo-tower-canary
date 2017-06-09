@@ -2,17 +2,21 @@ import React, {Component} from 'react';
 import './styles.css';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import { withRouter } from 'react-router-dom'
 import { getTodaySmart } from 'helpers'
 import BigUserButton from 'components/bigUserButton';
 import { getUnreadQmLettersCount } from 'selectors/unreadQmLettersSelector'
 import _ from 'lodash';
 
-class SelectUserTopBar extends Component {
+class SelectUserTopbar extends Component {
 
 	tryToSelectUser = (user) => {
-		user.isAdmin ?
-			this.props.openAdminPinDialog(user) :
+		if(user.isAdmin){
+			this.props.openAdminPinDialog(user)
+		}else{
 			this.props.setSelectedUser(user.ID)
+			this.props.history.push('/Apps/TaskManager/Kalender/'+user.ID)
+		}
 	}
 
 	getUsers = () => {
@@ -22,7 +26,7 @@ class SelectUserTopBar extends Component {
 
 	render() {
 		return(
-			<fb id="selectUserTopBar">
+			<fb id="selectUserTopbar">
 				<fb className="bigUserButtonsContainer">
 					{this.getUsers().map(u => (
 						<BigUserButton
@@ -57,4 +61,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectUserTopBar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SelectUserTopbar))

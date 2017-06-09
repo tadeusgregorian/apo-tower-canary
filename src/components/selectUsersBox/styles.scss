@@ -19,11 +19,18 @@
     border-color: grey;
     box-sizing: border-box;
 
+    &.disabled{
+      color: grey;
+      background-color: lightgrey;
+      border-color: lightgrey;
+    }
+
     &.selected{
       box-sizing: border-box;
-      border: 2px solid green;
-      color: green;
+      border: 2px solid #2ecc71;
+      color: #2ecc71;
       font-weight: 400;
+      background-color: #f2fff7;
     }
   }
 }

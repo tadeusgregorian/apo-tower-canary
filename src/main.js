@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux'
 import { setAuthStateListener } from 'actions'
 
 import 'normalize.css/normalize.css' // needed for material-ui i think
-import 'react-select/dist/react-select.css'
 import 'skeleton.css/skeleton.css'
 import "./styles/main.css"
 
@@ -31,8 +30,8 @@ const Main = (props) => {
 		<div id='main'>
 			{isAuthenticating ? <fb>AUTHENTICATING...</fb> :
 				<fb style={{height: '100vh'}}>
-					<Route path='/' exact render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender" /> : <Login /> } />
-					<Route path='/Login' 	render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender" /> : <Login /> } />
+					<Route path='/' exact render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender/Public" /> : <Login /> } />
+					<Route path='/Login' 	render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender/Public" /> : <Login /> } />
 					<Route path='/Apps' 	render={() => loggedOut ? <Redirect to="/Login" /> : <Apps /> } />
 				</fb>
 			}

@@ -1,6 +1,7 @@
 .taskList{
   flex-direction: column;
   overflow-y: scroll;
+  min-height: 400px;
 }
 .taskList :hover{
   background-color: #e1e1e1 ;

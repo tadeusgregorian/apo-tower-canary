@@ -1,7 +1,7 @@
 
 // This function holds the Information, where in the FirebaseDB each Node sits
 export const getFirebasePath	= (target) => {
-	//if(!window.selectedBranch) throw new Error('window.selectBranch existiert noch nicht!')
+
 	const branchID = window.selectedBranch
 	const accPath = 'accounts/' + window.accountID
 

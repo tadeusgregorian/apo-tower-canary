@@ -49,7 +49,7 @@ class PublicTopbar extends PureComponent{
                   this.props.openSelectbranchDialog()
                   this.setState({popoverOpen: false})
                 }}/>}
-                <MenuItem primaryText="Abmelden" onClick={() => this.props.logoutFromFirebase()}/>
+                <MenuItem primaryText="Abmelden" onClick={logoutFromFirebase}/>
               </Menu>
             </Popover>
           </fb>
@@ -66,7 +66,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => (
 	bindActionCreators({
-		logoutFromFirebase,
 		openSelectbranchDialog: () => ({type: 'OPEN_SELECT_BRANCH_DIALOG'})
 	}, dispatch)
 )

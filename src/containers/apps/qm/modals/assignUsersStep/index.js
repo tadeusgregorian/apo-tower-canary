@@ -62,7 +62,7 @@ class AssignUsersStep extends Component {
 		return (
 			<fb className="qmAssignUsersStep">
 				{ this.props.branches.length > 1 &&
-					<fb className="chipBarBranches">
+					<fb className="chipBarBranches chipbarWrapper">
 						<ChipBar
 							chips={this.props.branches}
 							selectedChips={this.state.selectedBranches}
@@ -70,7 +70,7 @@ class AssignUsersStep extends Component {
 						/>
 					</fb>
 				}
-					<fb className="chipBarGroups">
+					<fb className="chipBarGroups chipbarWrapper">
 						<ChipBar
 							chips={this.props.groups}
 							selectedChips={this.state.selectedGroups}
@@ -80,7 +80,7 @@ class AssignUsersStep extends Component {
 					<fb className="selectUsersBox">
 						<SelectUsersBox
 							users={this.props.users.filter(u => u.ID !== this.props.selectedUser)}
-							selectedUsers={this.props.OTask.assignedUsers}
+							selectedUsers={_.keys(this.props.OTask.assignedUsers)}
 							userClicked={this.selectDeselectUser}
 						/>
 					</fb>

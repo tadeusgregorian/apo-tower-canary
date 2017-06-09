@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom'
 import EnterPinForm from './enterPinForm'
 import CreatePinForm from './createPinForm'
 import { saveAdminPinToDB } from 'actions/accountActions'
@@ -15,6 +16,7 @@ class EnterAdminPinPopup extends Component {
 		this.props.closeAdminPinDialog()
 		this.props.setSelectedUser(this.props.adminUser.ID)
 		this.props.logAdminIn()
+		this.props.history.push('/Apps/TaskManager/Kalender/' + this.props.adminUser.ID)
 		Toast.success("Willkommen " + this.props.adminUser.name)
 	}
 
@@ -60,4 +62,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(EnterAdminPinPopup)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EnterAdminPinPopup))

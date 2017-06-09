@@ -59,7 +59,7 @@ class SetTimingStep extends PureComponent {
 	}
 
 	renderOneTimerSelector() { return (
-		<fb className='vertical'>
+		<fb className='vertical oneTimerContent'>
 				<WizardDatePicker
 					//openOnMount={true}
 					pickedDate={this.props.OTask.onetimerDate}
@@ -94,15 +94,12 @@ class SetTimingStep extends PureComponent {
 	renderWeeklySelector() {
 		const weekly = this.props.OTask.weekly || []
 		return (
-			<fb className="vertical">
+			<fb className="vertical weeklyContent">
 					<fb className="horizontal padding-bottom">
-						<fb className="weekdays offset only-horizontal slim">
-							{Wochentage.map(w => (<fb
-								key={w}
-								className={(cN({weekdayBox: true, selected: _.includes(weekly, w) }))}
-								onClick={() => this.toggleWeekday(w)}
-								style={{borderColor: _.includes(weekly, w) ? 'blue' : "#BBBBBB"}}
-								>{w}</fb>))}
+						<fb className="weekdays only-horizontal">
+							{Wochentage.map(w =>
+								<fb key={w} className={(cN({weekdayBox: true, selected: _.includes(weekly, w) }))} onClick={() => this.toggleWeekday(w)}>{w}</fb>
+							)}
 						</fb>
 					</fb>
 					<fb>
@@ -116,26 +113,30 @@ class SetTimingStep extends PureComponent {
 		)
 	}
 
-	renderDailySelector() {	return (
-		<fb className="vertical">
-				<fb className="margin-top">
-					<Checkbox
-						onClick={() => this.props.editOTask({includeSaturday: this.props.OTask.includeSaturday ? null : true})} // we prefere null because it creates no Firebase-entry
-						checked={!!this.props.OTask.includeSaturday}
-						label="Inklusive Samstags"
-					/>
+	renderDailySelector = () => (
+		<fb className="vertical dailyContent">
+			<fb className="horizontal">
+				<fb className="dateBoxOuterWrapper">{ this.renderWizardDatePicker('startDate') }</fb>
+				<fb className="checkboxesWrapper vertical">
+					<fb className="checkboxWrapper">
+						<Checkbox
+							onClick={() => this.props.editOTask({includeSaturday: this.props.OTask.includeSaturday ? null : true})} // we prefere null because it creates no Firebase-entry
+							checked={!!this.props.OTask.includeSaturday}
+							label="Inklusive Samstags"
+						/>
+					</fb>
+					<fb className="checkboxesWrapper">
+						<Checkbox
+							onClick={() => this.props.editOTask({includeSunday: this.props.OTask.includeSunday ? null : true})} // we prefere null because it creates no Firebase-entry
+							checked={!!this.props.OTask.includeSunday}
+							label="Inklusive Sonntags"
+						/>
+					</fb>
 				</fb>
-				<fb className="margin-top">
-					<Checkbox
-						onClick={() => this.props.editOTask({includeSunday: this.props.OTask.includeSunday ? null : true})} // we prefere null because it creates no Firebase-entry
-						checked={!!this.props.OTask.includeSunday}
-						label="Inklusive Sonntags"
-					/>
-				</fb>
-				<fb className="margin-top">{ this.renderWizardDatePicker('startDate') }</fb>
-				<fb className="margin-top panel">{ this.renderWizardDatePicker('endDate') }</fb>
+			</fb>
+			<fb className="margin-top panel">{ this.renderWizardDatePicker('endDate') }</fb>
 		</fb>
-	)}
+	)
 
 	yearlyDateSelected = (e, d, i) => {
 		let yearliesClone = [...this.props.OTask.yearly]
@@ -146,9 +147,9 @@ class SetTimingStep extends PureComponent {
 	renderYearlySelector() {
 		const yearly = this.props.OTask.yearly
 		return (
-			<fb className="vertical">
-					<fb className="margin-bottom wrap overflowY offset only-horizontal no-grow no-shrink">
-						{ yearly.map((smartDate, i) => (
+			<fb className="vertical yearlyContent">
+					<fb className="margin-bottom wrap overflowY only-horizontal no-grow no-shrink">
+						{ yearly.map((smartDate, i) =>
 							<fb key={i} style={{paddingBottom: "2px"}}>
 									<DatePicker
 										value={moment(smartDate, 'YYYYMMDD').toDate()}
@@ -164,9 +165,11 @@ class SetTimingStep extends PureComponent {
 										DateTimeFormat={window.DateTimeFormat}
 										locale="de-DE"
 							  />
-								<icon onClick={() => {
-								  yearly.length !== 1 && this.props.editOTask({yearly: _.without(yearly, i) })
-							  }} className="icon icon-remove_circle no-border"/></fb>)
+								{ yearly.length > 1 &&
+								<icon className="icon icon-remove_circle removeDateIcon" onClick={
+									() => { this.props.editOTask({ yearly: yearly.filter((d, index) => i !== index) })}
+								} /> }
+							</fb>
 						)}
 					</fb>
 					<fb className="no-shrink no-grow">
@@ -204,12 +207,12 @@ class SetTimingStep extends PureComponent {
 	}
 
 	renderIrregularSelector() {
-		const irregularDates = this.props.OTask.irregularDates
+		const dates = this.props.OTask.irregularDates
 		return (
-			<fb className="vertical">
+			<fb className="vertical irregularDatesContent">
 					<fb className="margin-bottom wrap overflowY offset only-horizontal">
-						{irregularDates.map((smartDate, i) =>
-							(<fb key={i} style={{paddingBottom: "2px"}}>
+						{dates.map((smartDate, i) =>
+							(<fb key={i} style={{paddingBottom: "2px", cursor: 'pointer'}}>
 								<DatePicker
 									value={moment(smartDate, 'YYYYMMDD').toDate()}
 									onChange={(e, d) => this.irregularDateSelected(d, i)}
@@ -219,19 +222,16 @@ class SetTimingStep extends PureComponent {
 									okLabel="OK" cancelLabel="Abbrechen"
 									DateTimeFormat={window.DateTimeFormat} locale="de-DE"
 							  />
-								<icon onClick={() => {
-									if(irregularDates.length===1) return
-								  let irregularDatesClone = [...irregularDates]
-								  irregularDatesClone.removeAt(i)
-								  this.setIrregularDates(irregularDatesClone)
-							  }} className="icon icon-remove_circle no-border"/>
+								{ dates.length > 1 &&
+									<fb className="icon icon-remove_circle" onClick={() => { this.setIrregularDates(dates.filter((d, index) => i !== index)) }}></fb>
+								}
 							</fb>)
 						)}
 					</fb>
 					<fb className="no-shrink margin-bottom">
 						<RaisedButton
 							label="Weiteres Datum hinzufügen"
-							onClick={()=>this.setIrregularDates([...irregularDates, getTodaySmart()])}
+							onClick={()=>this.setIrregularDates([...dates, getTodaySmart()])}
 							icon={<FontIcon className="icon icon-add_circle"/>}
 						/>
 					</fb>
@@ -249,12 +249,11 @@ class SetTimingStep extends PureComponent {
 		if(_.includes(monthly, 29)) relevantMonthlength = 29
 
 		return (
-			<fb className="vertical">
-					<fb className="monthdays offset slim wrap margin-bottom no-grow no-shrink">
-						{monthdays.map(w => (<fb key={w} className={(cN({monthdayBox: true, selected: _.includes(monthly, w) }))}
-							style={{borderColor: _.includes(monthly, w) ? 'blue' : "#BBBBBB"}}
-							onClick={() => this.toggleMonthday(w)}
-							>{w}</fb>))}
+			<fb className="vertical monthlyContent">
+					<fb className="monthdays slim wrap no-grow no-shrink">
+						{	monthdays.map(w =>
+							<fb key={w} className={(cN({monthdayBox: true, selected: _.includes(monthly, w) }))} onClick={() => this.toggleMonthday(w)}>{w}</fb>
+						)}
 					</fb>
 					{  relevantMonthlength &&
 							<fb className="margin-top panel no-grow no-shrink infoText">

@@ -18,7 +18,7 @@ class UserTopbar extends PureComponent{
   ]
 
   render(){
-    const { removeSelectedUser, users, selectedUser } = this.props
+    const { users, selectedUser } = this.props
     const user = users.find(u => u.ID === selectedUser)
     const unredQms = this.props.unreadQmLettersGrid[selectedUser]
     return(
@@ -26,9 +26,9 @@ class UserTopbar extends PureComponent{
         <fb className='userTopbar' style={{backgroundColor: user.color}}>
           <fb className="center">
             <fb className='navigation'>
-              <Link to='/Apps/TaskManager'>
+              <Link to='/Apps/TaskManager/Kalender/Public'>
                 <fb className='backButtonWrapper'>
-                  <icon onClick={removeSelectedUser} className="backButton icon-arrow-left2"/>
+                  <icon onClick={this.leaveUserMode} className="backButton icon-arrow-left2"/>
                 </fb>
               </Link>
               <Link to={`/Apps/TaskManager/Kalender/${user.ID}`}>
@@ -76,8 +76,4 @@ const mapStateToProps = (state) => ({
   unreadQmLettersGrid: getUnreadQmLettersCount(state)
 })
 
-const mapDispatchToProps = (dispatch) => ({
-		removeSelectedUser: () => dispatch({type: 'REMOVE_SELECTED_USER'})
-})
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserTopbar))
+export default withRouter(connect(mapStateToProps)(UserTopbar))

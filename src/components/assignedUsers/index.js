@@ -1,7 +1,6 @@
 import React from 'react';
 import cN from 'classnames';
 import MiniUser from 'components/miniUser'
-//import ReactTooltip from 'react-tooltip'
 import './styles.css';
 
 // @param obj 		assignedUsers - {userID:userID,userID:userID,...}
@@ -10,7 +9,7 @@ import './styles.css';
 // @param str 		colorStyle optional! here you can provide colorStyles for MiniUser for ex. 'colorful' , 'blackAndWhite'
 // @param obj 		isDoneBy optional! - a obj of the user.ID {userID:userID} who has done the task
 
-const AssignedUsers = ({maxDisplayedMiniUsers, assignedUsers, users, usersRed, colorStyle, withTooltips, style, replacers}) => {
+const AssignedUsers = ({maxDisplayedMiniUsers, assignedUsers, users, usersRed, colorStyle, style, replacers, tooltipRight}) => {
 	const maxMiniUsers = maxDisplayedMiniUsers || 100
 
 	let assignedUsersSorted = assignedUsers.map(userID =>{
@@ -34,11 +33,11 @@ const AssignedUsers = ({maxDisplayedMiniUsers, assignedUsers, users, usersRed, c
 			{ hiddenMiniUsersCount ? <fb className={cN({"hiddenMiniUsersCount": true, "nothingToHide": !hiddenMiniUsersCount  })} key="counter"> {'...'} </fb> : null}
 			{ assignedUsersSorted.map(u => (
 				<MiniUser
-					withTooltips={withTooltips}
 					user={u}
 					isReplacer={u.isReplacer}
 					grayedOut={u.hasRed}
 					colorStyle={colorStyle}
+					tooltipRight={tooltipRight}
 					key={u.ID} />))}
 		</fb>
 	)

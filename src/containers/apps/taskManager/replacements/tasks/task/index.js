@@ -18,7 +18,7 @@ export default (props) => {
 
 	const editClicked = (e) => {
 		e.stopPropagation()
-		openReplacementPopup(task.ID)
+		openReplacementPopup(task)
 	}
 
 	const removeClicked = (e) => {

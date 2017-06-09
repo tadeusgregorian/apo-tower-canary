@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import InputMinimal from 'components/inputMinimal'
 import SButton from 'components/sButton'
-import lockIcon from './lockIcon.png'
 import { Toast } from 'helpers'
 import sha1 from 'sha1'
 import './styles.css';
@@ -32,7 +31,7 @@ export default class EnterPinForm extends Component {
 			<fb className='enterPinWrapper'>
 				<InputMinimal
 					onInputChange={this.onInpChange}
-					imgUrl={lockIcon}
+					icon='lock'
 					defaultText='pin'
 					value={this.state.pin}
 					onEnter={this.checkPin}

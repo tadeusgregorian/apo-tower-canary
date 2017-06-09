@@ -11,7 +11,6 @@ import ListHead  				from './listHead'
 
 import TaskDetailsPopup from '../modals/taskDetailsPopup'
 import SelectUserPopup 	from 'components/selectUserPopup'
-
 import './styles.css'
 
 class Editor extends PureComponent {
@@ -24,17 +23,17 @@ class Editor extends PureComponent {
 		}
 	}
 
-	removeReplacement = (taskID) => {
-		removeReplacement(taskID, this.props.selectedUser)
-	}
+	removeReplacement = (taskID) => removeReplacement(taskID, this.props.selectedUser)
 
-	openReplacementPopup = (taskID) => {
+	openReplacementPopup = (task) => {
 		const { selectedUser, selectedBranch, users } = this.props
 		const relevantUsers = users.filter(u => u.ID !== selectedUser && u.branches[selectedBranch])
 		this.selectUserPopup = (
 			<SelectUserPopup
 				users={relevantUsers} // users of this Branch except selectedUser
-				onUserSelected={(replacer) => addReplacement(taskID, selectedUser, replacer)}
+				selectedUser={task.assignedUsers[selectedUser]} // sorry very confusing: selectedUser used twice as name... ( TODO: change name of state.core.selectedUser )
+				blockedUsers={_.keys(task.assignedUsers)}
+				onUserSelected={(replacer) => addReplacement(task.ID, selectedUser, replacer)}
 				onClose={() => this.setState({selectUserPopupOpen: false})}
 			/>
 		)
@@ -46,7 +45,6 @@ class Editor extends PureComponent {
 			<TaskDetailsPopup
 				task={task}
 				users={this.props.users}
-				editable={false} // come back and remove edit buttons completely
 				withoutFooter={true}
 				onClose={() => this.setState({taskDetailsPopupOpen: false})}
 			/>
@@ -63,7 +61,7 @@ class Editor extends PureComponent {
 			<fb className="replacementsMain">
 					<fb className="replacementsContent">
 						<fb className="replacementInfoText">
-							Hier kannst du für alle deine wiederholenden Aufgaben Vertretungen auswählen.
+							Hier kannst du für deine wiederholenden Aufgaben Vertretungen auswählen.
 						</fb>
 						<fb className="taskListWrapper">
 							<ListHead selectedCategory={this.state.selectedCategory}/>

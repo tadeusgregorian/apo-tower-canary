@@ -1,15 +1,11 @@
 import FBInstance from '../firebaseInstance'
 import { getFirebasePath } from './actionHelpers'
-import { getSmartDayRange } from 'helpers'
+import { getSmartDayRange, getTodaySmart, getYesterdaySmart } from 'helpers'
 import { getTasksForDay } from 'selectors/tasksDaySelector'
-import moment from 'moment'
 import _ from 'lodash'
 
-const yesterday =  parseInt(moment().subtract(1, 'day').format('YYYYMMDD'), 10)
-const today = parseInt(moment().format('YYYYMMDD'), 10)
-
 const writeUndoneTasksToDB = (undoneTasksInRange) => {
-	let updates = {[getFirebasePath('lastUTUpdate')]: today}
+	let updates = {[getFirebasePath('lastUTUpdate')]: getTodaySmart()}
 	undoneTasksInRange.forEach(t => updates[getFirebasePath('undoneTasks') + t.ID] = t)
 	FBInstance.database().ref().update(updates)
 }
@@ -34,8 +30,8 @@ export const updateUndoneTasks = (lastUpdate) => {
 
 		const singleTasksPath = getFirebasePath('singleTasks')
 		const checkedMini 		= getFirebasePath('checkedMini')
-		const singleTasksRef 	= FBInstance.database().ref(singleTasksPath).orderByChild("onetimerDate").startAt(lastUpdate).endAt(yesterday)
-		const checkedMiniRef	= FBInstance.database().ref(checkedMini).orderByKey().startAt(lastUpdate+'').endAt(yesterday+'')
+		const singleTasksRef 	= FBInstance.database().ref(singleTasksPath).orderByChild("onetimerDate").startAt(lastUpdate).endAt(getYesterdaySmart()+'')
+		const checkedMiniRef	= FBInstance.database().ref(checkedMini).orderByKey().startAt(lastUpdate+'').endAt(getYesterdaySmart()+'')
 
 		singleTasksRef.once('value', tSnap => {
 			checkedMiniRef.once('value', cSnap => {
@@ -45,7 +41,7 @@ export const updateUndoneTasks = (lastUpdate) => {
 				const checkedMini 		= cSnap.val()
 
 				//console.log(lastUpdate)
-				const range = getSmartDayRange(lastUpdate, yesterday)
+				const range = getSmartDayRange(lastUpdate, getYesterdaySmart())
 				const undoneTasksInRange = getUndoneTasksInRange(range, repeatingTasks, singleTasks, checkedMini)
 				writeUndoneTasksToDB(undoneTasksInRange)
 			})

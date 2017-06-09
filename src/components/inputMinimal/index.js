@@ -1,32 +1,39 @@
-import React, {PureComponent} from 'react'
+import React from 'react'
+import lockIcon from './lockIcon.png'
+import emailIcon from './emailIcon.png'
+import userIcon from './userIcon.png'
 import './styles.css'
 
 
-export default class InputMinimal extends PureComponent {
-	componentDidMount(){
-		if(this.props.autoFocus) this.nameInput.focus()
+export default (props) => {
+
+	const getBackgroundImage = () => {
+		if(props.icon === 'lock') 	return 'url('+lockIcon+')'
+		if(props.icon === 'email')	return 'url('+emailIcon+')'
+		if(props.icon === 'user') 	return 'url('+userIcon+')'
+		if(props.imgUrl) 						return 'url('+props.imgUrl+')'
+		return 'none'
 	}
 
-	getStyle = () => ({
-		...this.props.iStyle,
-		backgroundImage: 'url('+this.props.imgUrl+')'
+	const getStyle = () => ({
+		...props.iStyle,
+		backgroundImage: getBackgroundImage()
 	})
 
-	render(){
-		const {name, defaultText, password, onInputChange, onEnter, value} = this.props
-		return(
-			<div className='inputMinimalMain'>
-				<input
-					value={value}
-          ref={(input) => { this.nameInput = input }}
-					type={password ? "password" : "text"}
-					name={name}
-					style={this.getStyle()}
-					placeholder={defaultText}
-					onChange={(e)=> onInputChange(e.target.value)}
-					onKeyDown={(e)=> { if(e.key === 'Enter') onEnter && onEnter() }}
-				/>
-			</div>
-		)
-	}
+	const {name, defaultText, password, onInputChange, onEnter, value} = props
+	return(
+		<div className='inputMinimalMain'>
+			<input
+				value={value}
+				type={password ? "password" : "text"}
+				name={name}
+				style={getStyle()}
+				placeholder={defaultText}
+				onChange={(e)=> onInputChange(e.target.value)}
+				onKeyDown={(e)=> { if(e.key === 'Enter') onEnter && onEnter() }}
+				autoFocus={props.autoFocus}
+				autoComplete={props.autocompleteOn ? 'on' : 'new-password'}
+			/>
+		</div>
+	)
 }

@@ -20,6 +20,19 @@
 			font-size: 17px;
 		}
 
+		.airplane{
+			border-radius: 4px;
+	    width: 40px;
+	    height: 38px;
+	    flex: 0 0 auto;
+	    justify-content: center;
+	    margin-right: 8px;
+	    font-size: 20px;
+	    background-color: #e8e8e8;
+			color: #6f6f6f;
+			cursor: pointer;
+		}
+
 		.editUserButton{
 			margin-right: 8px;
 		}

@@ -224,3 +224,5 @@ export const getSmartDayRange = (firstDate, lastDate) => {
 	}
 	return range
 }
+
+export const replaceDotsWithCommas = (str) => str.replace(/\./g, ',')

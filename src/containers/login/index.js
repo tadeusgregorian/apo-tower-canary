@@ -1,53 +1,60 @@
-import React from 'react';
-import { signInWithEmailAndPassword } from 'actions/index';
-import {connect} from 'react-redux';
-import { bindActionCreators } from 'redux';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import React, { PureComponent } from 'react';
+import { signInWithEmailAndPassword, checkIfEmailExists, sendPasswordResetEmail } from 'actions';
+import InputMinimal from 'components/inputMinimal'
+import SButton from 'components/sButton'
+import PasswordForgotten from './passwordForgotten'
+import { Toast } from 'helpers'
 import './styles.css'
 
 
-class Login extends React.Component {
+export default class Login extends PureComponent {
 	constructor() {
 		super()
-		this.state = { username: '', password: '' }
+		this.state = { username: '', password: '', passwordForgotten: false, loading: false}
+		this.requestPWLink = this.requestPWLink.bind(this)
 	}
 
 	tryToLogin = () => {
-		this.props.signInWithEmailAndPassword(this.state.username + '@mail.de', this.state.password)
-			.catch((e) => { this.props.userCredentialsWereWrong() })
+		this.setState({loading: true})
+		signInWithEmailAndPassword(this.state.username, this.state.password)
+			.catch((e) => {
+				this.setState({password: '', loading: false})
+				Toast.error('Email oder Passowort falsch')
+			})
+	}
+
+	async requestPWLink (email) {
+		//Toast.info('...')
+		const emailExists = await checkIfEmailExists(email)
+		if(emailExists){
+			sendPasswordResetEmail(email)
+			Toast.info('E-Mail gesendet. Überprüfen sie Ihr Postfach.')
+			this.setState({passwordForgotten: false})
+		}else{
+			Toast.error('Diese E-Mail Adresse ist nicht registriert')
+		}
 	}
 
 
 	render() {
+		const { password, username, passwordForgotten, loading } = this.state
+		if(passwordForgotten) return <PasswordForgotten requestPWLink={this.requestPWLink}/>
+
 		return (
-				<fb style={{ height: "100%"}}>
-					<fb className="vertical" id="login">
-						<header className="a-center j-center title">apoTower</header>
-						<fb className="login-container vertical">
-							{ this.props.authMessage && <fb className='authMessage'>{this.props.authMessage}</fb> }
-							<TextField type="text" floatingLabelText="Benutzername" value={this.state.username} onChange={e => this.setState({username: e.target.value})}/>
-							<TextField type="password" floatingLabelText="Passwort" value={this.state.password} onChange={e => this.setState({password: e.target.value})}/>
-							<fb className="j-end margin-top" style={{ width: "256px" }}>
-								<RaisedButton label="Einloggen" primary={true} onClick={this.tryToLogin}/>
-							</fb>
-						</fb>
-					</fb>
+			<fb className='login-outer-container'>
+				<fb className="login-container">
+					<fb className="title">APOTOWER</fb>
+					<InputMinimal defaultText="Email" 		value={username} onInputChange={val => this.setState({username: val})} icon='email'/>
+					<InputMinimal defaultText="Passwort" 	value={password} onInputChange={val => this.setState({password: val})} icon='lock' onEnter={this.tryToLogin} password/>
+					<SButton
+						label={loading ? '...' : 'Einloggen'}
+						onClick={this.tryToLogin}
+						sStyle={{width: '100%', marginLeft: 2, marginRight: -2, marginTop: 8}}
+						color='#2ecc71'
+					/>
+					<fb className="passwordForgotten" onClick={() => this.setState({passwordForgotten: true})}>Passwort vergessen?</fb>
 				</fb>
+			</fb>
 		)
 	}
 }
-
-const mapStateToProps = (state) => ({
-		authMessage: state.auth.authMessage,
-})
-
-const mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({
-		signInWithEmailAndPassword,
-		setUserToLoggedIn: () => ({type: 'USER_LOGGED_IN'}),
-		userCredentialsWereWrong: () => ({type: 'SET_AUTH_MESSAGE', payload: 'Benutzer oder Passwort falsch'})
-	}, dispatch)
-}
-
-export default  connect(mapStateToProps, mapDispatchToProps)(Login)

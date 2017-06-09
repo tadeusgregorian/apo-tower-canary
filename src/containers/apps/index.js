@@ -12,7 +12,8 @@ import {
 	registerBranchesDataListener,
 	setQmLettersListener,
 	synchronizeClientTime,
-} from 'actions/index'
+	selectBranch
+} from 'actions'
 
 import UserTopbar 	from './topbar/userTopbar'
 import PublicTopbar from './topbar/publicTopbar'
@@ -30,15 +31,28 @@ class Apps extends PureComponent{
 		this.props.branchesDataStatus === 'NOT_REQUESTED' && this.props.registerBranchesDataListener()
 
 		this.props.qmLettersDataStatus  === 'NOT_REQUESTED' && this.props.setQmLettersListener()
-		window.selectedBranch = this.props.selectedBranch || null
+		window.selectedBranch = this.props.selectedBranch || null // all this window.selectedBranch and window.accountID ist just for the getFirebasePath() function ...
 		window.accountID = this.props.accountID
+
 	}
 
 	componentWillReceiveProps(nP) {
-		!nP.selectedBranch && nP.branches.length && !this.props.selectBranchDialog && this.props.openSelectbranchDialog()
+		if(nP.branchesDataStatus !== 'LOADED') return
+		!nP.selectedBranch && nP.branches.length > 1 && !this.props.selectBranchDialog && this.props.openSelectbranchDialog()
+		!nP.selectedBranch && nP.branches.length === 1 && selectBranch(nP.branches[0])
+		 nP.selectedBranch && !nP.branches.find(b => b.ID === nP.selectedBranch) && selectBranch(nP.branches[0]) // edge case scenario, when there is a selectedBranch in local storage, that doesnt exists in this account.
 
 		const branchHasChanged = nP.selectedBranch !== this.props.selectedBranch
-		if(branchHasChanged) { window.selectedBranch = nP.selectedBranch }
+		if(branchHasChanged) { window.selectedBranch = nP.selectedBranch } // this window.selectedBranch bullshit is just used for the getFirebasePath() function...
+
+
+	}
+
+	componentDidUpdate() {
+		const tP = this.props
+		const urlIncludesPublic = tP.location.pathname.includes('Public')
+		if(urlIncludesPublic && tP.selectedUser) tP.removeSelectedUser()	// when redirected to a url containting 'Public' we remove the selectedUser -> props.selectedUser is what changes the UI
+		if(!urlIncludesPublic && !tP.selectedUser) tP.history.push('/Apps/TaskManager/Kalender/Public') // someone is in unpublic area, without a selectedUser -> get him out
 	}
 
 	requiredDataIsLoaded = () => {
@@ -59,7 +73,7 @@ class Apps extends PureComponent{
 					{user ? <UserTopbar /> : <PublicTopbar />}
 					<fb id="app">
 						<Route path='/Apps/TaskManager' 					component={TaskManager} />
-						<Route path='/Apps/QM/:userID' 						component={QmApp} />
+						<Route path='/Apps/QM'  									component={QmApp} />
 						<Route path='/Apps/Adminpanel' 						component={AdminPanel} />
 						<Route path='/Apps/Profil' 								component={UserProfile} />
 					</fb>
@@ -109,6 +123,7 @@ const mapDispatchToProps = (dispatch) => {
 		registerBranchesDataListener,
 		setQmLettersListener,
 		setSelectedUser: 		(userID) => ({type: 'SET_SELECTED_USER', payload: userID}),
+		removeSelectedUser: 			() => ({type: 'REMOVE_SELECTED_USER'}),
 		closeAdminPinDialog: 			() => ({type: 'CLOSE_ADMIN_PIN_DIALOG'}),
 		openSelectbranchDialog: 	() => ({type: 'OPEN_SELECT_BRANCH_DIALOG'}),
 		closeSelectbranchDialog: 	() =>	({type: 'CLOSE_SELECT_BRANCH_DIALOG'}),

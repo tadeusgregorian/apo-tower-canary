@@ -13,6 +13,7 @@ export default class AddEditGroupPopup extends PureComponent {
 	}
 
 	onButtonClicked = () => {
+		if(this.state.groupName.length < 2) return
 		this.props.editing ?
 			this.props.editGroup({ ...this.props.group, name: this.state.groupName}) :
 			this.props.addNewGroup(this.state.groupName)
@@ -36,10 +37,11 @@ export default class AddEditGroupPopup extends PureComponent {
 							className="groupNameInput"
 							placeholder="Gruppenname"
 							onChange={this.onInputChanged}
+							onKeyDown={(e) => e.keyCode === 13 && this.onButtonClicked()}
 							autoFocus />
 						<SButton
 							label='BESTÄTIGEN'
-							disabled={!this.state.groupName}
+							disabled={this.state.groupName.length < 2}
 							onClick={this.onButtonClicked}
 							color={'#2ecc71'}
 						/>

@@ -22,7 +22,7 @@ const getRearrangedTasks = (tasks, users) => {
 		const replacersArray = _.uniq(assignedUsersOnVacWithRepl.map(uID => t.assignedUsers[uID])) // we use uniq cause there can be the same replacer for two assignedUsers
 
 		let newAssignedUsers = { ...t.assignedUsers } // assignedUsers just get extended by replacers. the replacedUsers stay here as well.
-		replacersArray.forEach(uID => newAssignedUsers[uID] = 'replacer')
+		replacersArray.forEach(uID => { if(!t.assignedUsers[uID]) newAssignedUsers[uID] = 'replacer' }) // put a user only as replacer, If he istn't already an assignes User!
 		assignedUsersOnVacWithRepl.forEach(uID => newAssignedUsers[uID] = 'replaced')
 
 		return { ...t, assignedUsers: newAssignedUsers}

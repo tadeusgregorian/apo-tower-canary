@@ -62,7 +62,7 @@ export default class ReadUnreadQmPopup extends PureComponent {
 			<SModal.Main title={qmData.subject} onClose={this.props.onClose}>
 				<SModal.Body>
 					<fb className='rurModalAssignedUsers'>
-						<AssignedUsers {...{assignedUsers, users, usersRed}} withTooltips/>
+						<AssignedUsers {...{assignedUsers, users, usersRed}} tooltipRight/>
 					</fb>
 					<fb className="rurModalBodyContent">
 						<CreatedInfo createdBy={createdBy} creationDate={qmData.date}/>

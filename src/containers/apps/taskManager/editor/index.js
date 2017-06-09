@@ -23,7 +23,6 @@ import ConfirmPopup from 'components/confirmPopup'
 import TaskDetailsPopup from '../modals/taskDetailsPopup'
 import { deleteTaskText } from 'constants/modalTexts'
 
-import ReactTooltip from 'react-tooltip'
 import './styles.css'
 
 class Editor extends PureComponent {
@@ -149,7 +148,6 @@ class Editor extends PureComponent {
 							{this.taskDetailsPopup}
 						</Dialog>
 					</fb>
-					<ReactTooltip id='fullUserName' type='dark' delayShow={100} className="highestZIndex"/>
 				</fb>
 		)
 	}

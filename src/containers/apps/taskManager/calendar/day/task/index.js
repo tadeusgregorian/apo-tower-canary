@@ -27,7 +27,7 @@ export default class Task extends PureComponent {
 							clickHandler={(e) => onCheckboxClick(t)} />
 					}
 				<fb className={cN({ task: true, prio, isDone: t.isDone, isIgnored: t.isIgnored || t.isShifted })}>
-					<fb className="body" onClick={clickHandler}>
+					<fb className="body taskBody" onClick={clickHandler}>
 						<fb className="head">
 							<fb className="subject">{t.subject}</fb>
 						</fb>

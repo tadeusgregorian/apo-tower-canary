@@ -41,7 +41,7 @@ class AssignUsersStep extends PureComponent {
 
 	render() {
 		return (
-			<fb className='assignUsersMain'>
+			<fb className='tasksAssignUsersMain'>
 				<ChipBar
 					chips={this.props.groups}
 					selectedChips={this.state.selectedGroups}
@@ -49,7 +49,7 @@ class AssignUsersStep extends PureComponent {
 				/>
 				<SelectUsersBox
 					users={this.props.users}
-					selectedUsers={this.props.OTask.assignedUsers}
+					selectedUsers={_.keys(this.props.OTask.assignedUsers)}
 					userClicked={this.selectDeselectUser}
 				/>
 			</fb>

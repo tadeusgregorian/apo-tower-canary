@@ -2,17 +2,16 @@ import FBInstance from '../../firebaseInstance'
 import { createFirebaseListener } from './firebaseHelpers';
 import { getFirebasePath } from '../actionHelpers'
 import { updateUndoneTasks } from '../undoneTasksUpdater'
-import moment from 'moment'
+import { getTodaySmart } from 'helpers'
 
-const today = parseInt(moment().format('YYYYMMDD'), 10)
-//const yesterday =  parseInt(moment().subtract(1, 'day').format('YYYYMMDD'), 10)
-const aWhileAgo = 20170520//parseInt(moment().subtract(10, 'day').format('YYYYMMDD'), 10)
+
+const aWhileAgo = 20170520 // we start here ( as late as possible , so initial calculation of undoneTasks isnt going to far )
 
 export const setRepeatingTasksListener = () => {
 	return (dispatch, getState) => {
 		createFirebaseListener(dispatch, getState, 'repeatingTasks', getFirebasePath('repeatingTasks'))
 		.then(res => createFirebaseListener(dispatch, getState, 'lastUTUpdate', getFirebasePath('lastUTUpdate'), null, true))
-		.then(lastUpdate => lastUpdate !== today && updateUndoneTasks(lastUpdate || aWhileAgo)(dispatch, getState))
+		.then(lastUpdate => lastUpdate !== getTodaySmart() && updateUndoneTasks(lastUpdate || aWhileAgo)(dispatch, getState))
 	}
 }
 
@@ -41,6 +40,7 @@ export const setLastUTUpdateListener = () => {
 
 export const setTaskManagerListeners = () => {
 	return (dispatch, getState) => {
+		console.log('who calls this ?')
 		getState().taskManager.repeatingTasksDataStatus 	=== 'NOT_REQUESTED' && setRepeatingTasksListener()(dispatch, getState)
 		getState().taskManager.singleTasksDataStatus 			=== 'NOT_REQUESTED' && setSingleTasksListener()(dispatch, getState)
 		getState().taskManager.undoneTasksDataStatus 			=== 'NOT_REQUESTED' && setUndoneTasksListener()(dispatch, getState)

@@ -6,6 +6,14 @@
 	padding-bottom: 6px;
   width: 100%;
 
+  .chipbarWrapper{
+    width: 650px;
+
+    &.chipBarGroups{
+      border-top: 1px solid #efefef;
+    }
+  }
+
   .selectUsersBox{
     margin-top: 8px;
   }

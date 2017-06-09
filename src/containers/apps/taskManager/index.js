@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
-import { Route, Redirect } 			from 'react-router-dom'
+import { Route } 			from 'react-router-dom'
 import { connect } 							from 'react-redux';
 import { bindActionCreators } 	from 'redux';
 
 import Calendar 			from './calendar'
 import Editor 				from './editor'
 import Replacements 	from './replacements'
-import SelectUserTopBar 	from 'components/selectUserTopBar';
+import SelectUserTopbar 	from 'components/selectUserTopbar';
 
 import { setTaskManagerListeners, refreshTaskManagerListeners } from 'actions/index'
 import _ from 'lodash'
@@ -25,10 +25,10 @@ class TaskManager extends PureComponent {
 
 		return (
 			<main className="vertical">
-				{ !selectedUser && <SelectUserTopBar selectedBranch={selectedBranch}/> }
-				<Route path={match.url} exact render={() => <Redirect to={match.url+'/Kalender'}/>} />
-				<Route path={match.url + '/Kalender'} component={Calendar}/>
-				<Route path={match.url + '/Editor'}   component={Editor}/>
+				{ !selectedUser && <SelectUserTopbar selectedBranch={selectedBranch}/> }
+				{/* <Route path={match.url} exact render={() => <Redirect to={match.url+'/Kalender'}/>} /> */}
+				<Route path={match.url + '/Kalender'} 	component={Calendar}/>
+				<Route path={match.url + '/Editor'}   	component={Editor}/>
 				<Route path={match.url + '/Vertretung'} component={Replacements}/>
 			</main>
 		)

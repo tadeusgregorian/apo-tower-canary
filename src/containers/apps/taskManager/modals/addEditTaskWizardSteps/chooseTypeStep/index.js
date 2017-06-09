@@ -41,7 +41,7 @@ export default class ChooseTypeStep extends Component {
 						<SButton label="Einmalig" 	onClick={() => this.onClick(TaskType.onetimer)}  color={'#2ECC71'} sStyle={this.bStyle()}/>
 						<SButton label="Multidatum" onClick={() => this.onClick(TaskType.irregular)} color={'#2ECC71'} sStyle={this.bStyle()} />
 					</fb>
-					<fb className="repetetiveTasks buttonsWrapper">
+					<fb className="repetetiveTasks buttonsWrapper wBorderLeft">
 						<SButton label="Täglich" 			onClick={() => this.onClick(TaskType.daily)}   color={'#2ECC71'} sStyle={this.bStyle()}/>
 						<SButton label="Wöchentlich" 	onClick={() => this.onClick(TaskType.weekly)}  color={'#2ECC71'} sStyle={this.bStyle()}/>
 						<SButton label="Monatlich" 		onClick={() => this.onClick(TaskType.monthly)} color={'#2ECC71'} sStyle={this.bStyle()}/>

@@ -7,7 +7,6 @@ import './styles.css';
 import DayFooter from './dayFooter'
 import Task from './task';
 import DummyTasks from './dummyTasks'
-//import ReactTooltip from 'react-tooltip'
 
 
 
@@ -60,7 +59,7 @@ export default class Day extends PureComponent {
 										onCheckboxClick={() => checkUncheckTask(t, t.isDone, 'done')}
 										users={users}
 										clickHandler={() => openCheckUncheckTaskPopup(t)}/>)
-						: <fb className="noTasksBlock">Keine Aufgaben mehr!</fb>}
+						: <fb className="noTasksBlock">Keine offenen Aufgaben für Heute!</fb>}
 					</TaskTransitionGroup>
 					<DayFooter
 						showHideDoneTasks={() => this.setState({ showDoneTasks: (!showDoneTasks) })}

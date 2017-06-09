@@ -7,7 +7,7 @@ export function deleteGroup(groupID, users) {
 
 	let updates = {}
 	updates[getFirebasePath('groups') + groupID] = null
-	users.forEach(u => {if(u.assignedGroups[groupID]) updates[getFirebasePath('users') + u.ID + '/assignedGroups/' + groupID] = null})
+	users.forEach(u => {if(u.assignedGroups && u.assignedGroups[groupID]) updates[getFirebasePath('users') + u.ID + '/assignedGroups/' + groupID] = null})
 	FBInstance.database().ref().update(updates)
 }
 
