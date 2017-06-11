@@ -4,13 +4,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
-//import SButton from 'components/sButton'
 import { uploadQmFile } from 'actions'
 import { createGuid } from 'helpers'
-import moment from 'moment'
 import { Toast } from 'helpers'
 import _ from 'lodash'
-import { Storage } from '../../../../../firebaseInstance'
+//import { Storage } from '../../../../../firebaseInstance'
 import './styles.css'
 
 export default class DefineContentStep extends Component {
@@ -35,7 +33,7 @@ export default class DefineContentStep extends Component {
 	startToUpload = () => {
 		let readAndUploadPromises = []
 		this.filesToUpload.forEach((f, i) => {
-			const qmFile = {name: f.name, guid: createGuid(), uploadTime: moment().toISOString(), size: f.size}
+			const qmFile = {name: f.name, guid: createGuid(), size: f.size}
 			let fileReader = new FileReader()
 			let readAndUploadPromise = new Promise((resolve, reject) => {
 				fileReader.onloadend = () => {
@@ -45,9 +43,6 @@ export default class DefineContentStep extends Component {
 					.then(snapshot => {
 						this.filesToUpload =  this.filesToUpload.filter(file => file.name !== f.name)
 						this.props.editOTask({files: (this.props.OTask.files || []).concat(qmFile)})
-						// console.log(f)
-						// console.log(qmFile)
-						// console.log(snapshot)
 						resolve(snapshot)
 					}).catch(c => {
 						reject(c)
@@ -66,7 +61,8 @@ export default class DefineContentStep extends Component {
 	}
 
 	removeExistingFile = (f) => {
-		Storage.ref().child(`${window.accountID}/qm/${f.guid}/${f.name}`).delete()
+		//Storage.ref().child(`${window.accountID}/qm/${f.guid}/${f.name}`).delete()
+		//we dont delte the file, just the connection to it: ( if we roll back with a backup we still have the files )
 		const freshFiles = this.props.OTask.files.filter(file => file.guid !== f.guid)
 		this.props.editOTask({files: freshFiles})
 	}

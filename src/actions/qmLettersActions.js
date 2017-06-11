@@ -15,7 +15,7 @@ export const unreadQm = (qmID, userID) => {
 
 export const createQm = (qmData) => ((disp, getS) =>{
 	const qm = { ...qmData,
-		date: moment().toISOString(),
+		date: moment().unix(),
 		ID: createShortGuid(),
 		creatorID: getS().core.selectedUser
 	}

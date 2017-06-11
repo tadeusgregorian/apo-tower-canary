@@ -56,6 +56,7 @@ export default class EnterPinTwice extends Component {
 						imgUrl={lockIcon}
 						defaultText='PIN wiederholen'
 						value={this.state.pin2}
+						onEnter={this.pinButtonClicked}
 						password
 					/>
 					<fb className='pinEnteredButtonWrapper'>

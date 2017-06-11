@@ -8,8 +8,9 @@ import 'normalize.css/normalize.css' // needed for material-ui i think
 import 'skeleton.css/skeleton.css'
 import "./styles/main.css"
 
-import Login 	from './containers/login'
-import Apps 	from './containers/apps'
+import Login 					from './containers/login'
+import Apps 					from './containers/apps'
+import Datenubernahme from 'components/datenubernahme' // comment this out when done with it!
 
 
 
@@ -33,6 +34,7 @@ const Main = (props) => {
 					<Route path='/' exact render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender/Public" /> : <Login /> } />
 					<Route path='/Login' 	render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender/Public" /> : <Login /> } />
 					<Route path='/Apps' 	render={() => loggedOut ? <Redirect to="/Login" /> : <Apps /> } />
+					<Route path='/Datenubernahme' 	component={Datenubernahme} />
 				</fb>
 			}
 		</div>

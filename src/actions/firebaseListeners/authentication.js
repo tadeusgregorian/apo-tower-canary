@@ -1,6 +1,5 @@
 import { firebaseAuth } from '../../firebaseInstance'
 import { trackFBListeners } from './firebaseHelpers'
-import { Toast } from 'helpers'
 
 export const setAuthStateListener = () => {
 	return (dispatch, getState) => {
@@ -9,7 +8,6 @@ export const setAuthStateListener = () => {
 
 		firebaseAuth().onAuthStateChanged((user) => {
 
-			if(user) Toast.success('Willkommen im Apotower')
 			if(user) window.accountID = user.uid
 			dispatch({
 				type: user ? 'USER_LOGGED_IN' : 'USER_LOGGED_OUT',
