@@ -34,7 +34,7 @@ export default class QmLetter extends PureComponent {
 					<RedQmsBox redNum={usersRedCount} totalNum={assignedUsersCount} />
 					{/* <AssignedUsers assignedUsers={_.keys(qm.assignedUsers)} usersRed={usersRed} maxDisplayedMiniUsers={5} users={users}/> */}
 				</fb>
-				<fb className="date">{moment(qm.date).format('DD. MMM')}</fb>
+				<fb className="date">{moment.unix(qm.date).format('DD. MMM')}</fb>
 			</fb>
 		)
 	}

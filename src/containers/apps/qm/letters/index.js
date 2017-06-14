@@ -51,9 +51,9 @@ export default class QmLetters extends PureComponent {
 			// this is a div because Lazyload doesnt work here with display: flex ( dont change this tade )
 			<div className="qmLetters">
 				{qmLettersSorted.map(qm => (
-						<LazyLoad key={qm.ID} overflow once height={45} offset={100}>
-							<QmLetter openReadUnreadQmModal={openReadUnreadQmModal} qm={qm} hasRed={qm.hasRed} users={users}/>
-						</LazyLoad>
+					<LazyLoad key={qm.ID} height={45} overflow once offset={60}>
+						<QmLetter openReadUnreadQmModal={openReadUnreadQmModal} qm={qm} hasRed={qm.hasRed} users={users}/>
+					</LazyLoad>
 				))}
 			</div>
 		)
