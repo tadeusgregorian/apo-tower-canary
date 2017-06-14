@@ -1,11 +1,10 @@
 
 .assignedUsersMain{
   justify-content: flex-start;
-	margin-left: -2px;
 	padding: 0px;
 	align-items: center;
 	flex-wrap: wrap;
-  flex-grow: 0;
+  flex: 0 0 auto;
 
 	.hiddenMiniUsersCount{
 		height: 22px;

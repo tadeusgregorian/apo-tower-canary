@@ -1,6 +1,18 @@
 import React from 'react'
+import FBInstance from '../../firebaseInstance';
 import SButton from 'components/sButton'
-import { getOldQms, getOldUsers, refreshUsers, saveToAccount, getOldBranches, getOldGroups, refreshQms } from './helpers'
+import {
+  getOldQms,
+  getOldUsers,
+  refreshUsers,
+  saveToAccount,
+  getOldBranches,
+  getOldGroups,
+  getOldTasks,
+  refreshTasks,
+  refreshChecked,
+  refreshQms } from './helpers'
+import _ from 'lodash'
 import './styles.css'
 
 export default (props) => {
@@ -25,16 +37,38 @@ export default (props) => {
   async function qmsUbernehmen () {
     const oldQms = await getOldQms()
     const newQms = refreshQms(oldQms)
-    console.log(newQms)
     saveToAccount(targetAccountID, 'qmLetters', newQms)
+  }
+
+  async function tasksUbernehmen () {
+    const oldTasks = await getOldTasks()
+    const newTasks = refreshTasks(oldTasks)
+    saveToAccount(targetAccountID, 'taskManager/branches', newTasks)
+  }
+
+  async function checkedUbernehmen () {
+    const oldTasks = await getOldTasks()
+    const branches = await getOldBranches()
+    _.keys(branches).forEach(bID => {
+      const newChecked = refreshChecked(oldTasks, bID)
+      saveToAccount(targetAccountID, 'taskManager/branches/' + bID +'/checked', newChecked.checked)
+      saveToAccount(targetAccountID, 'taskManager/branches/' + bID +'/checkedMini', newChecked.checkedMini)
+    })
+  }
+
+  const createNode = () => {
+    FBInstance.database().ref().child('oldData/dummy').set('dully')
   }
 
   return(
     <fb className="datenubernahmeMain edgebox">
-      <SButton label='Users Ubernehmen' onClick={usersUbernehmen}/>
-      <SButton label='Branches Ubernehmen' onClick={branchesUbernemen}/>
-      <SButton label='Groups Ubernehmen' onClick={groupsUbernemen}/>
-      <SButton label='QMS Ubernehmen' onClick={qmsUbernehmen}/>
+      <SButton label='Users' onClick={usersUbernehmen}/>
+      <SButton label='Branches' onClick={branchesUbernemen}/>
+      <SButton label='Groups' onClick={groupsUbernemen}/>
+      <SButton label='QMS' onClick={qmsUbernehmen}/>
+      <SButton label='Tasks' onClick={tasksUbernehmen}/>
+      <SButton label='Checked' onClick={checkedUbernehmen}/>
+      <SButton label='create node' color='red' onClick={createNode}/>
     </fb>
   )
 }

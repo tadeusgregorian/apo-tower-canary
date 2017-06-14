@@ -39,6 +39,15 @@
 				align-items: flex-end;
 				padding-bottom: 8px;
 				margin-left: 30px;
+
+				.adminEyeInfo{
+					padding-bottom: 3px;
+		    	padding-left: 4px;
+
+					.icon{
+						font-size: 16px;
+					}
+				}
 			}
 
 			.addQmButton{

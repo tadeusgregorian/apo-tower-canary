@@ -5,7 +5,7 @@ import { updateUndoneTasks } from '../undoneTasksUpdater'
 import { getTodaySmart } from 'helpers'
 
 
-const aWhileAgo = 20170520 // we start here ( as late as possible , so initial calculation of undoneTasks isnt going to far )
+const aWhileAgo = 20170301 // we start here ( as late as possible , so initial calculation of undoneTasks isnt going to far )
 
 export const setRepeatingTasksListener = () => {
 	return (dispatch, getState) => {

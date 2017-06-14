@@ -62,11 +62,13 @@ export default class ReadUnreadQmPopup extends PureComponent {
 			<SModal.Main title={qmData.subject} onClose={this.props.onClose}>
 				<SModal.Body>
 					<fb className='rurModalAssignedUsers'>
-						<AssignedUsers {...{assignedUsers, users, usersRed}} tooltipRight/>
+						<fb className="assignedUsersWrapper">
+							<AssignedUsers {...{assignedUsers, users, usersRed}} tooltipRight/>
+						</fb>
 					</fb>
 					<fb className="rurModalBodyContent">
 						<CreatedInfo createdBy={createdBy} creationDate={qmData.date}/>
-						<p>{qmData.text}</p>
+						{qmData.text  && <p className="qmText">{qmData.text}</p>}
 						{qmData.files && qmData.files.map(f => (
 								<AttachmentBar
 									file={f}

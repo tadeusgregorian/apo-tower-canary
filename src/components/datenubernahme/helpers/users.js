@@ -2,11 +2,11 @@ import FBInstance from '../../../firebaseInstance'
 import _ from 'lodash'
 
 export const userIDTranslator = {
-  '080ed8da-a609-4314-a7e8-19c9c1a55e86': 'u001',
+  '4e9a9d17-6099-47ce-bb73-afb829d5b18c': 'u001',
   '17ea0649-b563-425c-85f9-de04d93ac49a': 'u002',
   '39cde6fd-5d02-463d-9192-e061aa34cf30': 'u003',
   '3b5828b7-aaed-478a-b2f7-40ac35abc2eb': 'u004',
-  '4e9a9d17-6099-47ce-bb73-afb829d5b18c': 'u005',
+  '080ed8da-a609-4314-a7e8-19c9c1a55e86': 'u005',
   '5d2e9a83-5b8a-48c8-bc46-0e240467de22': 'u006',
   '61510760-8eeb-4006-abdd-582f0db1d802': 'u007',
   '63e33292-ee38-4236-8286-02a104bb61bb': 'u008',
@@ -22,7 +22,7 @@ export const userIDTranslator = {
 }
 
 export const getOldUsers = () => {
-  const ref = FBInstance.database().ref('users')
+  const ref = FBInstance.database().ref('oldData/users')
   return ref.once('value').then(snap => snap.val())
 }
 

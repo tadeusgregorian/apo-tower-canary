@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import InputMinimal from 'components/inputMinimal'
 import SButton from 'components/sButton'
-import { Toast } from 'helpers'
+import { Toast, isValidEmail } from 'helpers'
 import './styles.css'
 
 
@@ -11,22 +11,17 @@ export default class PasswordForgotten extends PureComponent {
 		this.state = { email: '' }
 	}
 
-	validateEmail = (email) => {
-		// eslint-disable-next-line
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-	}
+
 
 	onClick = () => {
 		const { email } = this.state
-		const validEmail = this.validateEmail(email)
+		const validEmail = isValidEmail(email)
 		validEmail ? this.props.requestPWLink(email) : Toast.error('Bitte gültige Email-Adresse eingeben.')
 	}
 
 	getExplenationText = () => (
 		<fb className="content">
-			<span>Geben Sie die E-Mail Adresse ein, mit der Sie sich registriert haben.</span>
-			<span>Sie erhalten eine E-Mail, um ein neues Passwort zu erstellen.</span>
+			<span>Geben Sie die E-Mail Adresse ein, mit der Sie sich registriert haben. Sie erhalten eine E-Mail, um ein neues Passwort zu erstellen.</span>
 		</fb>
 	)
 

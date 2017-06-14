@@ -121,7 +121,7 @@ export default class AddEditUserPopup extends Component {
 					</fb>
 					{	this.props.branches.length > 1 &&
 						<fb className="inputItemWrapper">
-							<fb className="inputDescription">arbeitet in:</fb>
+							<fb className="inputDescription">Filiale:</fb>
 							<fb className="branchesWrapper">
 								<ChipBar
 									chips={this.props.branches}
@@ -131,7 +131,7 @@ export default class AddEditUserPopup extends Component {
 						</fb>
 					}
 					<fb className="inputItemWrapper">
-						<fb className="inputDescription">arbeitet als:</fb>
+						<fb className="inputDescription">Gruppe:</fb>
 						<fb className="branchesWrapper">
 							<ChipBar
 								chips={this.props.groups}

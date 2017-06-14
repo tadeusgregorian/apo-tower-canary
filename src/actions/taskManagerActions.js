@@ -9,12 +9,11 @@ const getCategory = (task) => {return (task.onetimerDate ? 'singleTasks' : 'repe
 
 export function checkTask(task, checkType, taskDate, shiftedTo = null) {
 	return(dispatch, getState) => {
-		// note: cant get task from store, because when checking task from checkbox, there is no taskObj in redux-store.
-		const userID = getState().core.selectedUser
 
+		const userID = getState().core.selectedUser
 		const checkID = taskDate + task.ID
-		const currentIsoTime = moment().toISOString()
-		const checked = { ID: checkID, taskID: task.ID , taskDate, type: checkType,  by: userID, date: currentIsoTime}
+		const currentTime = moment().unix()
+		const checked = { ID: checkID, taskID: task.ID , taskDate, type: checkType,  by: userID, date: currentTime}
 		if(shiftedTo) checked['shiftedTo'] = shiftedTo
 		let updates = {}
 		updates[getFirebasePath('checked')+checkID] = checked
@@ -26,11 +25,7 @@ export function checkTask(task, checkType, taskDate, shiftedTo = null) {
 			updates[getFirebasePath('singleTasks')+ guid] = newShiftedTask
 		}
 
-		//Update undoneTasks if task is in past
-		if(taskDate < today){
-			console.log(taskDate)
-			console.log(task.ID)
-		}
+		// if checking task in past: update undoneTasks
 		if(taskDate < today) updates[getFirebasePath('undoneTasks') + taskDate + task.ID] = null
 
 		FBInstance.database().ref().update(updates)
@@ -57,7 +52,12 @@ export function uncheckTask(task, taskDate) {
 }
 
 export function createTask(taskObj) {
-	const task = {...taskObj, ID: createShortGuid(), creationDate: moment().toISOString()}
+	const task = {...taskObj, ID: createShortGuid(), creationDate: moment().unix()}
+	const ref = FBInstance.database().ref(getFirebasePath(getCategory(task)))
+	ref.child(task.ID).set(task)
+}
+
+export function overrideTask(task) { // this is for editing a onetimer task or a repTask that started today or later.
 	const ref = FBInstance.database().ref(getFirebasePath(getCategory(task)))
 	ref.child(task.ID).set(task)
 }

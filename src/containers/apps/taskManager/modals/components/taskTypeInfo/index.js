@@ -8,8 +8,8 @@ export default ({task}) => {
 	const taskTypeAndPattern = getTypeAndPatternOfTask(task);
   return(
     <fb className='modalTaskTypeInfo'>
-      <icon className='icon-insert_invitation nop'/>
-      <bo>{taskTypeAndPattern.type} </bo> {(taskTypeAndPattern.patternFullLength || taskTypeAndPattern.pattern)}
+      <icon style={{ alignItems: 'flex-start', paddingTop: '4px'}}className='icon-insert_invitation nop'/>
+      <bo style={{ display: 'flex', flex: '0 0 auto'}}>{taskTypeAndPattern.type} </bo> {(taskTypeAndPattern.patternFullLength || taskTypeAndPattern.pattern)}
     </fb>
   )
 }

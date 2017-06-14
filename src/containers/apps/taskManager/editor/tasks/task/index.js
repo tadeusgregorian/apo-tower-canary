@@ -19,7 +19,7 @@ export default class Task extends PureComponent {
 			<fb className={cN({"taskRow": true, "ghostRow": isInPast })} onClick={()=>this.props.openTaskDetailsPopup(task, isInPast)}>
 				<fb className="creator creatorCell" style={{color: creator.color}}>{creator.nameInitials}</fb>
 				<fb className="taskInfo taskInfoCell">
-					<fb className="taskTitle">{task.subject}</fb>
+					<span className="taskTitle">{task.subject}</span>
 					{ isInPast ? <fb className="isInPastTag">vergangen</fb> : null }
 				</fb>
 				<fb className="assignedUsers assignedUsersCell">

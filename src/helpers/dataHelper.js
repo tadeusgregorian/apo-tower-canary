@@ -68,7 +68,7 @@ export const getTypeAndPatternOfTask = (task) => {
 			}
 			case TaskType.yearly: {
 				r.type = task.repeatEvery ?  `alle ${task.repeatEvery} Jahre` : "Jährlich"
-				r.patternFullLength = task.yearly && task.yearly.map( d => moment(d).format("DD MMM") ).join(" ,  ")
+				r.patternFullLength = task.yearly && task.yearly.map( d => moment(d).format("DD MMM") ).join(",  ")
 				if( task.yearly.length >= 4 ){
 					r.pattern = task.yearly && task.yearly.at([0,1,2,3]).map( d => moment(d).format("DD MMM") ).join(" ,  ")+" , ..."
 				}else{
@@ -78,9 +78,9 @@ export const getTypeAndPatternOfTask = (task) => {
 			}
 			case TaskType.irregular: {
 				r.type =  "Multi-Datum"
-				r.patternFullLength = task.irregularDates && task.irregularDates.map( date =>  moment(date).format("DD/MM/YY")).join(" / ")
+				r.patternFullLength = task.irregularDates && task.irregularDates.map( date =>  moment(date, 'YYYYMMDD').format("DD.MM.YY")).join(" / ")
 				if( task.irregularDates.length >= 3 ){
-					r.pattern = task.irregularDates && task.irregularDates.slice(0, 3).map( date =>  moment(date).format("DD/MM/YY")).join(" ,  ") +" , ..."
+					r.pattern = task.irregularDates && task.irregularDates.slice(0, 3).map( date =>  moment(date , 'YYYYMMDD').format("DD.MM.YY")).join(" /  ") +" , ..."
 				}else{
 					r.pattern = r.patternFullLength;
 				}

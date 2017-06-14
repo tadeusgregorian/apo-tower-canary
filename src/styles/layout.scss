@@ -12,11 +12,9 @@ body {
 }
 
 html, body, body > div#root, body > div#root > div#main, body > div#main > div > div {
-	&:not(#toast-container):not(.toast):not(.toast-message) {
-		width: 100%;
-		height: 100%;
-		margin: 0;
-	}
+	width: 100%;
+	height: 100%;
+	margin: 0;
 }
 
 #apps {

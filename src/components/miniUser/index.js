@@ -29,6 +29,10 @@ export default class MiniUser extends PureComponent {
 			color: '#c1c1c1',
 			textShadow: 'none'
 		}
+
+		this.vacIconStyle = {
+			color: props.grayedOut ? '#efefef' : 'white'
+		}
 	}
 
 
@@ -46,7 +50,7 @@ export default class MiniUser extends PureComponent {
 		return (
 			<fb key={user.ID} className={cn({miniUserMain: true, isReplacer })} style={ style } data-balloon={user.name} data-balloon-pos={tooltipRight ? 'right' : 'left'}>
 				<fb className="initials">{user.nameInitials}</fb>
-				{isReplacer && <fb className="vacationV icon icon-autorenew" style={{color: 'white'}} ></fb>}
+				{isReplacer && <fb className="vacationV icon icon-autorenew" style={this.vacIconStyle} ></fb>}
 			</fb>
 		)
 	}

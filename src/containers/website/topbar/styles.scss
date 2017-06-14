@@ -1,0 +1,59 @@
+#topbar{
+	background-color: white;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 48px;
+	width: 100%;
+  box-shadow: 0 0 4px 0px #b9b9b9;
+	justify-content: center;
+	align-items: center;
+
+	#topbarCenter{
+		flex: 1 1 auto;
+		max-width: 900px;
+		height: 100%;
+		align-items: center;
+
+		#topbarLogo{
+			font-size: 18px;
+			font-weight: 300;
+			letter-spacing: 2px;
+			flex: 0 0 auto;
+			align-items: center;
+
+			#topbarLogoText{
+    		margin-left: 8px;
+			}
+		}
+
+		#topbarNavi{
+			flex: 1 1 auto;
+			justify-content: flex-end;
+
+			.naviElement{
+				margin-left: 30px;
+		    color: #4e4e56;
+		    font-size: 15px;
+		    width: 63px;
+		    justify-content: center;
+		    padding: 3px 4px;
+		    font-weight: 300;
+		    cursor: pointer;
+		    font-weight: bold;
+		    letter-spacing: 0.6px;
+			}
+
+			.naviElement:hover{
+				font-weight: 400;
+			}
+
+
+			#loginNaviElement{
+				background-color: #029ca6;
+		    border-radius: 44px;
+		    color: white;
+			}
+		}
+	}
+}

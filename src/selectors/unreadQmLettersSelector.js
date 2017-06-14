@@ -10,7 +10,6 @@ const calculateUnreadQmLetters = (users, qmLetters, branchID) => {
 	usersInThisBranch.forEach(u => unreadQmsGrid[u.ID] = 0) // populate grid with userID: 0
 	qmLetters.forEach(qm => {
 		for(let uID in qm.assignedUsers) {
-			if(!usersInThisBranch.find(u => u.ID === uID)) return
 			if(qm.assignedUsers[uID]===1) ++unreadQmsGrid[uID]
 		}
 	})

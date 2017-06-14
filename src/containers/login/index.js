@@ -52,7 +52,7 @@ export default class Login extends PureComponent {
 						sStyle={{width: '100%', marginLeft: 2, marginRight: -2, marginTop: 8}}
 						color='#2ecc71'
 					/>
-					<fb className="passwordForgotten" onClick={() => this.setState({passwordForgotten: true})}>Passwort vergessen?</fb>
+					<fb className="passwordForgottenBtn" onClick={() => this.setState({passwordForgotten: true})}>Passwort vergessen?</fb>
 				</fb>
 			</fb>
 		)

@@ -60,8 +60,8 @@ export default (props) => {
 					{/* <fb className="colorCircle"></fb> */}
 					<fb className="userName">{getReplacement()}</fb>
 					<fb className="iconsWrapper">
-						{ replExists && <fb className="removeIcon icon icon-cross" onClick={removeClicked}></fb>}
-						<fb className="editIcon icon icon-pencil" onClick={editClicked}></fb>
+						{ replExists && <fb className="removeIcon icon icon-cross clickableIcon" onClick={removeClicked}></fb>}
+						<fb className="editIcon icon icon-pencil clickableIcon" onClick={editClicked}></fb>
 					</fb>
 				</fb>
 			</fb>

@@ -37,7 +37,6 @@ export default class EnterPinForm extends Component {
 					onEnter={this.checkPin}
 					password
 					autoFocus
-					name='password'
 				/>
 				<fb className='pinEnteredButtonWrapper'>
 					<SButton

@@ -47,7 +47,7 @@ export const getTasksForDay = (repeatingTasks, singleTasks, day) => {
 				const startDate = t.originalStartDate || t.startDate
 				const yearDifference = smartYear(day) - smartYear(startDate)
 				const monthsDifference = smartMonth(day) - smartMonth(startDate) + (yearDifference * 12)
-				if (!(monthsDifference % t.repeatEvery)===0) return false
+				if (monthsDifference % t.repeatEvery !== 0) return false
 			}
 			return t.monthly.find(md => { return md===dayOfMonth || (dayOfMonth===daysInMonth && md > daysInMonth) })
 		}

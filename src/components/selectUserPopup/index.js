@@ -5,7 +5,7 @@ import SelectUsersBox from 'components/selectUsersBox'
 import _ from 'lodash'
 import './styles.css'
 
-export default ({onClose, users, onUserSelected, selectedUser, blockedUsers}) =>  {
+export default ({onClose, users, onUserSelected, selectedUser, blockedUsers, whyBlocked, title}) =>  {
 
 	const onUserClicked = (userID) => {
 		onUserSelected(userID)
@@ -13,11 +13,12 @@ export default ({onClose, users, onUserSelected, selectedUser, blockedUsers}) =>
 	}
 
 	return (
-		<SModal.Main onClose={onClose} title='Mitarbeiter auswählen'>
+		<SModal.Main onClose={onClose} title={title || 'Mitarbeiter auswählen'}>
 			<SModal.Body>
 				<fb className="bodyContent">
 					<SelectUsersBox
 						blockedUsers={blockedUsers} 		// array
+						whyBlocked={whyBlocked}					// string
 						selectedUsers={[selectedUser]} 	// userID
 						users={users}										// array[userObj]
 						userClicked={onUserClicked}

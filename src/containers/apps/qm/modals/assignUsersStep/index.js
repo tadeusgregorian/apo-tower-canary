@@ -59,6 +59,8 @@ class AssignUsersStep extends Component {
 	}
 
 	render() {
+		console.log(this.props.OTask.assignedUsers)
+
 		return (
 			<fb className="qmAssignUsersStep">
 				{ this.props.branches.length > 1 &&

@@ -4,7 +4,7 @@ import moment from 'moment'
 import _ from 'lodash'
 
 export const getOldQms = () => {
-  const ref = FBInstance.database().ref('qmList')
+  const ref = FBInstance.database().ref('oldData/qmList')
   return ref.once('value').then(snap => snap.val())
 }
 
@@ -26,8 +26,8 @@ export const refreshQms = (_oldQms) => {
   _.values(_oldQms).forEach(qm => {
     let assignedUsers = {}
 
-    _.keys(qm.assignedUsers).forEach(uID => assignedUsers[userIDTranslator[uID]] = '1')
-    _.keys(qm.usersRed).forEach(uID => assignedUsers[userIDTranslator[uID]] = '2' )
+    _.keys(qm.assignedUsers).forEach(uID => assignedUsers[userIDTranslator[uID]] = 1)
+    _.keys(qm.usersRed).forEach(uID => qm.assignedUsers[uID] && (assignedUsers[userIDTranslator[uID]] = 2))
 
     const ID        = qm.ID
     const subject   = qm.subject

@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux';
 import _ from 'lodash';
 
 import { openConfirmPopup, closeConfirmPopup } from 'actions'
-import { createTask, editAndCreateTask, deleteTask, endRepeatingTask } from 'actions';
+import { editAndCreateTask, deleteTask, endRepeatingTask, overrideTask } from 'actions';
 import { setAllSingleTasksListener } from 'actions';
 import Dialog from 'material-ui/Dialog';
 
@@ -34,18 +34,20 @@ class Editor extends PureComponent {
 			filterCreator: null,
 			filterAssignedUser: this.props.selectedUser,
 			taskSearchString: '',
-			hidePastTask: true,
+			showPastTask: false,
 			selectedCategory: 'repeating' // can be: 'single' or 'repeating'
 		}
 	}
 
 	openTaskDetailsPopup = (task, isInPast) => {
+		console.log(task)
 		const editable = (!isInPast) && task.creatorID === this.props.selectedUser
 		this.taskDetailsPopup = (
 			<TaskDetailsPopup
 				task={task}
 				users={this.props.users}
 				editable={editable}
+				deletable={task.onetimerDate || task.startDate >= getTodaySmart()}
 				deleteTask={this.openDeleteTaskPopup}
 				editTask={this.openEditTaskWizard}
 				onClose={() => this.setState({taskDetailsPopupOpen: false})}
@@ -85,8 +87,8 @@ class Editor extends PureComponent {
 	}
 
 	editTask = (task) => {
-		if(task.onetimerDate || (!task.onetimerDate && task.startDate >= getTodaySmart())) {
-			createTask(task) // this just overrides the task with new version.
+		if(task.onetimerDate || task.startDate >= getTodaySmart()) {
+			overrideTask(task)
 		} else {
 			editAndCreateTask(
 				{ID: task.ID, endDate: getYesterdaySmart()},
@@ -108,7 +110,7 @@ class Editor extends PureComponent {
 				filterAssignedUser={this.state.filterAssignedUser}
 				taskSearchString={this.state.taskSearchString}
 				selectedCategory={this.state.selectedCategory}
-				hidePastTask={this.state.hidePastTask}
+				showPastTask={this.state.showPastTask}
 				changeFilter={(changeObj) => this.setState(changeObj)}
 				changeCategoryTo={this.changeCategoryTo}
 			/>

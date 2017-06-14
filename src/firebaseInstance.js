@@ -1,38 +1,42 @@
 import firebase from 'firebase';
 
 let config;
+console.log('REACT_APP_TARGET: ',process.env.REACT_APP_TARGET)
 
-if (process.env.NODE_ENV === 'production') {
-	// Production config (STERSEMANN + ANDREAS DB)
-	// console.log("YOU are working with the produciton database - be cautious!");
-	// config = {
-	// 	apiKey: 'AIzaSyBwOP-NqDRYCw59ZdMlKAHK53sEnjG_l6s',
-	// 	authDomain: 'apochecklist2.firebaseapp.com',
-	// 	databaseURL: 'https://apochecklist2.firebaseio.com',
-	// 	storageBucket: 'apochecklist2.appspot.com'
-	// };
-	console.log('DEMO DATABASE')
+if (process.env.REACT_APP_TARGET === 'production') {
+	console.log('productionDB')
 	config = {
-	    apiKey: "AIzaSyCRAE8D33cStZVlM_uGLKptrPA8EaCZC-w",
-	    authDomain: "apochecklistdemo.firebaseapp.com",
-	    databaseURL: "https://apochecklistdemo.firebaseio.com",
-	    storageBucket: "apochecklistdemo.appspot.com",
-	};
-} else {
-	// Development config (Demo DB)
-	console.log("demo database - EVERYTHING FINE");
+		apiKey: "AIzaSyDvrSSswvlUmB2hhrgQwA3407_KUPqcYXY",
+    authDomain: "apotower-ed9eb.firebaseapp.com",
+    databaseURL: "https://apotower-ed9eb.firebaseio.com",
+    projectId: "apotower-ed9eb",
+    storageBucket: "apotower-ed9eb.appspot.com",
+    messagingSenderId: "1070970987025"
+	}
+}
+
+if(process.env.REACT_APP_TARGET === 'staging') {
+	console.log("developmentDB")
 	config = {
-		apiKey: "AIzaSyCRAE8D33cStZVlM_uGLKptrPA8EaCZC-w",
-		authDomain: "apochecklistdemo.firebaseapp.com",
-		databaseURL: "https://apochecklistdemo.firebaseio.com",
-		storageBucket: "apochecklistdemo.appspot.com"
-	};
-	// config = {
-	//     apiKey: 'AIzaSyBwOP-NqDRYCw59ZdMlKAHK53sEnjG_l6s',
-	//     authDomain: 'apochecklist2.firebaseapp.com',
-	//     databaseURL: 'https://apochecklist2.firebaseio.com',
-	//     storageBucket: 'apochecklist2.appspot.com'
-	// };
+		apiKey: "AIzaSyCg4wdcZLYjOv9giDzGyE1wwwrdwSf1G28",
+		authDomain: "apotowerdev.firebaseapp.com",
+		databaseURL: "https://apotowerdev.firebaseio.com",
+		projectId: "apotowerdev",
+		storageBucket: "apotowerdev.appspot.com",
+		messagingSenderId: "359455830469"
+	}
+}
+
+if(process.env.NODE_ENV === 'development') {
+	console.log("developmentDB")
+	config = {
+		apiKey: "AIzaSyCg4wdcZLYjOv9giDzGyE1wwwrdwSf1G28",
+		authDomain: "apotowerdev.firebaseapp.com",
+		databaseURL: "https://apotowerdev.firebaseio.com",
+		projectId: "apotowerdev",
+		storageBucket: "apotowerdev.appspot.com",
+		messagingSenderId: "359455830469"
+	}
 }
 
 const firebaseInstance = firebase.initializeApp(config);
@@ -40,5 +44,6 @@ const firebaseInstance = firebase.initializeApp(config);
 export const ref = firebase.database().ref()
 export const firebaseAuth = firebase.auth
 export const Storage = firebaseInstance.storage();
+export const serverTimestamp = firebase.database.ServerValue.TIMESTAMP
 
 export default firebaseInstance;

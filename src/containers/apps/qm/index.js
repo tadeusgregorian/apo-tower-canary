@@ -119,6 +119,9 @@ class QmApp extends PureComponent {
 								isChecked={this.state.adminWantsToSeeAll}
 								onCheck={this.adminEyeCheckboxClicked}
 							/>
+							<fb className="adminEyeInfo" data-balloon='Im Adminmodus sind die QM-Briefe aller sichtbar' data-balloon-pos='top' >
+								<fb className="icon icon-information2" />
+							</fb>
 						</fb>}
 						<fb className='addQmButton' onClick={this.openAddEditQmWizard}>
 							<fb className='addQmButtonIconWrapper'><icon className='icon icon-plus'/></fb>

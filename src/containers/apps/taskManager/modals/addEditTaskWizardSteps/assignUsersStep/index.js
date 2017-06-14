@@ -10,6 +10,11 @@ class AssignUsersStep extends PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = { selectedGroups: [] }
+
+		this.replacements = {}
+		_.keys(props.OTask.assignedUsers).forEach(uID => {
+			props.OTask.assignedUsers[uID] !== 1 && (this.replacements[uID] = props.OTask.assignedUsers[uID])
+		})
 	}
 
 	componentWillMount = () =>  {
@@ -27,7 +32,7 @@ class AssignUsersStep extends PureComponent {
 		for (let i of selectedGroups) {
 			let usersArray = filterUsersByGroup(this.props.users, i)
 			for (let f of usersArray) {
-				selectedUsersIds[f.ID] = 1
+				selectedUsersIds[f.ID] = this.oneOrReplacer(f.ID)
 			}
 		}
 		this.props.editOTask({assignedUsers: selectedUsersIds})
@@ -35,11 +40,18 @@ class AssignUsersStep extends PureComponent {
 
 	selectDeselectUser = (uID) => {
 		const oldAU = this.props.OTask.assignedUsers
-		const newAU = oldAU && oldAU[uID] ? _.omit(oldAU, uID) : { ...oldAU, [uID]: 1 }
+		const newAU = oldAU && oldAU[uID] ? _.omit(oldAU, uID) : { ...oldAU, [uID]: this.oneOrReplacer(uID) }
 		this.props.editOTask({assignedUsers: newAU})
 	}
 
+	// if there is a replacement ( only in edit mode ) we return that otherwise 1
+	// so we preserve the replacement when deselecting and selecting the user again
+	oneOrReplacer = (uID) => (this.replacements[uID] || 1)
+
 	render() {
+		console.log(this.props.OTask.assignedUsers)
+		console.log(this.replacements)
+
 		return (
 			<fb className='tasksAssignUsersMain'>
 				<ChipBar

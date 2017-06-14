@@ -27,7 +27,7 @@
 		cursor: pointer;
 
 		&:hover{
-			background: lightgrey;
+			background: #e8e8e8;
 		}
 
 		.taskTitle{
@@ -70,14 +70,18 @@
 			flex: 1 0 auto;
 			padding-right: 4px;
 
-			>*{
-		    flex: 0 0 auto;
-		    height: 36px;
-		    width: 36px;
-		    justify-content: center;
-		    border: 1px solid lightgrey;
-		    margin-left: -1px;
+			.clickableIcon{
+				flex: 0 0 auto;
+				height: 36px;
+				width: 36px;
+				justify-content: center;
+				border: 1px solid lightgrey;
+				margin-left: -1px;
 				color: #888888;
+
+				&:hover{
+					background-color: lightgrey;
+				}
 			}
 
 			.removeIcon{

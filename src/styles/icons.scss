@@ -2,68 +2,10 @@
     font-family: 'icomoon';
     src:    url('../../fonts/icomoon.eot?uqosd8');
     src:    url('../../fonts/icomoon.eot?uqosd8#iefix') format('embedded-opentype'),
-        url('../../fonts/icomoon.ttf?uqosd8') format('truetype'),
-        url('../../fonts/icomoon.woff?uqosd8') format('woff'),
-        url('../../fonts/icomoon.svg?uqosd8#icomoon') format('svg');
+            url('../../fonts/icomoon.ttf?uqosd8') format('truetype'),
+            url('../../fonts/icomoon.woff?uqosd8') format('woff');
     font-weight: normal;
     font-style: normal;
-}
-
-#toast-container > .toast {
-    background-image: none !important;
-	display: flex;
-	flex-direction: row;
-	padding-left: 50px;
-	box-sizing: content-box;
-	width: 240px;
-	align-items: center;
-	justify-content: flex-start;
-	box-shadow: 0 3px 17px rgba(0, 0, 0, 0.37);
-	opacity: .9;
-	border-radius: 3px;
-	div {
-		color: white;
-	}
-}
-
-#toast-container > .toast:before {
-    position: relative;
-    font-family: icomoon;
-    font-size: 22px;
-    float: left;
-    margin-left: -30px;
-	margin-right: 5px;
-    color: #FFF;
-    padding-right: 12px;
-	display: flex;
-	align-items: center;
-	.toast-message {
-		display: block;
-		text-align: left;
-		float: none;
-	}
-}
-
-#toast-container > .toast-warning:before {
-    content: "\e002";
-}
-
-#toast-container > .toast-error {
-	background-color: rgb(231, 76, 60);
-	&:before {
-    	content: "\ea10";
-	}
-}
-
-#toast-container > .toast-info:before {
-    content: "\ea0d";
-}
-
-#toast-container > .toast-success {
-    background-color: #27ae60;
-	&:before {
-    	content: "\ea11";
-	}
 }
 
 button {
@@ -84,7 +26,7 @@ button {
 			    font-size: 10px;
 			}
 		}
-    }
+  }
 }
 
 icon {

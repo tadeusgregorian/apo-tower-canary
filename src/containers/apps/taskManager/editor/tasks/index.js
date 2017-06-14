@@ -17,10 +17,10 @@ export default class Tasks extends PureComponent{
   )
 
   filteredSortedTasks() {
-    const {filterCreator, filterAssignedUser, taskSearchString, hidePastTask} = this.props
+    const {filterCreator, filterAssignedUser, taskSearchString, showPastTask} = this.props
     let filtTs = this.props.tasks.filter(t => !t.isDuplicate && !t.originalShiftedTask)
 
-    if (hidePastTask)																					filtTs = filtTs.filter(t => !this.taskIsInPast(t))
+    if (!showPastTask)																				filtTs = filtTs.filter(t => !this.taskIsInPast(t))
     if (filterCreator && filterCreator !== "none") 						filtTs = filtTs.filter(t => t.creatorID===filterCreator)
     if (filterAssignedUser && filterAssignedUser !== "none") 	filtTs = filtTs.filter(t => t.assignedUsers && t.assignedUsers[filterAssignedUser])
     if (this.props.taskSearchString) 													filtTs = filtTs.filter(t => stringIncludes(t.subject+' '+t.text, taskSearchString))

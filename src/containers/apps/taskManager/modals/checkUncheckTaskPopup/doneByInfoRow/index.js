@@ -6,8 +6,8 @@ export default ({task:t, users}) => {
 	const doneBy = 			t.isDoneBy 			&& users.find(u => u.ID===t.isDoneBy).name
 	const ignoredBy = 	t.isIgnoredBy 	&& users.find(u => u.ID===t.isIgnoredBy).name
 	const shiftedBy = 	t.isShiftedBy 	&& users.find(u => u.ID===t.isShiftedBy).name
-	const doneDate = 		t.isDoneDate 		&& moment(t.isDoneDate).format('DD.MM.YYYY - HH:mm')
-	const ignoredDate = t.isIgnoredDate && moment(t.isIgnoredDate).format('DD.MM.YYYY - HH:mm')
+	const doneDate = 		t.isDoneDate 		&& moment.unix(t.isDoneDate).format('DD.MM.YYYY - HH:mm')
+	const ignoredDate = t.isIgnoredDate && moment.unix(t.isIgnoredDate).format('DD.MM.YYYY - HH:mm')
 	//const shiftedDate = t.isShiftedDate && moment(t.isShiftedDate).format('DD.MM.YYYY')
 	const shiftedTo =		t.isShiftedTo   && moment(t.isShiftedTo, 'YYYYMMDD').format('DD.MM.YYYY')
 

@@ -1,0 +1,19 @@
+
+body{
+	background-color: #F8F7F8;
+	font-family: 'roboto';
+	height:100vh;
+
+	#websiteContent{
+		margin-top: 46px;
+		flex-direction: column;
+		width: 100%;
+		align-items: center;
+		justify-content: flex-start;
+		flex: 0 0 auto;
+
+		fb{
+			flex: 0 0 auto;
+		}
+	}
+}

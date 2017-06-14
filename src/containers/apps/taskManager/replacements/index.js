@@ -34,6 +34,8 @@ class Editor extends PureComponent {
 				selectedUser={task.assignedUsers[selectedUser]} // sorry very confusing: selectedUser used twice as name... ( TODO: change name of state.core.selectedUser )
 				blockedUsers={_.keys(task.assignedUsers)}
 				onUserSelected={(replacer) => addReplacement(task.ID, selectedUser, replacer)}
+				whyBlocked='ist bereits für diese Aufgabe verantwortlich'
+				title='Vertretung auswählen'
 				onClose={() => this.setState({selectUserPopupOpen: false})}
 			/>
 		)
@@ -41,6 +43,7 @@ class Editor extends PureComponent {
 	}
 
 	openTaskDetailsPopup = (task) => {
+		console.log(task);
 		this.taskDetailsPopup = (
 			<TaskDetailsPopup
 				task={task}
@@ -61,7 +64,6 @@ class Editor extends PureComponent {
 			<fb className="replacementsMain">
 					<fb className="replacementsContent">
 						<fb className="replacementInfoText">
-							Hier kannst du für deine wiederholenden Aufgaben Vertretungen auswählen.
 						</fb>
 						<fb className="taskListWrapper">
 							<ListHead selectedCategory={this.state.selectedCategory}/>

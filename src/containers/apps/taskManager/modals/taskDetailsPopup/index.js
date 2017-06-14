@@ -8,7 +8,7 @@ import _ from 'lodash'
 import './styles.css';
 
 
-export default ({users, task, editable, editTask, deleteTask, onClose, withoutFooter}) =>  {
+export default ({users, task, editable, editTask, deleteTask, onClose, withoutFooter, deletable}) =>  {
 
 		const assignedUsers = _.keys(task.assignedUsers)
 		const createdBy = users.find(u => u.ID === task.creatorID).name
@@ -44,7 +44,7 @@ export default ({users, task, editable, editTask, deleteTask, onClose, withoutFo
 						/>
 						<SButton
 							color={'#e74c3c'}
-							label={task.onetimerDate ? 'LÖSCHEN' : 'BEENDEN'}
+							label={deletable ? 'LÖSCHEN' : 'BEENDEN'}
 							onClick={delteBtnClicked}
 							disabled={!editable}
 						/>

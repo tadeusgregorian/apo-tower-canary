@@ -10,31 +10,27 @@ import "./styles/main.css"
 
 import Login 					from './containers/login'
 import Apps 					from './containers/apps'
-import Datenubernahme from 'components/datenubernahme' // comment this out when done with it!
+import Website				from './containers/website'
 
+//import Datenubernahme from 'components/datenubernahme' // comment this out when done with it!
 
 
 const Main = (props) => {
 	if(!props.firebaseAuthListener) props.setAuthStateListener()
-	const loggedIn = props.authState === 'loggedIn'
-	const loggedOut = !props.authState || props.authState === 'loggedOut'
-	const isAuthenticating = props.authState === 'isAuthenticating'
 
-
-	if(process.env.NODE_ENV === 'development'){
-			//if (!loggedIn) return(<fb>loggingIn... devEnvironment</fb>)
-	    //if (loggedIn) return <Route path='/Apps' component={Apps} />
- }
+	const loggedIn 					=  props.authState === 'loggedIn'
+	const loggedOut 				= !props.authState || props.authState === 'loggedOut'
+	const isAuthenticating 	=  props.authState === 'isAuthenticating'
 
 
 	return (
 		<div id='main'>
 			{isAuthenticating ? <fb>AUTHENTICATING...</fb> :
 				<fb style={{height: '100vh'}}>
-					<Route path='/' exact render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender/Public" /> : <Login /> } />
+					<Route path='/' exact render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender/Public" /> : <Website /> } />
 					<Route path='/Login' 	render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender/Public" /> : <Login /> } />
 					<Route path='/Apps' 	render={() => loggedOut ? <Redirect to="/Login" /> : <Apps /> } />
-					<Route path='/Datenubernahme' 	component={Datenubernahme} />
+					{/* <Route path='/Datenubernahme' 	component={Datenubernahme} /> */}
 				</fb>
 			}
 		</div>

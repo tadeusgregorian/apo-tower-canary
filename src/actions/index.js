@@ -14,3 +14,4 @@ export * from './authActions';
 export * from './accountActions';
 export * from './uiActions'
 export * from './storageActions'
+export * from './createAccount'

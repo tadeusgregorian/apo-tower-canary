@@ -11,6 +11,8 @@ export function createGuid() {
 	const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 	const x1 = possible.charAt(Math.floor(Math.random() * possible.length))
 	const x2 = possible.charAt(Math.floor(Math.random() * possible.length))
+	const x4 = possible.charAt(Math.floor(Math.random() * possible.length))
+	const x5 = possible.charAt(Math.floor(Math.random() * possible.length))
 	const unix = moment().format('X')
 	let d = new Date().getTime()
 	if (window.performance && typeof window.performance.now === 'function') {
@@ -21,7 +23,7 @@ export function createGuid() {
 		// eslint-disable-next-line
 		return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16)
 	});
-	return unix + uuid + x1 + x2;
+	return unix + uuid + x1 + x2 + x4 + x5;
 }
 
 export const createShortGuid = () => {
@@ -226,3 +228,9 @@ export const getSmartDayRange = (firstDate, lastDate) => {
 }
 
 export const replaceDotsWithCommas = (str) => str.replace(/\./g, ',')
+
+export const isValidEmail = (email) => {
+	// eslint-disable-next-line
+	const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return re.test(email);
+}

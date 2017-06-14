@@ -26,9 +26,12 @@
 		overflow: hidden;
 		white-space: nowrap;
 		min-width: 0;
+		overflow: hidden;
+    margin-right: 20px;
 
 		.taskTitle{
 			flex: 0 1 auto;
+			margin-right: 8px;
 		}
 
 		.isDoneTag , .hasEndedTag{

@@ -73,11 +73,11 @@ export default class FilterBar extends PureComponent {
 				</fb>
 				<fb className="filterActivesCheckbox filterCheckBox">
 				<Checkbox
-				label="Vergangene ausblenden"
+				label="Vergangene anzeigen"
 				iconStyle={{marginRight: 10}}
 				style={{fontSize: "14px"}}
-				checked={this.props.hidePastTask}
-				onCheck={()=>this.props.changeFilter({hidePastTask: !this.props.hidePastTask})}
+				checked={this.props.showPastTask}
+				onCheck={()=>this.props.changeFilter({showPastTask: !this.props.showPastTask})}
 				/>
 				</fb>
 			</fb>
