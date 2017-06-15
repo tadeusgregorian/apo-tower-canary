@@ -22,10 +22,16 @@ html, body, body > div#root, body > div#root > div#main, body > div#main > div >
 	height: 100%;
 }
 
-#app {
+#appsContent{
+	flex-direction: column;
+	min-height: 100px;
+}
+
+#appMain	 {
 	flex: 1 1 auto;
 	flex-direction: column;
 	width: 100%;
+	min-height: 100px;
 }
 
 tab {

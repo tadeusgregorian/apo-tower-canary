@@ -41,7 +41,9 @@ class Editor extends PureComponent {
 
 	openTaskDetailsPopup = (task, isInPast) => {
 		console.log(task)
-		const editable = (!isInPast) && task.creatorID === this.props.selectedUser
+		const isCreator = task.creatorID === this.props.selectedUser
+		const isAdmin		= this.props.users.find(u => u.ID === this.props.selectedUser).isAdmin
+		const editable 	= (!isInPast) && (isCreator || isAdmin)
 		this.taskDetailsPopup = (
 			<TaskDetailsPopup
 				task={task}
@@ -66,7 +68,7 @@ class Editor extends PureComponent {
 	}
 
 	openDeleteTaskPopup = (task) => {
-		// its deletable if its onetimerTask or if it hasnt started yet
+		// if a task is not deletable ( repTasks that started in past ) -> they get ended ( endDate gets set to yesterday )
 		const deletable = task.onetimerDate || task.startDate >= getTodaySmart()
 		const comp = <ConfirmPopup
 			acceptBtnLabel={deletable ? 'Löschen' : 'Beenden' }

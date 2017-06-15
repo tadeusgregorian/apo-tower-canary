@@ -9,6 +9,8 @@ export const setAuthStateListener = () => {
 		firebaseAuth().onAuthStateChanged((user) => {
 
 			if(user) window.accountID = user.uid
+			if(user && localStorage.apotowerbranch) window.selectedBranch = localStorage.apotowerbranch
+
 			dispatch({
 				type: user ? 'USER_LOGGED_IN' : 'USER_LOGGED_OUT',
 				payload: user ? user.uid : null

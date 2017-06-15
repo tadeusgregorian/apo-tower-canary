@@ -17,10 +17,11 @@ export const createNewAccountOnDB = (accountID, pharmacyName, email) => {
 }
 
 const getInitialAccountData = (accountID, pharmacyName, email) => {
+	const firstBranchID = createShortGuid()
 	return {
 		groups: 					getInitialGroups(),
-		branches: 				getInitialBranch(pharmacyName),
-		users: 						getInitialUser(),
+		branches: 				getInitialBranch(pharmacyName, firstBranchID),
+		users: 						getInitialUser(firstBranchID),
 		accountDetails: 	getAccountDetails(accountID, email)
 	}
 }
@@ -34,18 +35,18 @@ const getInitialGroups = () => {
 	}
 }
 
-const getInitialBranch = (pharmacyName) => {
-	return {Z03930initialBranchID: {ID: 'Z03930initialBranchID', name: pharmacyName, notDeletable: true}}
+const getInitialBranch = (pharmacyName, firstBranchID) => {
+	return {[firstBranchID]: {ID: firstBranchID, name: pharmacyName, notDeletable: true}}
 }
 
-const getInitialUser = (branchID) => {
+const getInitialUser = (firstBranchID) => {
 	return {u001: {
 		ID: 'u001',
 		name: 'Admin',
 		nameInitials: 'Admi',
 		color: '#2ecc71',
 		isAdmin: true,
-		branches: {Z03930initialBranchID: 1}
+		branches: {[firstBranchID]: 1}
 	}}
 }
 
