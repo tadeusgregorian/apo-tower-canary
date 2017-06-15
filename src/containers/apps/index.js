@@ -29,23 +29,15 @@ class Apps extends PureComponent{
 		this.props.usersDataStatus 		=== 'NOT_REQUESTED' && this.props.registerUsersDataListener()
 		this.props.groupsDataStatus 	=== 'NOT_REQUESTED' && this.props.registerGroupsDataListener()
 		this.props.branchesDataStatus === 'NOT_REQUESTED' && this.props.registerBranchesDataListener()
-
 		this.props.qmLettersDataStatus  === 'NOT_REQUESTED' && this.props.setQmLettersListener()
-		window.selectedBranch = this.props.selectedBranch || null // all this window.selectedBranch and window.accountID ist just for the getFirebasePath() function ...
-		window.accountID = this.props.accountID
 
 	}
 
 	componentWillReceiveProps(nP) {
 		if(nP.branchesDataStatus !== 'LOADED') return
 		!nP.selectedBranch && nP.branches.length > 1 && !this.props.selectBranchDialog && this.props.openSelectbranchDialog()
-		!nP.selectedBranch && nP.branches.length === 1 && selectBranch(nP.branches[0])
-		 nP.selectedBranch && !nP.branches.find(b => b.ID === nP.selectedBranch) && selectBranch(nP.branches[0]) // edge case scenario, when there is a selectedBranch in local storage, that doesnt exists in this account.
-
-		const branchHasChanged = nP.selectedBranch !== this.props.selectedBranch
-		if(branchHasChanged) { window.selectedBranch = nP.selectedBranch } // this window.selectedBranch bullshit is just used for the getFirebasePath() function...
-
-
+		!nP.selectedBranch && nP.branches.length === 1 && this.props.selectBranch(nP.branches[0])
+		nP.selectedBranch && !nP.branches.find(b => b.ID === nP.selectedBranch) && this.props.selectBranch(nP.branches[0]) // important edge case scenario, when there is a selectedBranch in local storage, that doesnt exists in this account.
 	}
 
 	componentDidUpdate() {
@@ -69,9 +61,9 @@ class Apps extends PureComponent{
 		const user = this.props.selectedUser && this.props.users && this.props.users.find(u => u.ID===this.props.selectedUser)
 		return (
 			<fb id="apps">
-				<fb className="vertical">
+				<fb id="appsContent">
 					{user ? <UserTopbar /> : <PublicTopbar />}
-					<fb id="app">
+					<fb id="appMain">
 						<Route path='/Apps/TaskManager' 					component={TaskManager} />
 						<Route path='/Apps/QM'  									component={QmApp} />
 						<Route path='/Apps/Adminpanel' 						component={AdminPanel} />
@@ -129,6 +121,7 @@ const mapDispatchToProps = (dispatch) => {
 		closeSelectbranchDialog: 	() =>	({type: 'CLOSE_SELECT_BRANCH_DIALOG'}),
 		closeConfirmPopup:				() => ({type: 'CLOSE_CONFIRM_POPUP'}),
 		synchronizeClientTime,
+		selectBranch
 	}, dispatch)
 };
 

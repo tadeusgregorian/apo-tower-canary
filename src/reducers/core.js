@@ -1,8 +1,8 @@
 import { simpleReducer } from './reducerHelpers'
 
-export const selectedBranch = (state = localStorage.branch || null, action) => {
+export const selectedBranch = (state = localStorage.apotowerbranch || null, action) => {
 	switch (action.type) {
-	case 'SELECT_BRANCH': return action.payload;
+	case 'SELECT_BRANCH': { return action.payload }
 	default: return state;
 	}
 }

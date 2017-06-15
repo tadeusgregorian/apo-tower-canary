@@ -4,7 +4,8 @@
 	padding: 0px;
 	align-items: center;
 	flex-wrap: wrap;
-  flex: 0 0 auto;
+  flex: 0 1 auto;
+  //max-width: 630px;
 
 	.hiddenMiniUsersCount{
 		height: 22px;

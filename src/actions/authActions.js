@@ -7,7 +7,7 @@ export function signInWithEmailAndPassword (email, pw) {
 }
 
 export function logoutFromFirebase () {
-  return firebaseAuth().signOut()
+  firebaseAuth().signOut()
 }
 
 export function checkIfEmailExists (email) {

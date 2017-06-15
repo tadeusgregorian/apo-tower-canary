@@ -12,9 +12,6 @@ import Login 					from './containers/login'
 import Apps 					from './containers/apps'
 import Website				from './containers/website'
 
-//import Datenubernahme from 'components/datenubernahme' // comment this out when done with it!
-
-
 const Main = (props) => {
 	if(!props.firebaseAuthListener) props.setAuthStateListener()
 
@@ -30,7 +27,6 @@ const Main = (props) => {
 					<Route path='/' exact render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender/Public" /> : <Website /> } />
 					<Route path='/Login' 	render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender/Public" /> : <Login /> } />
 					<Route path='/Apps' 	render={() => loggedOut ? <Redirect to="/Login" /> : <Apps /> } />
-					{/* <Route path='/Datenubernahme' 	component={Datenubernahme} /> */}
 				</fb>
 			}
 		</div>
@@ -40,7 +36,6 @@ const Main = (props) => {
 const mapStateToProps = (state) => ({
 	authState: state.auth.authState,
 	firebaseAuthListener: state.firebaseListeners.firebaseAuth
-
 })
 
 const mapDispatchToProps = (dispatch) => {

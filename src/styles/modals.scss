@@ -1,3 +1,4 @@
 .sModal{
 	padding: 0px !important; // to override the MaterilUI Dialog padding
+	overflow-y: visible !important; // so the tooltips on the miniUsrs can be visible outsiede of modal borders.
 }
