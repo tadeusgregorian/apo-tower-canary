@@ -3,13 +3,14 @@ import cN from 'classnames';
 import MiniUser from 'components/miniUser'
 import './styles.css';
 
+
 // @param obj 		assignedUsers - {userID:userID,userID:userID,...}
 // @param obj 		usersRed (optional) - {userID:userID,userID:userID,...}
 // @param number 	maxDisplayedMiniUsers optional! - Use this if you want to limit displayed miniUsers.
 // @param str 		colorStyle optional! here you can provide colorStyles for MiniUser for ex. 'colorful' , 'blackAndWhite'
 // @param obj 		isDoneBy optional! - a obj of the user.ID {userID:userID} who has done the task
 
-const AssignedUsers = ({maxDisplayedMiniUsers, assignedUsers, users, usersRed, colorStyle, style, replacers, tooltipRight}) => {
+const AssignedUsers = ({maxDisplayedMiniUsers, assignedUsers, users, usersRed, colorStyle, style, replacers, tooltipRight, testintStuff}) => {
 	const maxMiniUsers = maxDisplayedMiniUsers || 100
 
 	let assignedUsersSorted = assignedUsers.map(userID =>{

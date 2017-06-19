@@ -38,6 +38,7 @@
     "start-js": "react-scripts start",
     "start": "NODE_PATH=src npm-run-all -p watch-css start-js",
     "build": "NODE_PATH=src npm run build-css && react-scripts build",
+    "buildprod": "REACT_APP_TARGET=production npm run build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
