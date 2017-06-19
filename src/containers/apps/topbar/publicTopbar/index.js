@@ -29,9 +29,9 @@ class PublicTopbar extends PureComponent{
 
 		return (
 			<fb className="publicTopbar">
-        <fb className='center'>
           <fb className='leftSide'>
-            {selectedBranchName}
+            <icon className="icon icon-navigate_next" />
+            <fb className="text">{selectedBranchName}</fb>
           </fb>
           <fb className='rightSide'>
             <fb className='moreOptions' onClick={this.openPopover}>
@@ -53,7 +53,6 @@ class PublicTopbar extends PureComponent{
               </Menu>
             </Popover>
           </fb>
-        </fb>
 			</fb>
 		)
   }

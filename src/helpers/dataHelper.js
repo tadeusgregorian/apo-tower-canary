@@ -56,7 +56,7 @@ export const getTypeAndPatternOfTask = (task) => {
 			case TaskType.monthly: {
 				r.type =  task.repeatEvery ?  `alle ${task.repeatEvery} Monate` : "Monatlich "
 				let sortedMonthDays = task.monthly && [...task.monthly].sort((a,b) => a > b )
-				r.pattern = "am " + sortedMonthDays.map(date => date + ".").join("  ")
+				r.pattern = "am " + sortedMonthDays.map(date => date + ". /").join("  ").slice(0, -1)
 				break
 			}
 			case TaskType.daily: {

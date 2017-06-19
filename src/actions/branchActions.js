@@ -6,7 +6,8 @@ import _ from 'lodash';
 export function deleteBranch(branchID, users) {
 	let updates = {}
 	updates[getFirebasePath('branches') + branchID] = null
-	users.forEach(u => {if(u.branches[branchID]) updates[getFirebasePath('users') + u.ID + '/branches/' + branchID] = null})
+	// we dont have to do this: cause we only let branches to be deleted if it is completeley empty!
+	//users.forEach(u => {if(u.branches[branchID]) updates[getFirebasePath('users') + u.ID + '/branches/' + branchID] = null})
 	FBInstance.database().ref().update(updates)
 }
 
