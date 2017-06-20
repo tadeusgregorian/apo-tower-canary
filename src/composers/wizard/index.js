@@ -15,23 +15,19 @@ export default function composeWizard(stepComponents, defaultState) {
 			this.state = {
 				stepTitle: '-',
 				currentStep: 0,
-				stepsCompleteListener: null, // if this is a functions, it will be called just before onStepsComplete - call
 				wiz: defaultState || {},
-				wizMemory: {},
+				wizMemory: {}, // this is used to keep track of state, that is not part of the wiz-Object ( Task / Qm ) for ex.: isUploading
 				...this.defaultStepState
 			}
 		}
 
 		stepIsComplete = () => (
-			!this.state.stepCompleteChecker || this.state.stepCompleteChecker(this.state.wiz)
+			!this.state.stepCompleteChecker || this.state.stepCompleteChecker(this.state.wiz, this.state.wizMemory)
 		)
 
 		// this can be used to disable the stepForward Button by a func that returns true if
 		//step input is sufficinet.
 		setStepCompleteChecker = (func) => this.setState({stepCompleteChecker: func })
-		// this can be used if a stepComponent wants to register a listener that gets triggered
-		// when last step was completed.
-		setStepsCompleteListener = (func) => this.setState({stepsCompleteListener: func})
 
 		editWizState 	= (edit) => { this.setState({ wiz: { ...this.state.wiz, ...edit} })}
 		editWizMemory = (edit) => { this.setState({ wizMemory: { ...this.state.wizMemory, ...edit} })}
@@ -43,13 +39,13 @@ export default function composeWizard(stepComponents, defaultState) {
 		stepForward  = () => { this.setState({ currentStep: this.state.currentStep  + 1, ...this.defaultStepState })}
 		stepBackward = () => { this.setState({ currentStep: this.state.currentStep  - 1, ...this.defaultStepState })}
 
+		forceWizardUpdate = () => this.forceUpdate()
 		onStepsComplete = () => {
 			if(this.state.stepsCompleteListener) this.state.stepsCompleteListener()
 			this.props.onStepsComplete(this.state.wiz)
 		}
 
 		render() {
-			console.log('IMhere')
 			const Comp = stepComponents[this.state.currentStep || 0]
 			const compProps = {
 				setStepTitle: this.setStepTitle,
@@ -61,7 +57,7 @@ export default function composeWizard(stepComponents, defaultState) {
 				wizMemory: this.state.wizMemory,
 				editWizMemory: this.editWizMemory,
 				setStepCompleteChecker: this.setStepCompleteChecker,
-				setStepsCompleteListener: this.setStepsCompleteListener,
+				forceWizardUpdate: this.forceWizardUpdate,
 			}
 
 			return(

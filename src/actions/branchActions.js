@@ -12,6 +12,7 @@ export function deleteBranch(branchID, users) {
 }
 
 export function addNewBranch(branchName, adminUserID) {
+	// the admin user gets automatically added to a newly created branch
 	const branchID 		= createShortGuid()
 	const updates 		= {}
 

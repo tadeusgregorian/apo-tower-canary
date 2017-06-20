@@ -21,7 +21,7 @@ export const synchronizeClientTime = () => (dispatch) => {
 	  const offset = snap.val()
 
 		// for testing reasons:
-		// const addTime = 1000 * 60 * 60 * 24 * 4
+		// const addTime = ( 1000 * 60 * 60 * 24 ) * 4
 		// moment.now = () => (+new Date() + addTime)
 		// dispatch({type: 'TASKS_SET_CURRENT_DAY', payload: parseInt(moment().format('YYYYMMDD'), 10) })
 		// dispatch({type: 'CLIENT_TIME_SYNCHRONIZED'})

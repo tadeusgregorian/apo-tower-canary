@@ -20,14 +20,17 @@ export default class DefineContentStep extends Component {
 
 	componentWillMount = () => {
 		this.props.setStepTitle('Aufgabenbeschreibung')
-		this.props.setStepCompleteChecker((qm) => !!qm.subject )
+		this.props.setStepCompleteChecker((qm) => {
+			console.log('running')
+			return !!qm.subject && !this.filesToUpload.length
+		})
 	}
 
 	addChosenFiles = (e, f, c) => {
 		e.persist()
 		this.filesToUpload = _.uniqBy([ ...this.filesToUpload, ...e.target.files], 'name')
 		this.startToUpload()
-		this.forceUpdate()
+		this.props.forceWizardUpdate()
 	}
 
 	startToUpload = () => {
@@ -79,7 +82,7 @@ export default class DefineContentStep extends Component {
 							floatingLabelText="Betreff"
 							fullWidth={true}/>
 					</fb>
-					<fb className="no-shrink">
+					<fb className="no-shrink margin-bottom">
 						<TextField
 							floatingLabelText="Details"
 							value={OTask.text || ''}
@@ -97,7 +100,8 @@ export default class DefineContentStep extends Component {
 								containerElement='label'
 								labelPosition="before"
 								style={{position: "relative"}}
-								label='Dateien anhängen'
+								label='Datei anhängen'
+								disableTouchRipple={true}
 								icon={< FontIcon className="icon icon-upload" />}>
 								<input
 									multiple
@@ -109,7 +113,7 @@ export default class DefineContentStep extends Component {
 						</fb>
 						<fb className="checkBoxWrapper">
 							<Checkbox
-								label="Dringende Ansage"
+								label="wichtig"
 								checked={OTask.isUrgent}
 								onClick={() => editOTask({ isUrgent: !OTask.isUrgent })}
 							/>

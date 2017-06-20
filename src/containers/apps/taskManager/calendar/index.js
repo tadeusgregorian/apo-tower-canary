@@ -61,9 +61,15 @@ class Calendar extends PureComponent{
 		/>
 	}
 
+	getTaskByID = (taskObj) => {
+		return taskObj.onetimerDate ?
+			this.props.singleTasks.find(t => t.ID === taskObj.ID) :
+			this.props.repeatingTasks.find(t => t.ID === taskObj.ID)
+	}
+
 	checkUncheckTask = (taskObj, isUnchecking, checkType, taskDate = this.props.currentDay, shiftedTo = false) => {
 		if(!isUnchecking)  	this.props.checkTask(taskObj, checkType, taskDate, shiftedTo)
-		if(isUnchecking) 		this.props.uncheckTask(taskObj, taskDate)
+		if(isUnchecking) 		this.props.uncheckTask(this.getTaskByID(taskObj), taskDate) // we pick a clean task with getTaskByID ( cause the task obj from calendar is extended by checked Info we want to remove again here)
 		this.props.closeCheckingTask()
 	}
 
@@ -183,6 +189,7 @@ const mapStateToProps = (state) => {
 		currentDay: state.ui.taskManager.currentDay,
 		checkingTask: state.ui.taskManager.checkingTask,
 		repeatingTasks: state.taskManager.repeatingTasks,
+		singleTasks: state.taskManager.singleTasks,
 		tasks: extendTasksWithChecked(state),
 		taskDataLoaded: taskDataLoaded(state),
 		operatingTask: state.ui.taskManager.operatingTask,
