@@ -16,7 +16,9 @@ export default class DayHead extends PureComponent {
 		return (
 			<fb className="head">
 				<fb className="a-center">
-					<fb className="date">{(dayMoment.format('dddd DD')+'. '+dayMoment.format('MMM').toUpperCase().substr(0, 3))}</fb>
+					<fb className="date" style={{marginLeft: userMode ? '39px' : '4px'}}>
+						{(dayMoment.format('dddd DD')+'. '+dayMoment.format('MMM').toUpperCase().substr(0, 3))}
+					</fb>
 
 					{ isFuture ?
 						<fb className="futurePastIndicator"></fb> :
@@ -29,7 +31,6 @@ export default class DayHead extends PureComponent {
 					{	userMode &&
 						<fb className='addTaskButton' onClick={this.props.openAddEditTaskWizard}>
 							<fb className='addTaskButtonIconWrapper'><icon className='icon icon-plus'/></fb>
-							<fb className='addTaskButtonText'>NEUE AUFGABE</fb>
 						</fb> }
 
 				</fb>

@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom'
 import { getTodaySmart } from 'helpers'
 import BigUserButton from 'components/bigUserButton';
 import { getUnreadQmLettersCount } from 'selectors/unreadQmLettersSelector'
+import apotowerLogo from './apotowerLogo100x100.png'
 import _ from 'lodash';
 
 class SelectUserTopbar extends Component {
@@ -27,6 +28,7 @@ class SelectUserTopbar extends Component {
 	render() {
 		return(
 			<fb id="selectUserTopbar">
+				{/* <fb className="apotowerLogo" style={{backgroundImage: 'url('+ apotowerLogo +')' }}></fb> */}
 				<fb className="bigUserButtonsContainer">
 					{this.getUsers().map(u => (
 						<BigUserButton

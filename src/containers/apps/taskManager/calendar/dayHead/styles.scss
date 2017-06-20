@@ -2,7 +2,7 @@
 .daysWrapper {
 	> .head {
 		flex: 0 0 auto;
-		padding: 6px 40px;
+		padding: 6px 2px;
 		color: #656464;
 		text-transform: capitalize;
 		position: relative;
@@ -15,7 +15,7 @@
 		.date {
 			font-weight: 200;
 	    font-size: 29px;
-	    margin-left: 6px;
+	    margin-left: 2px;
 	    text-shadow: 1px 1px rgba(255, 255, 255, 0.41);
 	    text-align: center;
 	    height: 40px;
@@ -72,24 +72,22 @@
 
 	.addTaskButton{
 		background: #f6f7f9;
-		border-radius: 4px;
-		color: #65686d;
-		font-weight: bold;
-		cursor: pointer;
-		border: 1px solid #ced0d4;
-		border-bottom: 1px solid #bec1c7;
-		border-top: 1px solid #dfe0e2;
-		height: 40px;
+    border-radius: 4px;
+    color: #65686d;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid #ced0d4;
+    border-bottom: 1px solid #bec1c7;
+    border-top: 1px solid #dfe0e2;
+    height: 40px;
     flex: 0 0 auto;
-    width: 167px;
-    margin-right: 11px;
+    width: 39px;
+    margin-right: 9px;
 
 		.addTaskButtonIconWrapper{
-			width: 34px;
-			flex: 0 0 auto;
-			justify-content: center;
-			border-right: 1px solid #d7d7d8;
-			margin: 3px 0;
+			flex: 1 0 auto;
+	    justify-content: center;
+	    margin: 3px 0;
 
 			.icon{
 				border: none;

@@ -21,7 +21,7 @@ export function checkTask(task, checkType, taskDate, shiftedTo = null) {
 
 		if(checkType === 'shifted') { // create a new single Task as a copy of the shifted Task
 			const guid = createShortGuid()
-			const newShiftedTask = { ...task, ID: guid, onetimerDate: shiftedTo, originalShiftedTask: {ID: task.ID, date: taskDate}}
+			const newShiftedTask = { ...task, ID: guid, onetimerDate: shiftedTo, taskDate: null, originalShiftedTask: {ID: task.ID, date: taskDate}} // we clean taskDate and taskID out, because tasks from undoneTasks got that
 			updates[getFirebasePath('singleTasks')+ guid] = newShiftedTask
 		}
 

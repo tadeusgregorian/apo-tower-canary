@@ -3,8 +3,9 @@ import firebase from 'firebase';
 let config;
 console.log('REACT_APP_TARGET: ',process.env.REACT_APP_TARGET)
 
-if (process.env.REACT_APP_TARGET === 'production') {
-	console.log('productionDB')
+if (process.env.REACT_APP_TARGET === 'production' && process.env.NODE_ENV === 'production') {
+
+	console.log('prod_DB')
 	config = {
 		apiKey: "AIzaSyDvrSSswvlUmB2hhrgQwA3407_KUPqcYXY",
     authDomain: "apotower-ed9eb.firebaseapp.com",
@@ -13,22 +14,9 @@ if (process.env.REACT_APP_TARGET === 'production') {
     storageBucket: "apotower-ed9eb.appspot.com",
     messagingSenderId: "1070970987025"
 	}
-}
+} else {
 
-if(process.env.REACT_APP_TARGET === 'staging') {
-	console.log("developmentDB")
-	config = {
-		apiKey: "AIzaSyCg4wdcZLYjOv9giDzGyE1wwwrdwSf1G28",
-		authDomain: "apotowerdev.firebaseapp.com",
-		databaseURL: "https://apotowerdev.firebaseio.com",
-		projectId: "apotowerdev",
-		storageBucket: "apotowerdev.appspot.com",
-		messagingSenderId: "359455830469"
-	}
-}
-
-if(process.env.NODE_ENV === 'development') {
-	console.log("developmentDB")
+	console.log("dev_DB")
 	config = {
 		apiKey: "AIzaSyCg4wdcZLYjOv9giDzGyE1wwwrdwSf1G28",
 		authDomain: "apotowerdev.firebaseapp.com",

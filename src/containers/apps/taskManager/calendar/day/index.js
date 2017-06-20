@@ -18,7 +18,12 @@ export default class Day extends PureComponent {
 			showDoneTasks: false,
 			showEveryonesTasks: false,
 		}
-		this.blockAnimation = false
+		this.blockAnimation = false // blocks the TaskEnter and TaskLeave Animation
+	}
+
+	componentWillReceiveProps(nextProps){
+		// this ensures that whenever a user enters his space, showEveryonesTasks is false.
+		if(this.props.selectedUser && !nextProps.selectedUser) this.setState({showEveryonesTasks: false})
 	}
 
 	componentWillUpdate(nextProps, nextState){
@@ -32,8 +37,6 @@ export default class Day extends PureComponent {
 	}
 
 	render() {
-		//console.log('rendering here tade');
-		//console.log(this.blockAnimation)
 		const {tasks, users, selectedUser, day, checkUncheckTask, openCheckUncheckTaskPopup, tasksLoaded} = this.props;
 		const {showDoneTasks, showEveryonesTasks} = this.state
 		if(!tasks) return null

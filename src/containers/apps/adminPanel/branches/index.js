@@ -5,8 +5,8 @@ import { openConfirmPopup, closeConfirmPopup } from 'actions'
 import {bindActionCreators} from 'redux';
 import ConfirmPopup from 'components/confirmPopup'
 import AddEditBranchPopup from './addEditBranchPopup';
+import Branch from './branch'
 import Dialog from 'material-ui/Dialog';
-import cN from 'classnames'
 import './styles.css';
 
 
@@ -18,13 +18,14 @@ class AdminpanelBranches extends React.Component {
 	}
 
 	openAddEditBranchPopup = (editing = false, branch = null) => {
+		// the admin user gets automatically added to a newly created branch
 		this.addEditBranchPopup = <AddEditBranchPopup
 			onClose={() => this.setState({addEditBranchPopupOpen: false})}
 			addNewBranch={(branchName) => addNewBranch(branchName, this.props.selectedUser)}
 			editBranch={editBranch}
 			branch={branch}
 			editing={editing}/>
-		this.setState({addEditBranchPopupOpen: true});
+		this.setState({addEditBranchPopupOpen: true})
 	}
 
 	openDeleteBranchPopup = (branch) => {
@@ -40,7 +41,6 @@ class AdminpanelBranches extends React.Component {
 		this.props.openConfirmPopup(confPop)
 	}
 
-
 	render() {
 		return (
 			<fb className="edit-branches">
@@ -48,14 +48,12 @@ class AdminpanelBranches extends React.Component {
 					<button className="button icon-folder-plus" onClick={() => this.openAddEditBranchPopup()}>Filiale Hinzufügen</button>
 				</fb>
 				{ this.props.branches.map(branch =>
-					<fb key={branch.ID} className='branches-list-element'>
-						<icon className="branchIcon icon-navigate_next" />
-						<fb className="branchName">{branch.name}</fb>
-						<button className="button editBranchButton" onClick={() => this.openAddEditBranchPopup(true, branch)}>bearbeiten</button>
-						<icon
-							className={cN({'icon-bin': true, deleteIcon: true, disabled: branch.notDeletable })}
-							onClick={() => !branch.notDeletable && this.openDeleteBranchPopup(branch)}/>
-					</fb>
+					<Branch
+						branch={branch}
+						users={this.props.users}
+						openAddEditBranchPopup={this.openAddEditBranchPopup}
+						openDeleteBranchPopup={this.openDeleteBranchPopup}
+					/>
 				)}
 				<Dialog
 					bodyClassName="sModal"
