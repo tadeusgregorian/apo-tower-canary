@@ -30,7 +30,8 @@ class PublicTopbar extends PureComponent{
 		return (
 			<fb className="publicTopbar">
           <fb className='leftSide'>
-            <icon className="icon icon-navigate_next" />
+            <icon className="icon icon-arrow_drop_down" />
+            {/* <fb className="apotheken_a"></fb> */}
             <fb className="text">{selectedBranchName}</fb>
           </fb>
           <fb className='rightSide'>
