@@ -8,14 +8,24 @@
   height: 32px;
 
   .leftSide{
-    font-weight: 400;
-    padding: 0px 8px 0px 2px;
+    font-weight: 300;
+    padding: 0px 8px 0px 4px;
     height: 100%;
     flex: 0 0 auto;
+
+    // .apotheken_a{
+    //   background-image: url('./apotheken_a.png');
+    //   background-repeat: no-repeat;
+    //   background-size: 14px 14px;
+    //   width: 14px;
+    //   height: 14px;
+    //   margin: 8px 4px 0px 8px;
+    // }
 
     icon{
       padding: 0px;
       color: #7b7b7b;
+      transform: rotate(-90deg);
     }
     .text{
       color: #7b7b7b;
