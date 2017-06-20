@@ -33,7 +33,6 @@ export function checkTask(task, checkType, taskDate, shiftedTo = null) {
 }
 
 export function uncheckTask(task, taskDate) {
-	console.log(taskDate)
 	return(dispatch, getState) => {
 
 		const checkID = taskDate + task.ID
