@@ -19,7 +19,7 @@ export default class DefineContentStep extends Component {
 	}
 
 	componentWillMount = () => {
-		this.props.setStepTitle('Aufgabenbeschreibung')
+		this.props.setStepTitle('QM-Text verfassen')
 		this.props.setStepCompleteChecker((qm) => {
 			console.log('running')
 			return !!qm.subject && !this.filesToUpload.length

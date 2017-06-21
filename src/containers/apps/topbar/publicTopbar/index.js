@@ -22,6 +22,11 @@ class PublicTopbar extends PureComponent{
     this.setState({popoverOpen: true, settingsButton: e.currentTarget})
   }
 
+  logoutAndReload = () => {
+    logoutFromFirebase()
+    window.location = '/'
+  }
+
   render(){
     const {selectedBranch, branches} = this.props
 		const selectedBranchObj = branches.find(b => b.ID === selectedBranch)
@@ -50,7 +55,7 @@ class PublicTopbar extends PureComponent{
                   this.props.openSelectbranchDialog()
                   this.setState({popoverOpen: false})
                 }}/>}
-                <MenuItem primaryText="Abmelden" onClick={logoutFromFirebase}/>
+                <MenuItem primaryText="Abmelden" onClick={this.logoutAndReload}/>
               </Menu>
             </Popover>
           </fb>
