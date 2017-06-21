@@ -21,7 +21,6 @@ export default class CheckUncheckTaskPopup extends Component {
 	}
 
 	render() {
-		console.log(this.props.checkingTask)
 		// this is a random Workaround for a bug ( after closing the Popup there is a last Render which causes bugs... MaterialUI bug )
 		if(!this.props.checkingTask) return <fb></fb>
 		const t = this.props.checkingTask
