@@ -3,6 +3,7 @@ import InputMinimal from 'components/inputMinimal'
 import SButton from 'components/sButton'
 import lockIcon from './lockIcon.png'
 import sha1 from 'sha1';
+import { createShortGuid } from 'helpers'
 import './styles.css';
 
 export default class EnterPinTwice extends Component {
@@ -10,10 +11,14 @@ export default class EnterPinTwice extends Component {
 		super(props)
 
 		this.state = {
-			pin1: '',
-			pin2: '',
+			pin1: 't', // dirtyHack -> gets removed by componentDidMount: to prevent autocomplete Box (firefox)
+			pin2: 't', // dirtyHack -> gets removed by componentDidMount: to prevent autocomplete Box (firefox)
 			infoMessage: ''
 		}
+	}
+
+	componentDidMount = () => { // dirty hack, to prevent autocomplete Box (firefox)
+		this.setState({pin1: '', pin2: ''})
 	}
 
 	onInputChanged = (inp, pinField) => {
@@ -48,6 +53,7 @@ export default class EnterPinTwice extends Component {
 						imgUrl={lockIcon}
 						defaultText='PIN'
 						value={this.state.pin1}
+						name={createShortGuid()}
 						password
 						autoFocus
 					/>
@@ -57,6 +63,7 @@ export default class EnterPinTwice extends Component {
 						defaultText='PIN wiederholen'
 						value={this.state.pin2}
 						onEnter={this.pinButtonClicked}
+						name={createShortGuid()}
 						password
 					/>
 					<fb className='pinEnteredButtonWrapper'>
