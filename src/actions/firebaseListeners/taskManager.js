@@ -40,7 +40,6 @@ export const setLastUTUpdateListener = () => {
 
 export const setTaskManagerListeners = () => {
 	return (dispatch, getState) => {
-		console.log('who calls this ?')
 		getState().taskManager.repeatingTasksDataStatus 	=== 'NOT_REQUESTED' && setRepeatingTasksListener()(dispatch, getState)
 		getState().taskManager.singleTasksDataStatus 			=== 'NOT_REQUESTED' && setSingleTasksListener()(dispatch, getState)
 		getState().taskManager.undoneTasksDataStatus 			=== 'NOT_REQUESTED' && setUndoneTasksListener()(dispatch, getState)

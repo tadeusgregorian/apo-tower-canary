@@ -23,7 +23,7 @@ export default class Registration extends PureComponent{
 		if(!pharmacyName || !email || !password) 	error = error || 'Bitte füllen Sie alle Felder aus.'
 		if(pharmacyName.length < 6 )							error = error || 'Der Name der Apotheke ist zu kurz.'
 		if(password.length < 6 )									error = error || 'Das Passwort muss mindestens 6 Zeichen lang sein.'
-		if(!isValidEmail(email)) 									error = error || 'Bitte geben sie eine gültige E-Mail Adresse ein.'
+		if(!isValidEmail(email)) 									error = error || 'Bitte geben Sie eine gültige E-Mail Adresse ein.'
 
 		error ?
 			Toast.warning(error) :

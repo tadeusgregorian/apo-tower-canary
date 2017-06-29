@@ -20,13 +20,16 @@ export const synchronizeClientTime = () => (dispatch) => {
 	FBInstance.database().ref(".info/serverTimeOffset").on('value', snap => {
 	  const offset = snap.val()
 
-		// for testing reasons:
-		// const addTime = ( 1000 * 60 * 60 * 24 ) * 4
-		// moment.now = () => (+new Date() + addTime)
-		// dispatch({type: 'TASKS_SET_CURRENT_DAY', payload: parseInt(moment().format('YYYYMMDD'), 10) })
-		// dispatch({type: 'CLIENT_TIME_SYNCHRONIZED'})
-		// return
-		// testing part ends here
+		//for testing reasons:
+		if(process.env.NODE_ENV === 'development'){ // security check here!!!
+			// const addTime = ( 1000 * 60 * 60 * 24 ) * 2
+			// moment.now = () => (+new Date() + addTime)
+			// dispatch({type: 'TASKS_SET_CURRENT_DAY', payload: parseInt(moment().format('YYYYMMDD'), 10) })
+			// dispatch({type: 'CLIENT_TIME_SYNCHRONIZED'})
+			// startNewDayChecker()
+			// return
+		}
+		//testing part ends here
 
 		if (Math.abs(offset) < (1000 * 60 * 10)){ // if difference to real time is less than 10 min
 			dispatch({type: 'CLIENT_TIME_CORRECT'})

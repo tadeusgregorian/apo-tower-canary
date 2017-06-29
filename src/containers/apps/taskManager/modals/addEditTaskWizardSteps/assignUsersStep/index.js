@@ -18,7 +18,7 @@ class AssignUsersStep extends PureComponent {
 	}
 
 	componentWillMount = () =>  {
-		this.props.setStepTitle('Weisen sie die Aufgabe zu')
+		this.props.setStepTitle('Weisen Sie die Aufgabe zu')
 		this.props.setStepCompleteChecker((task) => !!_.keys(task.assignedUsers).length)
 	}
 

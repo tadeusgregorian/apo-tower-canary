@@ -3,7 +3,11 @@ import firebase from 'firebase';
 let config;
 console.log('REACT_APP_TARGET: ',process.env.REACT_APP_TARGET)
 
-if (process.env.REACT_APP_TARGET === 'production' && process.env.NODE_ENV === 'production') {
+const building = process.env.NODE_ENV === 'production'
+const prodBuild = process.env.REACT_APP_TARGET === 'production'
+const godmode = window.location.pathname.includes('godmode')
+
+if ((building && prodBuild) || godmode) {
 
 	console.log('prod_DB')
 	config = {

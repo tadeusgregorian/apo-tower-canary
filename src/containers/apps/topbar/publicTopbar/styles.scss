@@ -36,7 +36,17 @@
 
   .rightSide{
     justify-content: flex-end;
-    padding-right: 8px;
+    padding-right: 10px;
+    height: 100%;
+
+    .videoIcon{
+      flex: 0;
+      margin-right: 2px;
+      cursor: pointer;
+      icon{
+        //color: #ff7979;
+      }
+    }
 
     .moreOptions{
       flex: 0 0 auto;

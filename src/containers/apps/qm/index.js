@@ -72,7 +72,7 @@ class QmApp extends PureComponent {
 				declineBtnLabel='Abbrechen'
 				acceptBtnRed={true}
 				title={'Löschen einer Ansage'}
-				text={'Möchten sie diese Ansage wirklich löschen ?'}
+				text={'Möchten Sie diese Ansage wirklich löschen ?'}
 				onAccept={() => deleteQm(qm.ID)}
 				onClose={this.props.closeConfirmPopup}
 			/>
@@ -96,7 +96,6 @@ class QmApp extends PureComponent {
 	userIsAdmin = () => !!this.props.users.find(u => u.ID === this.props.selectedUser).isAdmin
 
 	render() {
-		console.log('rendering all ?')
 		return (
 			<fb className='qmAppWrapper'>
 				<fb className="vertical qmAppMain">

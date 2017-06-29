@@ -21,13 +21,13 @@ export default class DeleteTaskPopup extends PureComponent {
 		let buttonLabel = "";
 
 		if (isOnetimer) {
-	    header = "Möchten sie diese Aufgabe Entfernen?";
+	    header = "Möchten Sie diese Aufgabe Entfernen?";
 	    infoText = "";
 	    buttonLabel = "Aufgabe entfernen"
 		}
 
 		if (!isOnetimer) {
-	    header = "Möchten sie diese Aufgabe ab Heute beenden?";
+	    header = "Möchten Sie diese Aufgabe ab Heute beenden?";
 	    infoText = "Vergangene Einheiten dieser Aufgabe bleiben dabei unverändert.";
 	    buttonLabel = "Aufgabe beenden"
 		}

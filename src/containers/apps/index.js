@@ -87,7 +87,6 @@ class Apps extends PureComponent{
 
 const mapStateToProps = (state) => {
 	return {
-		accountID: state.auth.accountID,
 		users: state.data.users,
 		branches: state.data.branches,
 

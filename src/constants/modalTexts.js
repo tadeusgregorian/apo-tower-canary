@@ -2,7 +2,7 @@
 export const deleteTaskText = {
   deletable: {
     title: 'Aufgabe löschen',
-    text: 'Möchten sie diese Aufgabe wirklich löschen?'
+    text: 'Möchten Sie diese Aufgabe wirklich löschen?'
   },
   endable: {
     title: 'Diese Aufgabe ab Heute beenden?',

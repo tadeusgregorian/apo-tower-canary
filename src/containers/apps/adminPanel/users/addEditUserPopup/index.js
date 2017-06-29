@@ -93,7 +93,6 @@ export default class AddEditUserPopup extends Component {
 	}
 
 	render() {
-		console.log(this.state)
 		return (
 				<SModal.Main title='Neuer Benutzer' onClose={this.props.close}>
 					<SModal.Body>

@@ -40,6 +40,9 @@ class PublicTopbar extends PureComponent{
             <fb className="text">{selectedBranchName}</fb>
           </fb>
           <fb className='rightSide'>
+            <fb className="videoIcon">
+              <icon className="icon-play" />
+            </fb>
             <fb className='moreOptions' onClick={this.openPopover}>
               <icon className='icon-dehaze'/>
             </fb>

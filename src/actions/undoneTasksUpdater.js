@@ -7,6 +7,8 @@ import _ from 'lodash'
 const writeUndoneTasksToDB = (undoneTasksInRange) => {
 	let updates = {[getFirebasePath('lastUTUpdate')]: getTodaySmart()}
 	undoneTasksInRange.forEach(t => updates[getFirebasePath('undoneTasks') + t.ID] = t)
+	console.log('want to update lastUTUpdate at path:')
+	console.log(getFirebasePath('lastUTUpdate'))
 	FBInstance.database().ref().update(updates)
 }
 

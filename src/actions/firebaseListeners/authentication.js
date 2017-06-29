@@ -11,11 +11,11 @@ export const setAuthStateListener = () => {
 			if(user) window.accountID = user.uid
 			if(user && localStorage.apotowerbranch) window.selectedBranch = localStorage.apotowerbranch
 
+			// just for godmode
+			if(user && window.godmode) window.accountID = window.targetAccount
+			if(user && window.godmode) window.selectedBranch = null
 
-			dispatch({
-				type: user ? 'USER_LOGGED_IN' : 'USER_LOGGED_OUT',
-				payload: user ? user.uid : null
-			})
+			dispatch({type: user ? 'USER_LOGGED_IN' : 'USER_LOGGED_OUT'})
 		})
 	}
 }

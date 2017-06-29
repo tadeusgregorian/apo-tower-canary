@@ -2,7 +2,6 @@ import _ from 'lodash'
 import moment from 'moment'
 
 export * from './dataHelper'
-export * from './databaseUpdates'
 export * from './databaseUpdate_qmLetters'
 export * from './iziToast'
 export * from './newDayChecker'

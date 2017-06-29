@@ -3,6 +3,7 @@ import { signInWithEmailAndPassword, checkIfEmailExists, sendPasswordResetEmail 
 import InputMinimal from 'components/inputMinimal'
 import SButton from 'components/sButton'
 import PasswordForgotten from './passwordForgotten'
+import AdminLogin from './adminLogin'
 import { Toast } from 'helpers'
 import './styles.css'
 
@@ -28,7 +29,7 @@ export default class Login extends PureComponent {
 		const emailExists = await checkIfEmailExists(email)
 		if(emailExists){
 			sendPasswordResetEmail(email)
-			Toast.info('E-Mail gesendet. Überprüfen sie Ihr Postfach.')
+			Toast.info('E-Mail gesendet. Überprüfen Sie Ihr Postfach.')
 			this.setState({passwordForgotten: false})
 		}else{
 			Toast.error('Diese E-Mail Adresse ist nicht registriert')
@@ -39,6 +40,7 @@ export default class Login extends PureComponent {
 	render() {
 		const { password, username, passwordForgotten, loading } = this.state
 		if(passwordForgotten) return <PasswordForgotten requestPWLink={this.requestPWLink}/>
+		if(window.location.pathname.includes('godmode')) return <AdminLogin />
 
 		return (
 			<fb className='login-outer-container'>

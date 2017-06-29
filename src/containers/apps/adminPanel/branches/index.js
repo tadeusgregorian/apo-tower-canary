@@ -49,6 +49,7 @@ class AdminpanelBranches extends React.Component {
 				</fb>
 				{ this.props.branches.map(branch =>
 					<Branch
+						key={branch.ID}
 						branch={branch}
 						users={this.props.users}
 						openAddEditBranchPopup={this.openAddEditBranchPopup}
