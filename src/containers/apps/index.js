@@ -4,6 +4,8 @@ import {connect} from 'react-redux'
 import { Route, withRouter } from 'react-router-dom'
 import {bindActionCreators} from 'redux'
 import Dialog from 'material-ui/Dialog'
+import { startNewDayChecker } from 'helpers'
+import InfoNote 					from 'components/infoNote'
 import EnterAdminPinPopup from 'components/enterAdminPinPopup'
 import SelectBranchDialog from 'components/selectBranchDialog'
 import {
@@ -11,7 +13,7 @@ import {
 	registerGroupsDataListener,
 	registerBranchesDataListener,
 	setQmLettersListener,
-	synchronizeClientTime,
+	checkClientDate,
 	selectBranch
 } from 'actions'
 
@@ -25,7 +27,8 @@ import UserProfile 	from './userProfile'
 class Apps extends PureComponent{
 
 	componentDidMount() {
-		this.props.synchronizeClientTime()
+		this.props.checkClientDate()
+		startNewDayChecker()
 		this.props.usersDataStatus 		=== 'NOT_REQUESTED' && this.props.registerUsersDataListener()
 		this.props.groupsDataStatus 	=== 'NOT_REQUESTED' && this.props.registerGroupsDataListener()
 		this.props.branchesDataStatus === 'NOT_REQUESTED' && this.props.registerBranchesDataListener()
@@ -37,18 +40,18 @@ class Apps extends PureComponent{
 		if(nP.branchesDataStatus !== 'LOADED') return
 		!nP.selectedBranch && nP.branches.length > 1 && !this.props.selectBranchDialog && this.props.openSelectbranchDialog()
 		!nP.selectedBranch && nP.branches.length === 1 && this.props.selectBranch(nP.branches[0])
-		nP.selectedBranch && !nP.branches.find(b => b.ID === nP.selectedBranch) && this.props.selectBranch(nP.branches[0]) // important edge case scenario, when there is a selectedBranch in local storage, that doesnt exists in this account.
+		nP.selectedBranch && !nP.branches.find(b => b.ID === nP.selectedBranch) && this.props.selectBranch(nP.branches[0]) // important edge case scenario, when there is a selectedBranch in local storage, but that branch doesnt exists in this account.
 	}
 
 	componentDidUpdate() {
 		const tP = this.props
 		const urlIncludesPublic = tP.location.pathname.includes('Public')
 		if(urlIncludesPublic && tP.selectedUser) tP.removeSelectedUser()	// when redirected to a url containting 'Public' we remove the selectedUser -> props.selectedUser is what changes the UI
-		if(!urlIncludesPublic && !tP.selectedUser) tP.history.push('/Apps/TaskManager/Kalender/Public') // someone is in unpublic area, without a selectedUser -> get him out
+		if(!urlIncludesPublic && !tP.selectedUser) tP.history.push('/Apps/TaskManager/Kalender/Public') // someone is in non-public area, without a selectedUser -> redirect him OUT !
 	}
 
 	requiredDataIsLoaded = () => {
-		if (!this.props.clientTimeSynchronization)				return false
+		if (!this.props.clientDateChecked)	return false
 		if (this.props.usersDataStatus 			!== 'LOADED') return false
 		if (this.props.branchesDataStatus  	!== 'LOADED') return false
 		if (this.props.groupsDataStatus 		!== 'LOADED') return false
@@ -58,18 +61,21 @@ class Apps extends PureComponent{
 
 	render() {
 		if(!this.requiredDataIsLoaded()) return <fb>loading...</fb>
-		const user = this.props.selectedUser && this.props.users && this.props.users.find(u => u.ID===this.props.selectedUser)
+		if(!this.props.clientDateCorrect) return <InfoNote type='warning' text='Die Datum/Zeit Einstellung Ihres Computers ist falsch. Bitte korrigiren Sie diese uns laden Sie die Seite neu.' />
+		const user = this.props.selectedUser && this.props.users && this.props.users.find(u => u.ID === this.props.selectedUser)
 		return (
 			<fb id="apps">
-				<fb id="appsContent">
-					{user ? <UserTopbar /> : <PublicTopbar />}
-					<fb id="appMain">
-						<Route path='/Apps/TaskManager' 					component={TaskManager} />
-						<Route path='/Apps/QM'  									component={QmApp} />
-						<Route path='/Apps/Adminpanel' 						component={AdminPanel} />
-						<Route path='/Apps/Profil' 								component={UserProfile} />
+				{ this.props.selectedBranch &&
+					<fb id="appsContent">
+						{user ? <UserTopbar /> : <PublicTopbar />}
+						<fb id="appMain">
+							<Route path='/Apps/TaskManager' 					component={TaskManager} />
+							<Route path='/Apps/QM'  									component={QmApp} />
+							<Route path='/Apps/Adminpanel' 						component={AdminPanel} />
+							<Route path='/Apps/Profil' 								component={UserProfile} />
+						</fb>
 					</fb>
-				</fb>
+				}
 				<Dialog open={!!this.props.selectBranchDialog} modal={true}>
 					<SelectBranchDialog close={this.props.closeSelectbranchDialog}/>
 				</Dialog>
@@ -102,7 +108,8 @@ const mapStateToProps = (state) => {
 		selectBranchDialog: state.ui.app.selectBranchDialog,
 
 		confirmPopup: state.ui.app.confirmPopup,
-		clientTimeSynchronization: state.core.clientTimeSynchronization,
+		clientDateChecked: state.core.clientDateChecked,
+		clientDateCorrect: state.core.clientDateCorrect,
 	}
 }
 
@@ -119,7 +126,7 @@ const mapDispatchToProps = (dispatch) => {
 		openSelectbranchDialog: 	() => ({type: 'OPEN_SELECT_BRANCH_DIALOG'}),
 		closeSelectbranchDialog: 	() =>	({type: 'CLOSE_SELECT_BRANCH_DIALOG'}),
 		closeConfirmPopup:				() => ({type: 'CLOSE_CONFIRM_POPUP'}),
-		synchronizeClientTime,
+		checkClientDate,
 		selectBranch
 	}, dispatch)
 };

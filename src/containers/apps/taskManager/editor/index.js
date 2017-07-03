@@ -43,7 +43,7 @@ class Editor extends PureComponent {
 		console.log(task)
 		const isCreator = task.creatorID === this.props.selectedUser
 		const isAdmin		= this.props.users.find(u => u.ID === this.props.selectedUser).isAdmin
-		const editable 	= (!isInPast) && (isCreator || isAdmin)
+		const editable 	= (!isInPast) && (isCreator || isAdmin) // isInPast is true if its a reapeating task, and has already ended, or a its a single task in the past. ( no need to edit them )
 		this.taskDetailsPopup = (
 			<TaskDetailsPopup
 				task={task}
@@ -124,7 +124,6 @@ class Editor extends PureComponent {
 	}
 
 	render() {
-		console.log('RENDERING EDITOR')
 		return (
 			<fb className="taskManagerEditorMain">
 					<fb className="editorContent">
@@ -139,10 +138,7 @@ class Editor extends PureComponent {
 								{...this.state}
 							/>
 						</fb>
-						<Dialog
-							bodyClassName='sModal'
-							open={this.props.taskWizard === 'edit'}
-							onRequestClose={this.props.closeTaskWizard}>
+						<Dialog bodyClassName='sModal' open={this.props.taskWizard === 'edit'}>
 							{this.addEditTaskWizard}
 						</Dialog>
 						<Dialog

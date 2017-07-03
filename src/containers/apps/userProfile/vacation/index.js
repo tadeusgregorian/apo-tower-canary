@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react'
 import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
 import {setUserVacation} from 'actions'
 import SButton from 'components/sButton'
 import DatePicker from 'material-ui/DatePicker';
@@ -60,12 +59,4 @@ const mapStateToProps = (state) => ({
   users: state.data.users,
 })
 
-
-
-const mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({
-
-  })
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Vacation)
+export default connect(mapStateToProps)(Vacation)

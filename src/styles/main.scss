@@ -98,7 +98,6 @@ button {
 		background-color: #F54F4F;
 		color: white;
 		border: solid 1px #F54F4F;
-		transition: all 0.07s linear;
 
 		&:hover {
 			background-color: #E03838;
@@ -107,7 +106,6 @@ button {
 }
 
 button {
-	// transition: all 0.07s linear;
 
 	&.slim {
 		height: 27px;
@@ -132,49 +130,6 @@ button {
 
 .user {
 	position: relative;
-
-	&:hover {
-		.add-user-to-group-icon,
-		.remove-user-from-group-icon {
-			display: block;
-		}
-	}
-
-	.remove-user-from-group-icon {
-		display: none;
-		width: 20px;
-		height: 20px;
-		border-radius: 50%;
-		border: solid 1px red;
-		background-color: white;
-		color: red;
-		text-align: center;
-		position: absolute;
-		right: 0;
-		top: 0;
-		transform: translate(50%, -50%);
-		line-height: 20px;
-		font-size: 24px;
-		font-weight: 900;
-	}
-
-	.add-user-to-group-icon {
-		display: none;
-		width: 20px;
-		height: 20px;
-		border-radius: 50%;
-		border: solid 1px green;
-		background-color: white;
-		color: green;
-		text-align: center;
-		position: absolute;
-		right: 0;
-		top: 0;
-		transform: translate(50%, -50%);
-		line-height: 20px;
-		font-size: 24px;
-		font-weight: 200;
-	}
 }
 
 .column {
@@ -302,23 +257,6 @@ tadeButton{
   justify-content: center;
   align-items: center;
   display: flex;
-}
-
-tadeButtonSmall{
-  border: 1px solid #ced0d4;
-  box-sizing: border-box;
-  font-size: 13px;
-  padding: 0 10px;
-  cursor: pointer;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-	font-weight: normal;
-	background-color: #f6f7f9;
-	border-radius: 4px;
-	color: #656565;
-	height: 32px;
-	flex: 0 0 auto;
 }
 
 .highestZIndex{

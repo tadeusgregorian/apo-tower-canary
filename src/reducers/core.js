@@ -1,13 +1,14 @@
 import { simpleReducer } from './reducerHelpers'
+import { combineReducers } from 'redux'
 
-export const selectedBranch = (state = localStorage.apotowerbranch || null, action) => {
+const selectedBranch = (state = localStorage.apotowerbranch || null, action) => {
 	switch (action.type) {
 	case 'SELECT_BRANCH': { return action.payload }
 	default: return state;
 	}
 }
 
-export const selectedUser = (state = null, action) => {
+const selectedUser = (state = null, action) => {
 	switch (action.type) {
 	case 'SET_SELECTED_USER': return action.payload
 	case 'REMOVE_SELECTED_USER': return null
@@ -15,8 +16,21 @@ export const selectedUser = (state = null, action) => {
 	}
 }
 
-export const clientTimeSynchronization = simpleReducer({
+const clientDateCorrect = simpleReducer({
+	default: 										null,
+	CLIENT_DATE_CORRECT: 				true,
+	CLIENT_DATE_INCORRECT: 			false,
+})
+
+const clientDateChecked = simpleReducer({
 	default: 										false,
-	CLIENT_TIME_SYNCHRONIZED: 	'timeWasSynchronized',
-	CLIENT_TIME_CORRECT: 				'notNecessaryTimeCorrect',
+	CLIENT_DATE_CORRECT: 				true,
+	CLIENT_DATE_INCORRECT: 			true,
+})
+
+export default combineReducers({
+	selectedBranch,
+	selectedUser,
+	clientDateCorrect,
+	clientDateChecked
 })

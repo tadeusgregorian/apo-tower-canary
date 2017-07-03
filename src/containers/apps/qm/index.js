@@ -28,7 +28,6 @@ class QmApp extends PureComponent {
 		}
 	}
 
-	//componentDidMount = () => this.props.setSelectedUser(this.props.match.params.userID)
 	closeReadUnreadQmModal = () => 	this.setState({readUnreadQmDialogOpen: false})
 	closeAddEditQmWizard = () => this.setState({addEditQmWizardOpen: false})
 
@@ -141,9 +140,7 @@ class QmApp extends PureComponent {
 						onRequestClose={this.closeReadUnreadQmModal}>
 						{this.readUnreadQmPopup}
 					</Dialog>
-					<Dialog bodyClassName='sModal'
-						open={this.state.addEditQmWizardOpen}
-						onRequestClose={this.closeAddEditQmWizard}>
+					<Dialog bodyClassName='sModal' open={this.state.addEditQmWizardOpen}>
 						{this.addEditQmWizard}
 					</Dialog>
 				</fb>
@@ -154,7 +151,6 @@ class QmApp extends PureComponent {
 
 const mapDispatchToProps = (dispatch) => (
 	bindActionCreators({
-		setSelectedUser: (userID) => ({type: 'SET_SELECTED_USER', payload: userID}),
 		createQm,
 		openConfirmPopup,
 		closeConfirmPopup,

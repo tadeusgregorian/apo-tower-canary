@@ -27,15 +27,25 @@
 		flex: 0 0 auto;
 	  background: rgba(0,0,0,0.07);
 	  border-radius: 2px;
+		align-items: center;
 		&:not(:last-child) {
 	  	margin: 0 0 6px 0;
 		}
-		&.notUploadedYet {
-			background: #d7ecd2;
-		}
-		align-items: center;
 		.name {
 			padding: 6px 6px 6px 10px;
+			min-width: 0px;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+			flex: 1;
 		}
+	}
+	.notUploadedYet {
+		padding: 4px;
+		background: #d7ecd2;
+		min-width: 0px;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 	}
 }

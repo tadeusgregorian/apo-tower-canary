@@ -18,20 +18,24 @@ export const createNewAccountOnDB = (accountID, pharmacyName, email) => {
 
 const getInitialAccountData = (accountID, pharmacyName, email) => {
 	const firstBranchID = createShortGuid()
+	const firstGrouptID = createShortGuid()
+
 	return {
-		groups: 					getInitialGroups(),
+		groups: 					getInitialGroups(firstGrouptID),
 		branches: 				getInitialBranch(pharmacyName, firstBranchID),
-		users: 						getInitialUser(firstBranchID),
+		users: 						getInitialUser(firstBranchID, firstGrouptID),
 		accountDetails: 	getAccountDetails(accountID, email)
 	}
 }
 
-const getInitialGroups = () => {
-	const groupID_1 = createShortGuid()
+const getInitialGroups = (firstGrouptID) => {
+	const groupID_1 = firstGrouptID
 	const groupID_2 = createShortGuid()
+	const groupID_3 = createShortGuid()
 	return {
 		[groupID_1]: {ID: groupID_1, name: 'Apotheker', notDeletable: true},
-		[groupID_2]: {ID: groupID_2, name: 'PTA', notDeletable: true}
+		[groupID_2]: {ID: groupID_2, name: 'PTA', notDeletable: true},
+		[groupID_3]: {ID: groupID_3, name: 'PKA', notDeletable: true},
 	}
 }
 
@@ -39,14 +43,15 @@ const getInitialBranch = (pharmacyName, firstBranchID) => {
 	return {[firstBranchID]: {ID: firstBranchID, name: pharmacyName, notDeletable: true}}
 }
 
-const getInitialUser = (firstBranchID) => {
+const getInitialUser = (firstBranchID, firstGrouptID) => {
 	return {u001: {
 		ID: 'u001',
 		name: 'Admin',
 		nameInitials: 'Admi',
 		color: '#2ecc71',
 		isAdmin: true,
-		branches: {[firstBranchID]: 1}
+		branches: {[firstBranchID]: 1},
+		assignedGroups: {[firstGrouptID]: 1}
 	}}
 }
 

@@ -4,6 +4,7 @@ import TaskTypeInfo from '../components/taskTypeInfo'
 import CreatedInfo from '../components/createdInfo'
 import SButton from 'components/sButton'
 import SModal from 'components/sModal'
+import WithTooltip from 'components/withTooltip'
 import _ from 'lodash'
 import './styles.css';
 
@@ -37,17 +38,21 @@ export default ({users, task, editable, editTask, deleteTask, onClose, withoutFo
 				</SModal.Body>
 				{!withoutFooter &&
 					<SModal.Footer>
-						<SButton
-							label='BEARBEITEN'
-							onClick={editBtnClicked}
-							disabled={!editable}
-						/>
+						<WithTooltip text={'Nur der Ersteller kann die Aufgabe bearbeiten.'} noTooltip={editable}>
+							<SButton
+								label='BEARBEITEN'
+								onClick={editBtnClicked}
+								disabled={!editable}
+							/>
+						</WithTooltip>
+						<WithTooltip text={'Nur der Ersteller kann die Aufgabe löschen.'} noTooltip={editable}>
 						<SButton
 							color={'#e74c3c'}
 							label={deletable ? 'LÖSCHEN' : 'BEENDEN'}
 							onClick={delteBtnClicked}
 							disabled={!editable}
 						/>
+					</WithTooltip>
 					</SModal.Footer>
 				}
 			</SModal.Main>

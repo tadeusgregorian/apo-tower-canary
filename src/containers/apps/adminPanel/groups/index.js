@@ -5,8 +5,8 @@ import { openConfirmPopup, closeConfirmPopup } from 'actions'
 import {bindActionCreators} from 'redux';
 import ConfirmPopup from 'components/confirmPopup'
 import AddEditGroupPopup from './addEditGroupPopup';
+import Group from './group'
 import Dialog from 'material-ui/Dialog';
-import cN from 'classnames'
 import './styles.css';
 
 
@@ -48,14 +48,13 @@ class AdminpanelGroups extends React.Component {
 					<button className="button icon-folder-plus" onClick={() => this.openAddEditGroupPopup()}>Gruppe Hinzufügen</button>
 				</fb>
 				{ this.props.groups.map(group =>
-					<fb key={group.ID} className='groups-list-element'>
-						<icon className="groupIcon icon-navigate_next" />
-						<fb className="groupName">{group.name}</fb>
-						<button className="button editGroupButton" onClick={() => this.openAddEditGroupPopup(true, group)}>bearbeiten</button>
-						<icon
-							className={cN({'icon-bin': true, deleteIcon: true, disabled: group.notDeletable })}
-							onClick={() => !group.notDeletable && this.openDeleteGroupPopup(group)}/>
-					</fb>
+					<Group
+						key={group.ID}
+						group={group}
+						users={this.props.users}
+						openAddEditGroupPopup={this.openAddEditGroupPopup}
+						openDeleteGroupPopup={this.openDeleteGroupPopup}
+					/>
 				)}
 				<Dialog
 					bodyClassName="sModal"

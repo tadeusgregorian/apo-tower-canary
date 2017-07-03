@@ -4,10 +4,20 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import _ from 'lodash';
 import moment from 'moment'
+import Dialog from 'material-ui/Dialog'
 import Day from './day';
 import DayHead from './dayHead'
-import {checkTask, uncheckTask, createTask} from 'actions'
-import Dialog from 'material-ui/Dialog'
+import { checkTask, uncheckTask, createTask, setSingleTasksListener } from 'actions'
+import {
+	openUndoneTasksModal,
+	closeUndoneTasksModal,
+	openAddTaskWizard,
+	closeTaskWizard,
+	setCheckingTask,
+	closeCheckingTask,
+	setCurrentDay
+} from 'actions/ui/taskManager'
+
 import CheckUncheckTaskPopup from '../modals/checkUncheckTaskPopup'
 import UndoneTasksModal from '../modals/undoneTasksModal'
 import DaysTransitionGroup from './daysTransitionGroup'
@@ -20,7 +30,6 @@ import SetTimingStep 			from '../modals/addEditTaskWizardSteps/setTimingStep'
 
 import DatePicker from 'material-ui/DatePicker';
 import { addDays, subtractDays } from 'helpers'
-import { setSingleTasksListener } 		from 'actions'
 import { extendTasksWithChecked } 		from 'selectors/extendTasksWithChecked'
 import { taskDataLoaded }							from 'selectors/taskDataLoaded'
 import { undoneTasksOfSelectedUser }	from 'selectors/undoneTasksOfSelectedUser'
@@ -138,13 +147,7 @@ class Calendar extends PureComponent{
 					autoOk={true}
 					DateTimeFormat={window.DateTimeFormat}
 					locale="de-DE"/>
-				<Dialog
-					actionsContainerStyle={{zIndex: '200'}}
-					bodyStyle={{zIndex: '200'}}
-					bodyClassName='sModal'
-					open={!!this.props.undoneTasksModal}
-					onRequestClose={this.props.closeUndoneTasksModal}
-					children={this.props.undoneTasksModal} />
+				<Dialog bodyClassName='sModal' open={!!this.props.undoneTasksModal} children={this.props.undoneTasksModal} />
 				<Dialog bodyClassName='sModal' open={!!this.props.checkingTask} onRequestClose={this.props.closeCheckingTask}>
 					<CheckUncheckTaskPopup
 						checkUncheck={this.checkUncheckTask}
@@ -155,11 +158,7 @@ class Calendar extends PureComponent{
 						currentDay={this.props.currentDay}
 					/>
 				</Dialog>
-				<Dialog
-					bodyClassName='sModal'
-					open={this.props.taskWizard === 'add'}
-					onRequestClose={this.props.closeTaskWizard}
-					children={this.addEditTaskWizard} />
+				<Dialog bodyClassName='sModal' open={this.props.taskWizard === 'add'} children={this.addEditTaskWizard} />
 			</content>
 		);
 	}
@@ -171,13 +170,13 @@ const mapDispatchToProps = (dispatch) => {
 		setSingleTasksListener,
 		checkTask,
 		uncheckTask,
-		openUndoneTasksModal: 	(modal) => ({type: 'OPEN_UNDONDE_TASKS_MODAL', payload: modal}),
-		closeUndoneTasksModal: 	() => ({type: 'CLOSE_UNDONDE_TASKS_MODAL'}),
-		openAddTaskWizard: 			() => ({type: 'OPEN_ADD_TASK_WIZARD'}),
-		closeTaskWizard: 				() => ({type: 'CLOSE_TASK_WIZARD'}),
-		setCheckingTask: 				(task) => ({type: 'SET_CHECKING_TASK', payload: task}),
-		closeCheckingTask: 			() => ({type: 'CLOSE_CHECKING_TASK'}),
-		setCurrentDay: 					(smartDate) => ({type: 'TASKS_SET_CURRENT_DAY', payload: smartDate})
+		openUndoneTasksModal,
+		closeUndoneTasksModal,
+		openAddTaskWizard,
+		closeTaskWizard,
+		setCheckingTask,
+		closeCheckingTask,
+		setCurrentDay,
 	}, dispatch);
 }
 

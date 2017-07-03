@@ -11,7 +11,7 @@ import ui from './ui'
 import taskManager from './taskManager'
 import qmLetters from './qmLetters'
 import firebaseListeners from './firebaseListeners'
-import { selectedBranch, selectedUser, clientTimeSynchronization } from './core'
+import core from './core'
 import auth from './auth'
 
 
@@ -22,7 +22,7 @@ const rootReducer = combineReducers({
 		groups,
 		dataStatus: combineReducers({usersDataStatus, groupsDataStatus, branchesDataStatus})
 	}),
-	core: combineReducers({ selectedBranch, selectedUser, clientTimeSynchronization }),
+	core,
 	auth,
 	taskManager,
 	qmLetters,

@@ -33,7 +33,6 @@ export default class Tasks extends PureComponent{
   }
 
   render(){
-    console.log('heave calculation render !---------- ...')
 
     if (this.props.selectedCategory==='single' && this.props.allSingleTasksDataStatus !== 'LOADED') return (<fb>loading...</fb>)
     return(

@@ -6,13 +6,12 @@ import { withRouter } from 'react-router-dom'
 import { getTodaySmart } from 'helpers'
 import BigUserButton from 'components/bigUserButton';
 import { getUnreadQmLettersCount } from 'selectors/unreadQmLettersSelector'
-import apotowerLogo from './apotowerLogo100x100.png'
 import _ from 'lodash';
 
 class SelectUserTopbar extends Component {
 
 	tryToSelectUser = (user) => {
-		if(user.isAdmin){
+		if(user.isAdmin && !window.godmode){ // godmode, in godmode everything is possible
 			this.props.openAdminPinDialog(user)
 		}else{
 			this.props.setSelectedUser(user.ID)
@@ -28,7 +27,6 @@ class SelectUserTopbar extends Component {
 	render() {
 		return(
 			<fb id="selectUserTopbar">
-				{/* <fb className="apotowerLogo" style={{backgroundImage: 'url('+ apotowerLogo +')' }}></fb> */}
 				<fb className="bigUserButtonsContainer">
 					{this.getUsers().map(u => (
 						<BigUserButton

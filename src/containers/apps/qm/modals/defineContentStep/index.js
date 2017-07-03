@@ -121,7 +121,7 @@ export default class DefineContentStep extends Component {
 					<fb className="no-shrink margin-top vertical">
 					{OTask.files && OTask.files.map((f, i) => (
 						<fb key={i} className="qm-file">
-							<fb className="name">{f.name}</fb>
+							<div className="name">{f.name}</div>
 							<FlatButton
 								primary={true}
 								className="iconButton"
@@ -132,7 +132,8 @@ export default class DefineContentStep extends Component {
 					))}
 						{this.filesToUpload.map((f, i) => (
 							<fb key={i} className="file notUploadedYet">
-								<fb className="name">{f.name}</fb><fb>loading...</fb>
+								<div className="name">{f.name}</div>
+								<fb>loading...</fb>
 							</fb>
 						))}
 					</fb>

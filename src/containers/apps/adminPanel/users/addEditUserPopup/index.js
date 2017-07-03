@@ -19,7 +19,7 @@ export default class AddEditUserPopup extends Component {
 			nameInitials: 	editing ? user.nameInitials : '',
 			color: 					editing ? user.color : '',
 			branches: 			editing ? _.keys(user.branches) : this.getDefaultBranch(),
-			assignedGroups: editing ? _.keys(user.assignedGroups) : ['101'], // we need this dummy '1' here, so user.groups doesnt get get deleted on firebase
+			assignedGroups: editing ? _.keys(user.assignedGroups) : [], // it is called assignedGroups, but its only allowed 1 group. TODO: rename, restrucutre data on Firebase
 			userinputMissingText: '',
 		};
 	}
@@ -46,6 +46,11 @@ export default class AddEditUserPopup extends Component {
 
 		if(!this.state.branches.length){
 			this.setState({userinputMissingText: 'Bitte wählen Sie mindestens eine Filiale aus.'})
+			return;
+		}
+
+		if(!this.state.assignedGroups.length){
+			this.setState({userinputMissingText: 'Bitte wählen Sie eine Gruppe aus.'})
 			return;
 		}
 
@@ -86,10 +91,18 @@ export default class AddEditUserPopup extends Component {
 		this.setState({color})
 	}
 
-	chipClicked = (bID, target) => {
-		const currentBs = this.state[target]
+	branchChipClicked = (bID) => {
+		const currentBs = this.state.branches
 		const newBs = _.includes(currentBs, bID) ? _.without(currentBs, bID) : [ ...currentBs, bID ]
-		this.setState({[target]: newBs})
+		this.setState({branches: newBs})
+	}
+
+	groupChipClicked = (gID) => {
+		// there is only one group allowed, not more , not less
+		// TODO: have to change the name to singular, and dont need to wrap in array aswell -> FB structure has to be changed as well, to: assignedGroup: groupIdXyz
+		const currentGs = this.state.assignedGroups
+		const newGs = _.includes(currentGs, gID) ? [] : [ gID ]
+		this.setState({assignedGroups: newGs})
 	}
 
 	render() {
@@ -125,7 +138,7 @@ export default class AddEditUserPopup extends Component {
 								<ChipBar
 									chips={this.props.branches}
 									selectedChips={this.state.branches}
-									chipClicked={(bID) => this.chipClicked(bID, 'branches')}/>
+									chipClicked={this.branchChipClicked}/>
 							</fb>
 						</fb>
 					}
@@ -135,7 +148,7 @@ export default class AddEditUserPopup extends Component {
 							<ChipBar
 								chips={this.props.groups}
 								selectedChips={this.state.assignedGroups}
-								chipClicked={(gID) => this.chipClicked(gID, 'assignedGroups')}/>
+								chipClicked={this.groupChipClicked}/>
 						</fb>
 					</fb>
 				</fb>
