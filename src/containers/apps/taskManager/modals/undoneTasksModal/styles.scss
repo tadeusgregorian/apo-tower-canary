@@ -38,8 +38,10 @@
       border-radius: 2px;
       border: 1px solid lightgrey;
       padding: 2px 4px 2px 22px;
-      flex: 1 0 auto;
+      flex: 1 1 auto;
       font-size: 14px;
+      min-width: 0px;
+      align-items: center;
       //font-size: 15px;
 
       .taskDate{
@@ -50,10 +52,25 @@
         margin-right: 14px;
       }
 
-      .taskSubject{
-        flex: 1 0 auto;
+      .subjectWrapper{
+        flex: 1;
+        overflow: hidden;
+        min-width: 0px;
         align-items: center;
-        font-weight: 400;
+
+        .taskSubject{
+          flex: 1 0 auto;
+          align-items: center;
+          font-weight: 400;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
+
+      .assignedUsersWrapper{
+        flex: 0 0 auto;
+        justify-content: flex-end;
       }
     }
 

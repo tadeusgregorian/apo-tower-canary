@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import InputMinimal from 'components/inputMinimal'
 import SButton from 'components/sButton'
-import lockIcon from './lockIcon.png'
 import sha1 from 'sha1';
-import { createShortGuid } from 'helpers'
+import PinInputField from 'components/pinInputField'
 import './styles.css';
 
 export default class EnterPinTwice extends Component {
@@ -11,19 +9,10 @@ export default class EnterPinTwice extends Component {
 		super(props)
 
 		this.state = {
-			pin1: 't', // dirtyHack -> gets removed by componentDidMount: to prevent autocomplete Box (firefox)
-			pin2: 't', // dirtyHack -> gets removed by componentDidMount: to prevent autocomplete Box (firefox)
+			pin1: '',
+			pin2: '',
 			infoMessage: ''
 		}
-	}
-
-	componentDidMount = () => { // dirty hack, to prevent autocomplete Box (firefox)
-		this.setState({pin1: '', pin2: ''})
-	}
-
-	onInputChanged = (inp, pinField) => {
-		if(inp.length > 4) return
-		this.setState({[pinField]: inp})
 	}
 
 	pinButtonClicked = () => {
@@ -48,30 +37,31 @@ export default class EnterPinTwice extends Component {
 							{this.state.infoMessage}
 						</fb>
 					}
-					<InputMinimal
-						onInputChange={(inp) => this.onInputChanged(inp, 'pin1')}
-						imgUrl={lockIcon}
-						defaultText='PIN'
-						value={this.state.pin1}
-						name={createShortGuid()}
-						password
-						autoFocus
-					/>
-					<InputMinimal
-						onInputChange={(inp) => this.onInputChanged(inp, 'pin2')}
-						imgUrl={lockIcon}
-						defaultText='PIN wiederholen'
-						value={this.state.pin2}
-						onEnter={this.pinButtonClicked}
-						name={createShortGuid()}
-						password
-					/>
+					<fb className="pinInpWrapper">
+						<PinInputField
+							pin={this.state.pin1}
+							onChange={(pin) => this.setState({ pin1: pin })}
+							tabInd='1'
+							autoFocus
+						/>
+						<fb className="icon lockIcon icon-lock3"></fb>
+					</fb>
+					<fb className="pinInpWrapper">
+						<PinInputField
+							pin={this.state.pin2}
+							onEnter={this.pinButtonClicked}
+							onChange={(pin) => this.setState({ pin2: pin })}
+							tabInd='2'
+						/>
+						<fb className="icon lockIcon icon-lock3"></fb>
+					</fb>
 					<fb className='pinEnteredButtonWrapper'>
 						<SButton
 							color={'#2ECC71'}
 							label='PIN speichern'
 							onClick={this.pinButtonClicked}
 							sStyle={{height: '38px', width: '100%'}}
+							tabInd='3'
 						/>
 					</fb>
 				</fb>

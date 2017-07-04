@@ -28,7 +28,7 @@ class UserTopbar extends PureComponent{
             <fb className='navigation'>
               <Link to='/Apps/TaskManager/Kalender/Public'>
                 <fb className='backButtonWrapper'>
-                  <icon onClick={this.leaveUserMode} className="backButton icon-arrow-left2"/>
+                  <icon className="backButton icon-arrow-left2"/>
                 </fb>
               </Link>
               <Link to={`/Apps/TaskManager/Kalender/${user.ID}`}>

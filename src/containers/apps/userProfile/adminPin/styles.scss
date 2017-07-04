@@ -1,0 +1,25 @@
+.adminPinConfigMain{
+  flex-direction: column;
+  padding: 20px;
+  padding-top: 4px;
+  padding-left: 12px;
+  padding-right: 10px;
+
+  .headline{
+    font-size: 18px;
+    border-bottom: 1px solid #e6e6e6;
+    height: 54px;
+    align-items: center;
+    padding: 4px;
+
+    .lockIcon{
+      font-size: 20px;
+      flex: 0 0 auto;
+      margin-right: 8px;
+    }
+  }
+
+  .content{
+    padding: 14px 6px;
+  }
+}

@@ -16,6 +16,14 @@ injectTapEventPlugin() // needed by material-ui
 window.DateTimeFormat = global.Intl.DateTimeFormat // this is for material-ui datePicker
 initIziToast() // just setting the default style for iziToast
 
+if(process.env.NODE_ENV === 'production'){
+  window.$crisp=[];
+  window.CRISP_WEBSITE_ID="1833a04f-c9e7-40a4-917d-07f2f03f9468";
+  (function(){let d=document; let s=d.createElement("script");
+  s.src="https://client.crisp.im/l.js";s.async=1;
+  d.getElementsByTagName("head")[0].appendChild(s);})();
+}
+
 let render = () => {
     const Main = require("./main").default;
 

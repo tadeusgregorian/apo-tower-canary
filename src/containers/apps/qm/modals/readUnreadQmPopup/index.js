@@ -66,7 +66,7 @@ export default class ReadUnreadQmPopup extends PureComponent {
 					</fb>
 					<fb className="rurModalBodyContent">
 						<CreatedInfo createdBy={createdBy} creationDate={qmData.date}/>
-						{qmData.text  && <p className="qmText">{qmData.text}</p>}
+						{qmData.text  && <fb className="qmText">{qmData.text}</fb>}
 						{qmData.files && qmData.files.map(f => (
 								<AttachmentBar
 									file={f}

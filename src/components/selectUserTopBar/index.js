@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom'
 import { getTodaySmart } from 'helpers'
 import BigUserButton from 'components/bigUserButton';
 import { getUnreadQmLettersCount } from 'selectors/unreadQmLettersSelector'
+import { setSelectedUser } from 'actions/ui/core'
 import _ from 'lodash';
 
 class SelectUserTopbar extends Component {
@@ -47,9 +48,8 @@ class SelectUserTopbar extends Component {
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		logAdminIn: 							 () => dispatch({type: 'ADMIN_LOGGED_IN'}),
 		openAdminPinDialog: (userObj) => dispatch({type: 'OPEN_ADMIN_PIN_DIALOG', payload: userObj}),
-		setSelectedUser: 		 (userID) => dispatch({type: 'SET_SELECTED_USER', payload: userID})
+		setSelectedUser
 	}, dispatch);
 }
 

@@ -2,10 +2,14 @@
 	flex-direction: row;
 	padding: 24px;
 
+	.lockIcon{
+		font-size: 20px;
+    margin-right: 10px;
+    width: 21px;
+    flex: 0;
+	}
+
 	.pinEnteredButtonWrapper{
 		margin-left: 10px;
-    margin-right: -2px;
-    margin-top: 2px;
-		border-radius: 3px;
 	}
 }

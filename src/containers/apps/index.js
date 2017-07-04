@@ -17,6 +17,14 @@ import {
 	selectBranch
 } from 'actions'
 
+import {
+	removeSelectedUser,
+	closeAdminPinDialog,
+	openSelectbranchDialog,
+	closeSelectbranchDialog,
+	closeConfirmPopup
+} from 'actions/ui/core'
+
 import UserTopbar 	from './topbar/userTopbar'
 import PublicTopbar from './topbar/publicTopbar'
 import TaskManager 	from './taskManager'
@@ -43,10 +51,11 @@ class Apps extends PureComponent{
 		nP.selectedBranch && !nP.branches.find(b => b.ID === nP.selectedBranch) && this.props.selectBranch(nP.branches[0]) // important edge case scenario, when there is a selectedBranch in local storage, but that branch doesnt exists in this account.
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(prevProps) {
 		const tP = this.props
 		const urlIncludesPublic = tP.location.pathname.includes('Public')
-		if(urlIncludesPublic && tP.selectedUser) tP.removeSelectedUser()	// when redirected to a url containting 'Public' we remove the selectedUser -> props.selectedUser is what changes the UI
+		const userJustEntered = tP.selectedUser && !prevProps.selectedUser
+		if(urlIncludesPublic && tP.selectedUser && !userJustEntered) tP.removeSelectedUser()	// when redirected to a url containting 'Public' we remove the selectedUser -> props.selectedUser is what changes the UI
 		if(!urlIncludesPublic && !tP.selectedUser) tP.history.push('/Apps/TaskManager/Kalender/Public') // someone is in non-public area, without a selectedUser -> redirect him OUT !
 	}
 
@@ -60,30 +69,31 @@ class Apps extends PureComponent{
 	}
 
 	render() {
+		const tp = this.props
 		if(!this.requiredDataIsLoaded()) return <fb>loading...</fb>
-		if(!this.props.clientDateCorrect) return <InfoNote type='warning' text='Die Datum/Zeit Einstellung Ihres Computers ist falsch. Bitte korrigiren Sie diese uns laden Sie die Seite neu.' />
-		const user = this.props.selectedUser && this.props.users && this.props.users.find(u => u.ID === this.props.selectedUser)
+		if(!tp.clientDateCorrect) return <InfoNote type='warning' text='Die Datum/Zeit Einstellung Ihres Computers ist falsch. Bitte korrigiren Sie diese und laden Sie die Seite neu.' />
+		const user = tp.selectedUser && tp.users && tp.users.find(u => u.ID === tp.selectedUser)
 		return (
 			<fb id="apps">
-				{ this.props.selectedBranch &&
+				{ tp.selectedBranch &&
 					<fb id="appsContent">
 						{user ? <UserTopbar /> : <PublicTopbar />}
 						<fb id="appMain">
 							<Route path='/Apps/TaskManager' 					component={TaskManager} />
 							<Route path='/Apps/QM'  									component={QmApp} />
 							<Route path='/Apps/Adminpanel' 						component={AdminPanel} />
-							<Route path='/Apps/Profil' 								component={UserProfile} />
+							<Route path='/Apps/Profil' 								render={() => <UserProfile user={user} />} />
 						</fb>
 					</fb>
 				}
-				<Dialog open={!!this.props.selectBranchDialog} modal={true}>
-					<SelectBranchDialog close={this.props.closeSelectbranchDialog}/>
+				<Dialog open={!!tp.selectBranchDialog} modal={true}>
+					<SelectBranchDialog close={tp.closeSelectbranchDialog}/>
 				</Dialog>
-				<Dialog open={!!this.props.adminPinDialog} onRequestClose={this.props.closeAdminPinDialog} bodyClassName='sModal' contentStyle={{width: '480px'}}>
-					<EnterAdminPinPopup />
+				<Dialog open={tp.adminPinDialog.isOpen} onRequestClose={tp.closeAdminPinDialog} bodyClassName='sModal' contentStyle={{width: '480px'}}>
+					<EnterAdminPinPopup mode={tp.adminPinDialog.mode}/>
 				</Dialog>
-				<Dialog open={!!this.props.confirmPopup} onRequestClose={this.props.closeConfirmPopup} bodyClassName='sModal'>
-					{this.props.confirmPopup}
+				<Dialog open={!!tp.confirmPopup} onRequestClose={tp.closeConfirmPopup} bodyClassName='sModal'>
+					{tp.confirmPopup}
 				</Dialog>
 			</fb>
 		)
@@ -120,12 +130,11 @@ const mapDispatchToProps = (dispatch) => {
 		registerGroupsDataListener,
 		registerBranchesDataListener,
 		setQmLettersListener,
-		setSelectedUser: 		(userID) => ({type: 'SET_SELECTED_USER', payload: userID}),
-		removeSelectedUser: 			() => ({type: 'REMOVE_SELECTED_USER'}),
-		closeAdminPinDialog: 			() => ({type: 'CLOSE_ADMIN_PIN_DIALOG'}),
-		openSelectbranchDialog: 	() => ({type: 'OPEN_SELECT_BRANCH_DIALOG'}),
-		closeSelectbranchDialog: 	() =>	({type: 'CLOSE_SELECT_BRANCH_DIALOG'}),
-		closeConfirmPopup:				() => ({type: 'CLOSE_CONFIRM_POPUP'}),
+		removeSelectedUser,
+		closeAdminPinDialog,
+		openSelectbranchDialog,
+		closeSelectbranchDialog,
+		closeConfirmPopup,
 		checkClientDate,
 		selectBranch
 	}, dispatch)

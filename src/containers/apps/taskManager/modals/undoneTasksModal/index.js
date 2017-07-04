@@ -36,8 +36,10 @@ const UndoneTasksModal = ({undoneTasks, onClose, jumpToDate, openCheckUncheckTas
                 </fb>
                 <fb className={cN({undoneTask: true, prio: !!t.prio})} onClick={() => taskClicked(t)}>
                   <fb className="taskDate">{formatDate(t.taskDate)}</fb>
-                  <fb className="taskSubject">{t.subject}</fb>
-                  <AssignedUsers assignedUsers={_.keys(t.assignedUsers)} users={users}/>
+                  <div className="subjectWrapper"><div className="taskSubject">{t.subject}</div></div>
+                  <fb className="assignedUsersWrapper">
+                    <AssignedUsers assignedUsers={_.keys(t.assignedUsers)} users={users}/>
+                  </fb>
                 </fb>
               </fb>
             )}

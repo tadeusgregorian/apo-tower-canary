@@ -7,11 +7,13 @@ const selectBranchDialog = simpleReducer({
 	CLOSE_SELECT_BRANCH_DIALOG: false,
 })
 
-const adminPinDialog = simpleReducer({
-	default: 								false,
-	OPEN_ADMIN_PIN_DIALOG: 	'PAYLOAD',
-	CLOSE_ADMIN_PIN_DIALOG: false,
-})
+const adminPinDialog = (state = { isOpen: false }, action) => {
+	switch (action.type) {
+	case 'OPEN_ADMIN_PIN_DIALOG' 	: return { isOpen: true, mode: action.payload }
+	case 'CLOSE_ADMIN_PIN_DIALOG' : return { isOpen: false }
+	default: return state
+	}
+}
 
 const confirmPopup = simpleReducer({
 	default: 							null,

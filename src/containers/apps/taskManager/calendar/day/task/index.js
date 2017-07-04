@@ -28,9 +28,9 @@ export default class Task extends PureComponent {
 					}
 				<fb className={cN({ task: true, prio, isDone: t.isDone, isIgnored: t.isIgnored || t.isShifted })}>
 					<fb className="body taskBody" onClick={clickHandler}>
-						<fb className="head">
-							<fb className="subject">{t.subject}</fb>
-						</fb>
+						<div className="head">
+							<div className="subject">{t.subject}</div>
+						</div>
 						{ t.isIgnored && <fb className="tag">ignoriert</fb>  }
 						{ t.isShifted && <fb className="tag">verschoben</fb> }
 						{ t.originalShiftedTask && <fb className="tag">{originalDate}</fb> }

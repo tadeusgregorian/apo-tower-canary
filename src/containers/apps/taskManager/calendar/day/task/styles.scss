@@ -30,7 +30,7 @@
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.27);
 	border-radius: 2px;
 	background: white;
-	flex-wrap: nowrap;
+	min-width: 0px;
 
 	.taskBody{
 		overflow: visible;
@@ -68,16 +68,18 @@
 	.body {
 		flex-direction: row;
 		align-items: center;
+		width: 100%;
 	}
 
 	.head {
 		font-size: 14px;
-		flex: 1 1 auto;
+		flex: 1;
 		overflow: hidden;
 		padding-right: 12px;
 		// max-width: 67%;
 		align-items: center;
 		padding: 8px 6px 8px 17px;
+		min-width: 0px;
 
 		.date {
 			font-size: 12px;
