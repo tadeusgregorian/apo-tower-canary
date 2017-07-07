@@ -8,6 +8,7 @@ import { startNewDayChecker } from 'helpers'
 import InfoNote 					from 'components/infoNote'
 import EnterAdminPinPopup from 'components/enterAdminPinPopup'
 import SelectBranchDialog from 'components/selectBranchDialog'
+import IntroVideoPopup 		from 'components/introVideoPopup'
 import {
 	registerUsersDataListener,
 	registerGroupsDataListener,
@@ -22,7 +23,8 @@ import {
 	closeAdminPinDialog,
 	openSelectbranchDialog,
 	closeSelectbranchDialog,
-	closeConfirmPopup
+	closeConfirmPopup,
+	closeIntroVideoPopup
 } from 'actions/ui/core'
 
 import UserTopbar 	from './topbar/userTopbar'
@@ -89,6 +91,9 @@ class Apps extends PureComponent{
 				<Dialog open={!!tp.selectBranchDialog} modal={true}>
 					<SelectBranchDialog close={tp.closeSelectbranchDialog}/>
 				</Dialog>
+				<Dialog open={tp.introVideoPopup.isOpen} onRequestClose={tp.closeIntroVideoPopup} bodyClassName='sModal' contentStyle={{maxWidth: '940px', width: '940px'}}>
+					<IntroVideoPopup closePopup={tp.closeIntroVideoPopup}/>
+				</Dialog>
 				<Dialog open={tp.adminPinDialog.isOpen} onRequestClose={tp.closeAdminPinDialog} bodyClassName='sModal' contentStyle={{width: '480px'}}>
 					<EnterAdminPinPopup mode={tp.adminPinDialog.mode}/>
 				</Dialog>
@@ -116,6 +121,7 @@ const mapStateToProps = (state) => {
 		currentDay: state.ui.taskManager.currentDay,
 		adminPinDialog: state.ui.app.adminPinDialog,
 		selectBranchDialog: state.ui.app.selectBranchDialog,
+		introVideoPopup: state.ui.app.introVideoPopup,
 
 		confirmPopup: state.ui.app.confirmPopup,
 		clientDateChecked: state.core.clientDateChecked,
@@ -136,7 +142,8 @@ const mapDispatchToProps = (dispatch) => {
 		closeSelectbranchDialog,
 		closeConfirmPopup,
 		checkClientDate,
-		selectBranch
+		selectBranch,
+		closeIntroVideoPopup
 	}, dispatch)
 };
 

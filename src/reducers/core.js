@@ -9,10 +9,6 @@ const selectedBranch = (state = localStorage.apotowerbranch || null, action) => 
 }
 
 const selectedUser = (state = null, action) => {
-	if(action.type === 'SET_SELECTED_USER')console.log(action.type)
-	if(action.type === 'ADMIN_LOGGED_IN')console.log(action.type)
-	if(action.type === 'REMOVE_SELECTED_USER')console.log(action.type)
-
 	switch (action.type) {
 	case 'SET_SELECTED_USER'		: return action.payload
 	case 'ADMIN_LOGGED_IN' 			: return action.payload

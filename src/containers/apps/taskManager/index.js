@@ -8,7 +8,7 @@ import Editor 				from './editor'
 import Replacements 	from './replacements'
 import SelectUserTopbar 	from 'components/selectUserTopbar';
 
-import { setTaskManagerListeners, refreshTaskManagerListeners } from 'actions/index'
+import { setTaskManagerListeners, refreshTaskManagerListeners } from 'actions'
 import _ from 'lodash'
 
 class TaskManager extends PureComponent {
@@ -26,7 +26,6 @@ class TaskManager extends PureComponent {
 		return (
 			<fb className="vertical height100">
 				{ !selectedUser && <SelectUserTopbar selectedBranch={selectedBranch}/> }
-				{/* <Route path={match.url} exact render={() => <Redirect to={match.url+'/Kalender'}/>} /> */}
 				<Route path={match.url + '/Kalender'} 	component={Calendar}/>
 				<Route path={match.url + '/Editor'}   	component={Editor}/>
 				<Route path={match.url + '/Vertretung'} component={Replacements}/>

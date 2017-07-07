@@ -1,9 +1,11 @@
 #registrationMain{
 	flex-direction: column;
-	width: 100%;
+	width: 354px;
 	margin-top: 40px;
-	padding: 2px 63px;
+	padding: 2px;
 	border-left: 1px solid #c8c8c8;
+	padding-left: 30px;
+	padding-bottom: 20px;
 
 	#registrationHead{
 		padding: 18px 0px;
@@ -26,15 +28,14 @@
 
 	#registrationSubmitButton{
     border-radius: 4px;
-    background-color: #029ca6;
+    background-color: #0d97ea;
     cursor: pointer;
-    margin: 2px;
+    margin: 8px -2px 2px 2px;
     height: 42px;
-    margin-top: 8px;
     box-sizing: border-box;
-    border: 1px solid #008992;
+    border: 1px solid #0d97ea;
     box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.22);
-    border-bottom: 1px solid #007279;
+    border-bottom: 1px solid #0077bf;
 
 		justify-content: center;
 		align-items: center;

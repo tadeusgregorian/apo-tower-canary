@@ -21,8 +21,17 @@ const confirmPopup = simpleReducer({
 	CLOSE_CONFIRM_POPUP:	null
 })
 
+const introVideoPopup = (state = { isOpen: false }, action) => {
+	switch (action.type) {
+	case 'OPEN_INTROVIDEO_POPUP' 	: return { isOpen: true }
+	case 'CLOSE_INTROVIDEO_POPUP' : 	return { isOpen: false }
+	default: return state
+	}
+}
+
 export default combineReducers({
 	selectBranchDialog,
 	adminPinDialog,
-  confirmPopup
+  confirmPopup,
+	introVideoPopup
 })

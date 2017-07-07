@@ -120,7 +120,8 @@ class Editor extends PureComponent {
 
 	changeCategoryTo = (category) => {
 		this.setState({selectedCategory: category})
-		if(this.props.allSingleTasksDataStatus==='NOT_REQUESTED') this.props.setAllSingleTasksListener()
+		//const dataStatus = this.props.allSingleTasksDataStatus
+		if(category === 'single') this.props.setAllSingleTasksListener()
 	}
 
 	render() {

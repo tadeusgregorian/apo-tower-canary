@@ -15,7 +15,6 @@ export const trackFBListeners = (dispatch, getState, listenerTarget, newPath) =>
 	dispatch({type: 'ADD_FIREBASE_LISTENER', listenerTarget: listenerTarget, listenerPath: newPath})
 }
 
-
 // optionally you can give queryRef instead of dbPath to make a firebaseQuery beforehand.
 // the onValue is used for Listeners that just want to sync with a DB value. no child Events needed
 export const createFirebaseListener = (dispatch, getState, target, dbPath, queryRef = null, onValue = false) => {

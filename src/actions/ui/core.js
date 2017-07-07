@@ -10,3 +10,6 @@ export const openSelectbranchDialog   = () => ({type: 'OPEN_SELECT_BRANCH_DIALOG
 export const closeSelectbranchDialog  = () =>	({type: 'CLOSE_SELECT_BRANCH_DIALOG'})
 
 export const closeConfirmPopup        =	() => ({type: 'CLOSE_CONFIRM_POPUP'})
+
+export const openIntroVideoPopup     = () => ({type: 'OPEN_INTROVIDEO_POPUP'})
+export const closeIntroVideoPopup    = () => ({type: 'CLOSE_INTROVIDEO_POPUP'})

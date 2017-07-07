@@ -10,7 +10,7 @@ const lastUTUpdate					= createFirebaseReducer_simple('lastUTUpdate')
 
 const repeatingTasksDataStatus  		= createDataStatusReducer('repeatingTasks')
 const singleTasksDataStatus					= createDataStatusReducer('singleTasks')
-const allSingleTasksDataStatus		= createDataStatusReducer('allSingleTasks')
+const allSingleTasksDataStatus			= createDataStatusReducer('allSingleTasks')
 const checkedDataStatus							= createDataStatusReducer('checked')
 const undoneTasksDataStatus					= createDataStatusReducer('undoneTasks')
 const lastUTUpdateDataStatus				= createDataStatusReducer('lastUTUpdate')

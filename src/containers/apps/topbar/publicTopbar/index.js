@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux'
 import { logoutFromFirebase } from 'actions'
+import { openSelectbranchDialog, openIntroVideoPopup } from 'actions/ui/core'
 import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
@@ -28,7 +29,7 @@ class PublicTopbar extends PureComponent{
   }
 
   render(){
-    const {selectedBranch, branches} = this.props
+    const {selectedBranch, branches, openIntroVideoPopup} = this.props
 		const selectedBranchObj = branches.find(b => b.ID === selectedBranch)
 		const selectedBranchName = selectedBranchObj ? selectedBranchObj.name : ''
 
@@ -36,11 +37,10 @@ class PublicTopbar extends PureComponent{
 			<fb className="publicTopbar">
           <fb className='leftSide'>
             <icon className="icon icon-arrow_drop_down" />
-            {/* <fb className="apotheken_a"></fb> */}
             <fb className="text">{selectedBranchName}</fb>
           </fb>
           <fb className='rightSide'>
-            <fb className="videoIcon">
+            <fb className="videoIcon" onClick={openIntroVideoPopup}>
               <icon className="icon-play" />
             </fb>
             <fb className='moreOptions' onClick={this.openPopover}>
@@ -74,7 +74,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => (
 	bindActionCreators({
-		openSelectbranchDialog: () => ({type: 'OPEN_SELECT_BRANCH_DIALOG'})
+		openSelectbranchDialog,
+    openIntroVideoPopup
 	}, dispatch)
 )
 

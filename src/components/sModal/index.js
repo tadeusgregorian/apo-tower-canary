@@ -11,12 +11,12 @@ const SModalMain = ({title, children, onClose}) => (
 	</fb>
 )
 
-const SModalBody = ({children}) => (
-	<fb className='sModalBody'>{children}</fb>
+const SModalBody = ({children, style}) => (
+	<fb className='sModalBody' style={style}>{children}</fb>
 )
 
-export const SModalFooter = ({children}) => (
-	<fb className='sModalFooter'>{children}</fb>
+export const SModalFooter = ({children, style}) => (
+	<fb className='sModalFooter' style={style}>{children}</fb>
 )
 
 export default {Main: SModalMain, Body: SModalBody, Footer: SModalFooter}

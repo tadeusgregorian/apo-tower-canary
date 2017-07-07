@@ -1,0 +1,42 @@
+.benefitsMain{
+  padding-top: 40px;
+  height: 400px;
+  width: 100%;
+  justify-content: center;
+  background-color: white;
+
+  .center{
+    width: 900px;
+    flex: 0 1 auto;
+    align-items: flex-start;
+
+    .infoBox{
+      flex: 1 1;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 24px;
+
+      .bigIcon{
+
+      }
+
+      .text{
+        margin-top: 16px;
+        font-size: 16px;
+        color: #0d96e8;
+        text-align: center;
+        font-weight: 500;
+      }
+
+      .moreText{
+        border-top: 1px solid #e0e0e0;
+        padding-top: 8px;
+        margin-top: 8px;
+        color: grey;
+        text-align: center;
+      }
+    }
+
+
+  }
+}
