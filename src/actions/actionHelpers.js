@@ -16,6 +16,7 @@ export const getFirebasePath	= (target) => {
 		case 'users': 					return accPath + '/users/'
 		case 'branches': 				return accPath + '/branches/'
 		case 'groups': 					return accPath + '/groups/'
+		case 'accountDetails': 	return accPath + '/accountDetails/'
 		default : throw new Error('target is not existing Tade ( getFirebasePath ), target: ' + target)
 	}
 }

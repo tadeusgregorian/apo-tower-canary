@@ -24,8 +24,9 @@ const Main = (props) => {
 		<div id='main'>
 			{isAuthenticating ? <fb>AUTHENTICATING...</fb> :
 				<fb style={{height: '100vh'}}>
-					<Route path='/' exact render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender/Public" /> : <Website /> } />
-					<Route path='/Login' 	render={() => loggedIn ? <Redirect to="/Apps/TaskManager/Kalender/Public" /> : <Login /> } />
+					<Route path='/' exact render={() => loggedIn ?  <Redirect to="/Apps/TaskManager/Kalender/Public" /> : <Redirect to="/Home" /> } />
+					<Route path='/Login' 	render={() => loggedIn ?  <Redirect to="/Apps/TaskManager/Kalender/Public" /> : <Login /> } />
+					<Route path='/Home'   render={() => loggedIn ?  <Redirect to="/Apps/TaskManager/Kalender/Public" /> : <Website /> } />
 					<Route path='/Apps' 	render={() => loggedOut ? <Redirect to="/Login" /> : <Apps /> } />
 				</fb>
 			}

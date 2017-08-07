@@ -13,6 +13,7 @@ import qmLetters from './qmLetters'
 import firebaseListeners from './firebaseListeners'
 import core from './core'
 import auth from './auth'
+import accountDetails from './accountDetails'
 
 
 const rootReducer = combineReducers({
@@ -27,7 +28,8 @@ const rootReducer = combineReducers({
 	taskManager,
 	qmLetters,
 	ui,
-	firebaseListeners
+	firebaseListeners,
+	accountDetails
 });
 
 export default rootReducer

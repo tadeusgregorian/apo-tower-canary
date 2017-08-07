@@ -1,5 +1,5 @@
 import React from 'react';
-import apotowerLogo from './logo.png'
+import apotowerLogo from './logo5.png'
 import { withRouter } from 'react-router-dom'
 import './styles.css'
 
@@ -13,7 +13,6 @@ const topbar = (props) => (
 					<fb id='topbarLogoText'>APOTOWER</fb>
 				</fb>
 				<fb id='topbarNavi'>
-					<fb className='naviElement'>FUNKTIONEN</fb>
 					<fb className='naviElement' id='loginNaviElement' onClick={() => props.history.push('/login') }>LOGIN</fb>
 				</fb>
 			</fb>

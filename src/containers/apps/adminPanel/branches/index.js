@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addNewBranch, editBranch, deleteBranch } from 'actions'
-import { openConfirmPopup, closeConfirmPopup } from 'actions'
+import { openConfirmPopup, closeConfirmPopup } from 'actions/ui/core'
 import {bindActionCreators} from 'redux';
 import ConfirmPopup from 'components/confirmPopup'
 import AddEditBranchPopup from './addEditBranchPopup';

@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux';
 import UserElement from './user';
 import {addNewUser, editUser, deleteUser, reactivateUser} from 'actions/index';
 import ConfirmPopup from 'components/confirmPopup'
-import { openConfirmPopup, closeConfirmPopup } from 'actions'
+import { openConfirmPopup, closeConfirmPopup } from 'actions/ui/core'
 import Dialog from 'material-ui/Dialog';
 import AddEditUserPopup from './addEditUserPopup';
 import { Toast, getTodaySmart } from 'helpers';

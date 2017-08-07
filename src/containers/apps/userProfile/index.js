@@ -18,7 +18,7 @@ class UserProfile extends PureComponent {
 				<fb className='userProfile-body edgebox'>
 					<div className='userProfile-navbar'>
 						<NavLink activeClassName="selected" className="navbar-item" to={`${baseUrl}Urlaub`}>Urlaub</NavLink>
-						<NavLink activeClassName="selected" className="navbar-item" to={`${baseUrl}Pin`}>Admin-PIN</NavLink>
+						{isAdmin && <NavLink activeClassName="selected" className="navbar-item" to={`${baseUrl}Pin`}>Admin-PIN</NavLink>}
 						<NavLink activeClassName="selected" className="navbar-item" to={`${baseUrl}Farbe`}>Profilfarbe</NavLink>
 					</div>
 					<div className='userProfileContent'>

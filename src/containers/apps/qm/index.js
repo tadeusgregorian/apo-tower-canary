@@ -6,7 +6,7 @@ import composeWizard from 'composers/wizard';
 import DefineContentStep from './modals/defineContentStep'
 import AssignUsersStep from './modals/assignUsersStep'
 import { createQm, editQm, deleteQm } from 'actions'
-import { openConfirmPopup, closeConfirmPopup } from 'actions'
+import { openConfirmPopup, closeConfirmPopup } from 'actions/ui/core'
 import _ from 'lodash';
 import Dialog from 'material-ui/Dialog';
 import ReadUnreadQmPopup from './modals/readUnreadQmPopup/index.js';

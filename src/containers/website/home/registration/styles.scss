@@ -1,28 +1,64 @@
 #registrationMain{
 	flex-direction: column;
-	width: 354px;
-	margin-top: 40px;
-	padding: 2px;
-	border-left: 1px solid #c8c8c8;
-	padding-left: 30px;
-	padding-bottom: 20px;
+	min-width: 300px;
+	padding: 15px 0px;
+	border-radius: 2px;
+	background-color: white;
+	box-shadow: 1px 2px 7px 1px rgba(0, 0, 0, 0.35);
+
+	>fb{
+		flex: 0 0 auto;
+	}
 
 	#registrationHead{
-		padding: 18px 0px;
-    font-size: 24px;
-    color: #777777;
+		font-size: 28px;
+    color: #6f6f6f;
     font-weight: 500;
     justify-content: center;
+    flex: 0 0 auto;
+    line-height: 36px;
+    text-align: center;
+	}
+
+	.subHeader{
+		color: #ffffff;
+    font-size: 14px;
+    justify-content: center;
+    flex: 0 0 auto;
+    align-items: center;
+    margin-top: 12px;
+    margin-bottom: 14px;
+    background-color: #ff4f4f;
+    padding: 1px 0px;
+
+		.icon{
+			font-size: 12px;
+			flex: 0 0 auto;
+    	height: 18px;
+    	color: white;
+		}
 	}
 
 
 	#registrationBody{
 		flex-direction: column;
+		padding: 0px 18px 0px 15px;
 
 		.inputRegElement{
 			height: 45px;
 			width: 100%;
-			margin: 5px 0px;
+	    margin-bottom: 4px;
+
+			input{
+				//border: 1px solid #bfbfbf;
+				box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.17);
+    		border-bottom: 1px solid #c5c3c3;
+
+				&:focus{
+					border: 1px solid #7adaff;
+
+				}
+			}
 		}
 	}
 
@@ -30,8 +66,8 @@
     border-radius: 4px;
     background-color: #0d97ea;
     cursor: pointer;
-    margin: 8px -2px 2px 2px;
-    height: 42px;
+    margin: 8px -2px 0px 2px;
+    height: 34px;
     box-sizing: border-box;
     border: 1px solid #0d97ea;
     box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.22);

@@ -32,32 +32,40 @@ export default class Registration extends PureComponent{
 				.catch(e => e.code === 'auth/email-already-in-use' && Toast.warning(emailInUse))
 	}
 
-	render = () =>(
+	render = () =>{
+		return (
 		<fb id='registrationMain'>
-			<fb id='registrationHead'>Jetzt registrieren</fb>
+			<fb id='registrationHead'>Jetzt kostenlos registrieren!</fb>
+			<fb className="subHeader">Dieses Angebot ist limitiert.</fb>
 			<fb id='registrationBody'>
+				{/* fake inputfileds to distract the autofill! */}
+				<input type="text" style={{display: 'none'}} />
+				<input type="password" style={{display: 'none'}} />
 				<fb id='iWrapperPharmacyName' className='inputRegElement'>
 					<InputMinimal
 						onInputChange={(inp)=>this.setState({pharmacyName: inp})}
 						icon='user'
+						value={this.state.pharmacyName}
 						defaultText='Name der Apotheke'/>
 				</fb>
 				<fb id='iWrapperPharmacyEmail' className='inputRegElement' data-balloon="Email-Adresse der Apotheke" data-balloon-pos="up">
 					<InputMinimal
 						onInputChange={(inp)=>this.setState({email: inp})}
 						icon='email'
+						value={this.state.email}
 						defaultText='Email'/>
 				</fb>
 				<fb id='iWrapperPassword' className='inputRegElement' onKeyDown={(e) => e.keyCode === 13 && this.regButtonClicked()}>
 					<InputMinimal
 						onInputChange={(inp)=>this.setState({password: inp})}
 						icon='lock'
+						value={this.state.password}
 						defaultText='Passwort'
 						password={true} />
 				</fb>
 				<fb id='registrationSubmitButton' onClick={this.regButtonClicked}>Registrieren</fb>
-				<fb id='iWrapperCaptcha'></fb>
 			</fb>
 		</fb>
 	)
+	}
 }

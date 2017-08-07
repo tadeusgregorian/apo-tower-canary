@@ -1,0 +1,36 @@
+.testimonyMain{
+  height: 310px;
+  width: 100%;
+  justify-content: center;
+
+  .center{
+    width: 920px;
+    flex: 0 0 auto;
+    justify-content: flex-start;
+
+    .pharmacistImg{
+      flex: 0 0 auto;
+      height: 310px;
+      width: auto;
+    }
+
+
+    .textWrapper{
+      flex-direction: column;
+      padding: 10px;
+      color: #0d96e8;
+
+      .main{
+        font-size: 22px;
+        font-weight: 500;
+        text-align: center;
+      }
+
+      .small{
+        //border-top: 1px solid lightgrey;
+        margin-top: 8px;
+        justify-content: center;
+      }
+    }
+  }
+}

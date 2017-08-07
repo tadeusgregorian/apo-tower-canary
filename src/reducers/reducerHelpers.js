@@ -29,7 +29,7 @@ export const createFirebaseReducer_object = (target) => {
 }
 
 export const createFirebaseReducer_simple = (target) => {
-	return (state = null, action) => (
+	return (state = {}, action) => (
 		action.type === 'value_received_'+target ? action.payload : state
 	)
 }

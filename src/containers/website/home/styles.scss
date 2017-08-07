@@ -1,42 +1,31 @@
 
 #homeMain{
 	justify-content: center;
-	padding-bottom: 60px;
-	padding-top: 30px;
+	padding-bottom: 100px;
+	padding-top: 40px;
 
 	.center{
-		width: 900px;
+		width: 920px;
 		flex-direction: row;
 		flex: 0 1 auto;
+		justify-content: space-between;
 
 		#homeLeft{
-			flex: 1 1 50%;
-			//flex-direction: column;
-			// padding-top: 30px;
-			padding: 18px 0px;
+			flex: 0 0 auto;
 	    font-size: 24px;
 	    color: #777777;
 	    font-weight: 500;
 	    justify-content: flex-start;
-			margin-top: 20px;
 			align-items: center;
 
-
-			#homeImageTitle{
-				font-size: 40px;
-				//font-weight: 200;
-				font-size: 24px;
-				color: #777777;
-				font-weight: 500;
-				text-transform: uppercase;
+			span{
+				display: flex;
 			}
 
-			#homeImageWrapper{
-				margin-left: 40px;
-			}
 		}
 		#homeRight{
 			flex: 0 1;
+			height: 100%;
 		}
 	}
 }

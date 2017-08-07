@@ -1,20 +1,31 @@
 import React from 'react'
-import homeImage from './homeImage2.jpg';
-import Registration from './registration';
+import Registration from './registration'
+import YouTube from 'react-youtube'
 import './styles.css'
 
+export default() => {
 
-//const inDevelopement = process.env.NODE_ENV === 'development'
-export default() => (
-	<fb id='homeMain'>
-		<fb className="center">
-			<fb id='homeLeft'>
-				<fb id='homeImageTitle'>Apotower <br/>bringt <br/>Ordnung <br/>in <br/>das <br/>Chaos</fb>
-				<fb id='homeImageWrapper'><img src={homeImage} alt='homeImage' width='244' height='208'/></fb>
-			</fb>
-			<fb id='homeRight'>
-				<Registration />
+	const opts = {
+		height: '340',
+		width: '604',
+		playerVars: { // https://developers.google.com/youtube/player_parameters
+			modestbranding:1,
+			showinfo: 0,
+			controls: 0,
+			rel: 0
+		}
+	}
+
+	return(
+		<fb id='homeMain'>
+			<fb className="center">
+				<fb id='homeLeft'>
+					<YouTube videoId="lJACSys0FGc" opts={opts} />
+				</fb>
+				<fb id='homeRight'>
+					<Registration />
+				</fb>
 			</fb>
 		</fb>
-	</fb>
-)
+	)
+}

@@ -60,7 +60,7 @@ const getAccountDetails = (accountID, email) => {
 		ID: accountID,
 		email: email,
 		creationTime: serverTimestamp,
-		maxBranches: 2,
 		maxUsers: 20,
+		introVideoWatched: false
 	}
 }

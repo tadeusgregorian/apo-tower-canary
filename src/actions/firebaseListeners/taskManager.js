@@ -33,11 +33,6 @@ export const setUndoneTasksListener = () => {
 		createFirebaseListener(dispatch, getState, 'undoneTasks', getFirebasePath('undoneTasks'))
 }
 
-export const setLastUTUpdateListener = () => {
-	return (dispatch, getState) =>
-		createFirebaseListener(dispatch, getState, 'lastUTUpdate', getFirebasePath('lastUTUpdate'), null, true)
-}
-
 export const setTaskManagerListeners = () => {
 	return (dispatch, getState) => {
 		getState().taskManager.repeatingTasksDataStatus 	=== 'NOT_REQUESTED' && setRepeatingTasksListener()(dispatch, getState)

@@ -1,0 +1,46 @@
+.qmFeatureMain{
+  height: 310px;
+  width: 100%;
+  justify-content: center;
+  background-color: white;
+
+  .center{
+    width: 920px;
+    flex: 0 0 auto;
+    justify-content: flex-start;
+
+    .textWrapperCenter{
+      justify-content: center;
+
+      .textWrapper{
+        max-width: 330px;
+        flex-direction: column;
+        color: #0d96e8;
+        justify-content: center;
+        text-align: center;
+
+        .main{
+          font-size: 22px;
+          font-weight: 500;
+          text-align: center;
+          justify-content: center;
+
+        }
+
+        .small{
+          //border-top: 1px solid lightgrey;
+          margin-top: 8px;
+          justify-content: center;
+          text-align: center;
+        }
+      }
+    }
+
+    .theImage{
+      height: 310px;
+      width: auto;
+    }
+
+
+  }
+}

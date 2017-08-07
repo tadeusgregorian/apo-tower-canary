@@ -1,0 +1,27 @@
+.kontaktMain{
+  flex-direction: column;
+  width: 920px;
+
+
+  .kontaktHead{
+    height: 80px;
+    border-bottom: 1px solid grey;
+    font-size: 28px;
+    font-weight: 600px;
+    align-items: flex-end;
+  }
+
+  .content{
+    padding-top: 12px;
+    flex-direction: column;
+
+    .row{
+      padding: 4px 0px;
+
+      .cell1{
+        width: 100px;
+        flex: 0 0 auto;
+      }
+    }
+  }
+}

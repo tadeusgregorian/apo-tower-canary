@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import _ from 'lodash';
 
-import { openConfirmPopup, closeConfirmPopup } from 'actions'
+import { openConfirmPopup, closeConfirmPopup } from 'actions/ui/core'
 import { editAndCreateTask, deleteTask, endRepeatingTask, overrideTask } from 'actions';
 import { setAllSingleTasksListener } from 'actions';
 import Dialog from 'material-ui/Dialog';

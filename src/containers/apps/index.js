@@ -14,6 +14,7 @@ import {
 	registerGroupsDataListener,
 	registerBranchesDataListener,
 	setQmLettersListener,
+	setAccountDetailsListener,
 	checkClientDate,
 	selectBranch
 } from 'actions'
@@ -24,6 +25,7 @@ import {
 	openSelectbranchDialog,
 	closeSelectbranchDialog,
 	closeConfirmPopup,
+	openIntroVideoPopup,
 	closeIntroVideoPopup
 } from 'actions/ui/core'
 
@@ -39,18 +41,21 @@ class Apps extends PureComponent{
 	componentDidMount() {
 		this.props.checkClientDate()
 		startNewDayChecker()
-		this.props.usersDataStatus 		=== 'NOT_REQUESTED' && this.props.registerUsersDataListener()
-		this.props.groupsDataStatus 	=== 'NOT_REQUESTED' && this.props.registerGroupsDataListener()
-		this.props.branchesDataStatus === 'NOT_REQUESTED' && this.props.registerBranchesDataListener()
-		this.props.qmLettersDataStatus  === 'NOT_REQUESTED' && this.props.setQmLettersListener()
+		this.props.usersDataStatus 					=== 'NOT_REQUESTED' && this.props.registerUsersDataListener()
+		this.props.groupsDataStatus 				=== 'NOT_REQUESTED' && this.props.registerGroupsDataListener()
+		this.props.branchesDataStatus 			=== 'NOT_REQUESTED' && this.props.registerBranchesDataListener()
+		this.props.qmLettersDataStatus  		=== 'NOT_REQUESTED' && this.props.setQmLettersListener()
+		this.props.accountDetailsDataStatus === 'NOT_REQUESTED' && this.props.setAccountDetailsListener()
 
 	}
 
 	componentWillReceiveProps(nP) {
+		const tP = this.props
 		if(nP.branchesDataStatus !== 'LOADED') return
-		!nP.selectedBranch && nP.branches.length > 1 && !this.props.selectBranchDialog && this.props.openSelectbranchDialog()
-		!nP.selectedBranch && nP.branches.length === 1 && this.props.selectBranch(nP.branches[0])
-		nP.selectedBranch && !nP.branches.find(b => b.ID === nP.selectedBranch) && this.props.selectBranch(nP.branches[0]) // important edge case scenario, when there is a selectedBranch in local storage, but that branch doesnt exists in this account.
+		!nP.selectedBranch && nP.branches.length > 1 && !tP.selectBranchDialog && tP.openSelectbranchDialog()
+		!nP.selectedBranch && nP.branches.length === 1 && tP.selectBranch(nP.branches[0])
+		nP.selectedBranch && !nP.branches.find(b => b.ID === nP.selectedBranch) && tP.selectBranch(nP.branches[0]) // important edge case scenario, when there is a selectedBranch in local storage, but that branch doesnt exists in this account.
+		if(this.requiredDataJustLoaded(tP, nP) && nP.introVideoWatched !== 'sufficent') setTimeout(() => this.props.openIntroVideoPopup(), 2000)
 	}
 
 	componentDidUpdate(prevProps) {
@@ -61,18 +66,21 @@ class Apps extends PureComponent{
 		if(!urlIncludesPublic && !tP.selectedUser) tP.history.push('/Apps/TaskManager/Kalender/Public') // someone is in non-public area, without a selectedUser -> redirect him OUT !
 	}
 
-	requiredDataIsLoaded = () => {
-		if (!this.props.clientDateChecked)	return false
-		if (this.props.usersDataStatus 			!== 'LOADED') return false
-		if (this.props.branchesDataStatus  	!== 'LOADED') return false
-		if (this.props.groupsDataStatus 		!== 'LOADED') return false
-		if (this.props.qmLettersDataStatus 	!== 'LOADED') return false
+	requiredDataLoaded = (props) => {
+		if (!props.clientDateChecked)	return false
+		if (props.usersDataStatus 					!== 'LOADED') return false
+		if (props.branchesDataStatus  			!== 'LOADED') return false
+		if (props.groupsDataStatus 					!== 'LOADED') return false
+		if (props.qmLettersDataStatus 			!== 'LOADED') return false
+		if (props.accountDetailsDataStatus 	!== 'LOADED') return false
 		return true
 	}
 
+	requiredDataJustLoaded = (oldP, newP) => (!this.requiredDataLoaded(oldP) && this.requiredDataLoaded(newP))
+
 	render() {
 		const tp = this.props
-		if(!this.requiredDataIsLoaded()) return <fb>loading...</fb>
+		if(!this.requiredDataLoaded(tp)) return <fb>loading...</fb>
 		if(!tp.clientDateCorrect) return <InfoNote type='warning' text='Die Datum/Zeit Einstellung Ihres Computers ist falsch. Bitte korrigiren Sie diese und laden Sie die Seite neu.' />
 		const user = tp.selectedUser && tp.users && tp.users.find(u => u.ID === tp.selectedUser)
 		return (
@@ -92,7 +100,7 @@ class Apps extends PureComponent{
 					<SelectBranchDialog close={tp.closeSelectbranchDialog}/>
 				</Dialog>
 				<Dialog open={tp.introVideoPopup.isOpen} onRequestClose={tp.closeIntroVideoPopup} bodyClassName='sModal' contentStyle={{maxWidth: '940px', width: '940px'}}>
-					<IntroVideoPopup closePopup={tp.closeIntroVideoPopup}/>
+					<IntroVideoPopup closePopup={tp.closeIntroVideoPopup} introVideoWatched={tp.introVideoWatched} introVideoPopup={tp.introVideoPopup}/>
 				</Dialog>
 				<Dialog open={tp.adminPinDialog.isOpen} onRequestClose={tp.closeAdminPinDialog} bodyClassName='sModal' contentStyle={{width: '480px'}}>
 					<EnterAdminPinPopup mode={tp.adminPinDialog.mode}/>
@@ -113,19 +121,21 @@ const mapStateToProps = (state) => {
 
 		usersDataStatus: state.data.dataStatus.usersDataStatus,
 		groupsDataStatus: state.data.dataStatus.groupsDataStatus,
-		qmLettersDataStatus: state.qmLetters.dataStatus,
 		branchesDataStatus: state.data.dataStatus.branchesDataStatus,
+		qmLettersDataStatus: state.qmLetters.dataStatus,
+		accountDetailsDataStatus: state.accountDetails.dataStatus,
 
 		selectedBranch: state.core.selectedBranch,
 		selectedUser: state.core.selectedUser,
 		currentDay: state.ui.taskManager.currentDay,
 		adminPinDialog: state.ui.app.adminPinDialog,
 		selectBranchDialog: state.ui.app.selectBranchDialog,
-		introVideoPopup: state.ui.app.introVideoPopup,
 
 		confirmPopup: state.ui.app.confirmPopup,
 		clientDateChecked: state.core.clientDateChecked,
 		clientDateCorrect: state.core.clientDateCorrect,
+		introVideoWatched: state.accountDetails.data.introVideoWatched,
+		introVideoPopup: state.ui.app.introVideoPopup,
 	}
 }
 
@@ -136,6 +146,7 @@ const mapDispatchToProps = (dispatch) => {
 		registerGroupsDataListener,
 		registerBranchesDataListener,
 		setQmLettersListener,
+		setAccountDetailsListener,
 		removeSelectedUser,
 		closeAdminPinDialog,
 		openSelectbranchDialog,
@@ -143,7 +154,8 @@ const mapDispatchToProps = (dispatch) => {
 		closeConfirmPopup,
 		checkClientDate,
 		selectBranch,
-		closeIntroVideoPopup
+		closeIntroVideoPopup,
+		openIntroVideoPopup
 	}, dispatch)
 };
 

@@ -1,14 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {Provider} from 'react-redux'
 import configureStore from './configureStore'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { BrowserRouter as Router} from 'react-router-dom'
-import injectTapEventPlugin from 'react-tap-event-plugin';
+import injectTapEventPlugin from 'react-tap-event-plugin'
 import moment from 'moment'
 import { initIziToast } from './helpers'
+import 'react-select/dist/react-select.css'
 
-const rootEl = document.getElementById("root");
+const rootEl = document.getElementById("root")
 const store = configureStore()
 
 moment.locale('de')

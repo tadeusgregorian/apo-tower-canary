@@ -11,7 +11,7 @@ export default () => {
         <fb className="organisation infoBox">
           <img className="bigIcon" src={checkboxIcon} alt='checkbox' height='50px' width='50px' />
           <fb className="text">Bessere Organisation durch tägliche ToDo-Listen</fb>
-          <fb className="moreText">Jedem Mitarbeiter erscheint tägilch seine ToDo-Liste. Somit sind die Verantwortlichkeiten klar zugewiesen.</fb>
+          <fb className="moreText">Jedem Mitarbeiter erscheint täglich seine ToDo-Liste. Somit sind die Verantwortlichkeiten klar zugewiesen.</fb>
         </fb>
         <fb className="reminder infoBox">
           <img className="bigIcon" src={ringIcon} alt='checkbox' height='50px' width='50px' />
